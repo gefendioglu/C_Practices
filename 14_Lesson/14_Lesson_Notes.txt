@@ -1,0 +1,48 @@
+/----------------------------------------------
+/--------------LESSON NOTES-------------------- 
+/----------------------------------------------
+
+* MACRO 
+
+#define _USE_MATH_DEFINES
+#include <math.h>
+#include <limits.h>
+#include <stdio.h>
+
+
+#ifdef _USE_MATH_DEFINES // define edildiði için by bloða girilir. 
+#define SIZE 100
+#define MAX 500
+#endif // _USE_MATH_DEFINES
+
+
+int main() {
+
+	int sqrtNumberWithMacro = M_SQRT2;
+	printf("sqrtNumberWithMacro : %d\n", sqrtNumberWithMacro);
+
+	int sqrtNumberWithFunction = sqrt(2);
+	printf("sqrtNumberWithFunction : %d\n", sqrtNumberWithFunction);
+
+	int number = INT_MAX;
+	printf("number : %d\n", number);
+
+	return 0;
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Functional Macro
+
+#define max(a,b) ((a) > (b) ? (a):(b))
+#include <stdio.h>
+
+int main() {
+
+	int x = 34, y = 67;
+	int ival = max(x, y);
+	printf("ival : %d\n", ival);
+
+	return 0;
+}
