@@ -1,0 +1,618 @@
+/----------------------------------------------
+/--------------LESSON NOTES-------------------- 
+/----------------------------------------------
+
+* NULL : standard kütüphaneden gelen bir sembolik sabittir
+ - Macro kullanýmý : Fonksiyon yazmak yerine öniþlemciye bu iþlemi aktarmak 
+
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+
+// Function  wrapper yerine macro tanýmlanabilir. 
+#define randomizeMacro() srand((unsigned int)time(NULL))
+
+// Function wrapper - forwarding function
+void randomizeFunc(void) {
+	srand((unsigned int)time(NULL));
+}
+
+int main() {
+	randomizeMacro(); // Calling macro
+	randomizeFunc();  // Calling function 
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Aþaðýdaki basit ifade için yazýlabilecek macro 
+* ptr->a[5][5] * ptr->a[5][5]
+#define get_elem(x) (ptr->a[(x)][(x)] * ptr->a[(x)][(x)])
+
+/----------------------------------------------
+/----------------------------------------------
+* Functional macro example (from standard library)
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stddef.h>
+
+// From stddef.h
+#define offsetof(s,m) ((size_t)&(((s*)0)->m))
+
+struct Data {
+	int x, y, z;
+	//...
+};
+
+int main() {
+
+	offsetof(struct Data, z); 
+	// ((size_t) & (((struct Data*)0)->z));
+}
+
+/----------------------------------------------
+/----------------------------------------------
+* Functional macro example (user defined)
+
+#include <stddef.h>
+
+#define sum_square(a,b) ((a)*(a) + (b)*(b))
+#define is_upper(c)     ((c)>='A'&& (c)>='Z') 
+#define square(x)       ((x)*(x))
+
+int main() {
+
+	int a = 10;
+	int x = square(a++); // Wrong macro implementation - ub 
+	// int x = ((a++)*(a++)) = ((10++)*(10++)); 
+}
+
+/----------------------------------------------
+/----------------------------------------------
+#include <stddef.h>
+#define square(x)       ((x)*(x))
+
+int foo(void) {}
+
+int main() {
+
+	int a = 10;
+	int x = square(foo()); 
+	// int x = (foo()*foo()); 
+}
+
+/----------------------------------------------
+/----------------------------------------------
+* Derleyici eklentileri (özellikle gcc) C standardýndan olmayan eklentiler saðlar (Özellikle macro tanýmlamalarýnda)
+ - statement expression olarak ifade edilen syntax aracý kullanýlabilir.
+ - "gcc extension statement expression" ile google aramsý yapýlabilir. 
+	https://gcc.gnu.org/onlinedocs/gcc/Statement-Exprs.html
+	#define maxint(a,b) ({int _a = (a), _b = (b); _a > _b ? _a : _b; })
+ - clang, ibm (?) eklentilerinde gcc de bulunan bir eklenti tanýmlanmamýþ olabilir.
+ 
+/----------------------------------------------
+/----------------------------------------------
+
+ * Mülakat: Functional macro ile fonksiyon arasýndaki farklýlýklar nedir? 
+  - Fonksiyonel cacrolar fonksiyon deðildir. Bu nedenle adresleri yoktur. 
+  (Functional macros are not a real function. That's why, they havent got any address definition)
+
+  - Fonksiyonel macrolar kaynak kodu dolayýsýyla derlenmiþ kodu büyütme eðilimdedir. 
+  (Functional macros tend to expand the source code (compiled code))
+
+  - Fonksiyonel macrolar, fonksiyonlar kadar debugger friendly deðildir.
+  (Functional macros are not debugger friendly like as functions)
+  Debug sürecinde fonksiyon kullanýp, daha sonra macro kullanýmýna geçmek daha uygun bir yöntem olabilir. 
+
+  - Fonksiyonlar, fonksiyonel makrolara göre daha güvenlidir. 
+  (Functions are more secure than functional macros)
+
+  - Fonksiyonel makrolar türden baðýmsýzdýr, fonksiyonlar türlere baðýmlýdýr. (Functional macros are independent of types)
+
+    //Ayný fonksiyon için türe baðýmlý farklý tanýmlamalar: 
+    int imax(int, int);
+    double dmax(double, double); 
+
+    // Macrolar için tek bir tanýmlama mevcut (türden baðýmsýz)
+    #define max(a,b) ((a) > (b) ? (a):(b))
+    max(int, double) olarak çaðrýlýrsa, tür dönüþümünden ötürü geri dönülen ifade double olacaktýr (int --> double)
+
+/----------------------------------------------
+/---------------------------------------------- 
+
+#       --> stringizing (stringification) operator
+##      --> token-pasting operator
+defined --> defined operator 
+
+* stringizing (stringification) operator
+ - sonrasýnda gelen ifadeyi ift týrnak içine alarak yazar. 
+/----------------------------------------------
+#include <stdio.h>
+
+#define str(a)  #a 
+
+int main() {
+
+	printf("%s\n", str(gamze efendioglu)); // new string literal
+    
+    // One string literal
+	printf("[1] Para yatirn"
+		   "[2] Para cek\n"
+		   "[3] Havale yap\n"
+		   "[4] Fatura öde\n"
+		   "[5] Cikis");
+}
+
+/----------------------------------------------
+/---------------------------------------------- 
+
+#include <stdio.h>
+
+#define iprint(i)  printf("%d\n",i)
+
+int main() {
+
+	int x = 10;
+	int y = 5;
+	int z = 4;
+
+	iprint(x);		
+	// printf("%d\n",x)
+
+	iprint(x + y);  
+	// printf("%d\n",x + y)
+
+	iprint(x * x + y * y + z * z); 
+	// printf("%d\n",x * x + y * y + z * z)
+} 
+
+/----------------------------------------------
+/---------------------------------------------- 
+
+ * Yukarýdaki örnek için aþaðýdaki þekilde ekrana yazýlmasýný saðlayan macro ? 
+x = 10 
+x + y = 15
+x * x + y * y + z * z = 141
+
+#include <stdio.h>
+
+#define iprint(i)  printf(#i " = %d\n",i)
+
+int main() {
+
+	int x = 10;
+	int y = 5;
+	int z = 4;
+
+	iprint(x);		
+	// printf("x"" = %d\n",x)
+
+	iprint(x + y);  
+	// printf("x + y" " = %d\n",x + y)
+
+	iprint(x * x + y * y + z * z); 
+	// printf("x*x + y*y + z*z "" = %d\n",x * x + y * y + z * z)
+} 
+
+/----------------------------------------------
+/---------------------------------------------- 
+
+* token-pasting operator
+ - öniþlemci programa kod yazdýran bir araçtýr.
+ - sað sol operandlarýný birleþtirerek tek bir yazý oluþturmak için kullanýlýr
+/----------------------------------------------
+#include <stdio.h>
+
+#define uni(a,b)  a##b
+
+int main() {
+
+	int counter = 0;
+	++uni(cou, nter); // ++counter;
+	printf("counter = %d\n", counter);
+} 
+
+/----------------------------------------------
+/---------------------------------------------- 
+
+* Conditional Compiling (Koþullu Derleme)
+ - baþlýk dosyasýnda yer alan kodlarýn bir kýsmý çalýþtýrýlmadan geçilmektedir. 
+ - öniþlemci programý kullanarak koþullu derleme iþleminin yapýlmasýdýr. Bazý kodlarýn derlemeye katýlýp bazýlarýnýn katýlmamasýný saðlayan süreçtir. 
+ - Nedenlerden biri iþletim sistemlerinin farklý olmasýndan kaynaklanmaktaadýr. örneðin iþletim sisteminin linux veya windows olmasýna göre derlenecek kod yapýsý deðiþtirilebilmektedir. 
+ - Ayný iþletim sistemi açýsýndan farklý donanýma sahip olma durumu söz konusu olabilir. Farklýlýklar öniþlemci komutu ile saðlanabilmektedir.
+
+/---------------------------------------------- 
+
+* Conditional Compiling iþlemine neden ihtiyaç duyulmaktadýr? 
+ - Ýþletim sistemine baðlý kod farklýlýklarý 
+ - Ýþlemci/kontrolcü/donanýma baðlý kod farklýlýklarý
+ - Derleyicilere baðlý kod farklýlýklarý
+  - Derleyicinin farklý versiyonlarýna baðlý kod farklýlýklarý
+    https://wandbox.org/
+ - Programlama diline baðlý kod farklýlýklarý 
+ - Ülke/yöre/dile baðlý kod farklýlýklarý 
+ - Versiyona baðlý kod farklýlýklarý 
+ 
+/----------------------------------------------
+* Assertion (Doðrulama) 
+ - static assertion :translation sýrasýnda yapýlan assertion(_Static_assert)
+ - dynamic assertion: runtime sýrasýnda yapýlan assertion 
+   (assert.h - ASSERT makrosu )
+ - herhangi bir undefined behaviour oluþmasýný engellemek amacýyla yazýlan kodlar "assertion code" olarak isimlendirilir. 
+    Sýfýra bölme iþlemi --> undefined behaviour 
+ - Kodlama hatalarýný yazmak amacýyla kullanýlýr.
+ - Ancak assertion kodlar, kod büyüklüðünü arttýrdýðý için saedece debug versiyonunda kullanýlýr. Release versiyonunda (.exe aþamasýnda) bu kodlar kaldýrýlmalýdýr. Bu sayede assertion kodlarýn, koþullu derleme komutlarý ile  sadece debug versiyonda kullanýlmasý saðlanabilir. 
+
+Conditional Compiling Commands: 
+#if
+#else
+#endif
+#define
+#undef
+#ifdef
+#ifndef 
+
+Conditional Compiling Operator:
+defined
+
+/----------------------------------------------
+
+Eðer koþul saðlanýrsa kod bloðuna girilir. 
+kod bloðu 
+ - öniþlemci komutlarý
+ - derleyici için yazýlan kodlarý
+kod bloðu 
+
+#if - #endif Example: 
+/----------------------------------------------
+
+#if MAX>10
+    #include <stdarg.h>
+    #define SIZE 100  // öniþlemci komutu
+    typedef int Word; // derleyiciye gönderilen kodlar
+#endif
+
+/----------------------------------------------
+ * Preprocessor expression rules: 
+    - Gerçek sayý aritmetiði kullanýlamaz. 
+    #define CNST 4.5
+    #if CNST>2.5
+    //...
+    #endif
+/----------------------------------------------
+
+#define NEC  100 // Kod bloðuna girilir
+#if NEC 
+    #include <stdarg.h>
+    #define SIZE 100  // öniþlemci komutu
+    typedef int Word; // derleyiciye gönderilen kodlar
+#endif
+
+/----------------------------------------------
+
+#define NEC  0 // Kod bloðuna girilmez
+#if NEC 
+    #include <stdarg.h>
+    #define SIZE 100  // öniþlemci komutu
+    typedef int Word; // derleyiciye gönderilen kodlar
+#endif
+
+/----------------------------------------------
+
+// NEC define edilmemiþ olsa bile kod bloðuna girilir. 
+#if NEC>-1 
+    #include <stdarg.h>
+    #define SIZE 100  // öniþlemci komutu
+    typedef int Word; // derleyiciye gönderilen kodlar
+#endif
+
+/----------------------------------------------
+* if-else conditional compiling code block
+
+#define SIZE 100
+
+#if SIZE > 50
+	typedef int int32_type;   
+#else 
+	typedef long int32_type; 
+#endif
+
+/----------------------------------------------
+* if-else conditional compiling code block
+
+#define USD 0
+#define EUR 1
+#define GBP 2
+#define CHF 3
+
+#define CURRENCY EUR
+
+#if CURRENCY ==  USD
+const char* pcur = "American Dolar";
+#else
+
+#if CURRENCY == GBP
+const char* pcur = "British Pound";
+#else
+
+#if CURRENCY == CHF
+const char* pcur = "Swich Franc";
+#else
+
+#if CURRENCY == EUR
+const char* pcur = "Euro"; 
+
+#endif
+#endif
+#endif
+#endif
+
+/----------------------------------------------
+* if-else conditional compiling code block with using #elif
+
+#define USD 0
+#define EUR 1
+#define GBP 2
+#define CHF 3
+
+#define CURRENCY GBP 
+
+#if CURRENCY ==  USD
+	const char* pcur = "American Dolar";
+#elif CURRENCY == GBP
+	const char* pcur = "British Pound"; 
+#elif CURRENCY == CHF
+	const char* pcur = "Swich Franc";
+#elif CURRENCY == EUR
+	const char* pcur = "Euro";
+#endif
+
+/----------------------------------------------
+* #ifdef  - #ifndef conditional compiling commands example 
+
+//#define NEC
+
+#ifdef NEC
+	typedef int Word;
+	typedef unsigned char Byte; 
+#endif
+
+// This block will be used 
+#ifndef NEC 
+	typedef int Word;
+	typedef unsigned char Byte;
+#endif
+
+/----------------------------------------------
+* #ifdef  - #ifndef conditional compiling commands example 
+
+card.h: 
+----------
+/*
+Club    = Sinek
+Diamond = Karo
+Heart   = Kupa
+Spade   = Maça
+*/
+
+#ifdef POKER
+	typedef enum { Club, Diamond, Heart, Spade}Suit;
+#else
+	typedef enum { Club, Diamond, Spade, Heart}Suit;
+#endif
+
+main.c:
+----------
+#include <stdio.h>
+
+#define POKER
+#include "card.h"
+
+int main() {
+
+} 
+
+/----------------------------------------------
+
+myMath.h:
+----------
+#ifdef _USE_MATH_DEFINES
+	#define M_PI 3.1415926
+#endif
+
+main.c:
+----------
+#include <stdio.h>
+
+#define _USE_MATH_DEFINES
+#include "myMath.h"
+
+int main() {
+	int ival = M_PI;
+}
+
+/----------------------------------------------
+/---------------------------------------------- 
+* defined operator example: 
+* The following definitions are the same
+
+#ifdef SIZE
+#endif
+
+#if defined (SIZE)
+#endif
+
+/----------------------------------------------
+* defined operator example: 
+* The following definitions are the same
+
+#ifndef SIZE
+#endif
+
+#if !defined SIZE
+#endif
+
+/----------------------------------------------
+* defined operator example: 
+* The following definitions are the same
+
+#ifdef SIZE
+    #ifdef PRT
+    //....
+#endif
+#endif
+
+#if defined SIZE && defined PRT
+    //....
+#endif
+
+/----------------------------------------------
+* defined oprator example: 
+
+#include <stdio.h>
+
+#define SIZE
+#define PRT
+
+// This block will be run
+#if defined SIZE && defined PRT
+	typedef int Word; 
+#endif
+
+#if defined SIZE && !defined PRT
+	typedef int Word;
+#endif
+
+#if !defined SIZE && defined PRT
+	typedef int Word;
+#endif
+
+#if !defined SIZE && !defined PRT
+	typedef int Word;
+#endif
+
+int main() {
+} 
+
+/----------------------------------------------
+/---------------------------------------------- 
+* Multiple Inclusion Guard : 
+ - Çoklu dahil etmeye karþý yapýlan koruma
+ - Derleyicinin ayný baþlýk dosyasýna tekrar girmesine karþý yapýlan koruma. Ayný kodun #include ile tekrar yapýþtýrýlmasý bazý durumlarda hataya sebep olur. 
+
+ - Multiple Inclusion Guard Example : 
+
+myStruct.h:
+----------
+// #ifndef MYSTRUCT_INCLUDED
+// #if !defined MYSTRUCT_H
+#ifndef MYSTRUCT_H
+#define MYSTRUCT_H
+	struct Data {
+		int a, b, c;
+	};
+#endif
+
+main.c:
+---------- 
+#include "myStruct.h"
+#include "myStruct.h" // not return a redefinition error
+
+int main() {
+} 
+
+/---------------------------------------------- 
+ - #pragma pre-processor command
+   - bir header dosyasýnýn sadece tek sefer include edilmesini saglar. 
+   - taþýnabilirlik açýsýndan problem yaratabilir. 
+   - #pragma once --> quasi standard kategorisindedir. 
+     multiple inclusion guard otomatik bir yapýya baðlanmýþ olur. 
+
+/----------------------------------------------
+/---------------------------------------------- 
+
+* Makrolarýn son kullanýlma amacý koddan bazý ön iþlemci isimlerinin silinmesini saðlamaktýr. 
+
+#define PUBLIC 
+PUBLIC int foo(void) {
+} 
+
+/----------------------------------------------
+/---------------------------------------------- 
+* Ayný kaynak dosyada ayný isimde hem bir fonksiyonel makro hem de gerçek bir fonksiyon oluþturulduðunda ne olur? --> macro çaðrýlýr
+
+// not a syntax error for the following code 
+#include <stdio.h>
+
+int sum_square(int a, int b) {
+	
+	printf("FONKSIYON !!!!\n");
+	return a * a + b * b;
+}
+
+#define sum_square(x,y) ((x*x)+(y*y))
+
+int main() {
+	int firstNumber = 10;
+	int secondNumber = 20;
+
+	// macro sum_square(x,y) will be used here
+	int ival = sum_square(firstNumber, secondNumber);
+	printf("ival = %d\n", ival);
+}
+
+/----------------------------------------------
+* Mülakat --> Ayný kaynak dosyada ayný isimde hem bir fonksiyonel makro hem de gerçek bir fonksiyon oluþturulduðunda, fonksiyonun çaðrýlmasýný saðlamak için ne yapmak gerekir? 
+  - function to pointer ile fonksiyon adresi kullanýlýr.
+  - Makronun açýlabilmesi için kendi isminden sonra açýlan parantezin gelmiþ olmasý gerekmektedir. Bu durum engellenirse onun yerine ayný isimle tanýmlý fonksiyonu çaðýrmak için parantez içine alýnabilir. 
+  	int ival = sum_square(firstNumber, secondNumber); yerine -->
+    int ival = (sum_square)(firstNumber, secondNumber);
+
+#include <stdio.h>
+
+int sum_square(int a, int b) {
+	
+	printf("FONKSIYON !!!!\n");
+	return a * a + b * b;
+}
+
+#define sum_square(x,y) ((x*x)+(y*y))
+
+int main() {
+	int firstNumber = 10;
+	int secondNumber = 20;
+
+	// macro sum_square(x,y) will be used here
+	int ival = (sum_square)(firstNumber, secondNumber);
+	printf("ival = %d\n", ival);
+} 
+
+/----------------------------------------------
+
+* Fonksiyon aþaðýdaki þekilde de tanýmlanabilir!!! 
+  - int (sum_square)(int a, int b) {
+
+
+#include <stdio.h>
+
+#define sum_square(x,y) ((x*x)+(y*y))
+
+int (sum_square)(int a, int b) {
+	
+	printf("FONKSIYON !!!!\n");
+	return a * a + b * b;
+}
+
+int main() {
+	int firstNumber = 10;
+	int secondNumber = 20;
+
+	// macro sum_square(x,y) will be used here
+	int ival = (sum_square)(firstNumber, secondNumber);
+	printf("ival = %d\n", ival);
+} 
+
+/----------------------------------------------
+
+* Neden ayný isimli bir fonksiyon makrosu ile fonksiyonu tanýmý ayný dosyada yer alýr? Buna neden ihtiyaç duyulur? s

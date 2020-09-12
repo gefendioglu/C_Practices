@@ -3,6 +3,12 @@
 /----------------------------------------------
 
 * MACRO 
+ - fonksiyon çaðrýlarýndan kaynaklanan maliyetden kaçýnmak
+ - fonksiyon çaðrýsý olduðu yerde derleyici sadece belirtilen kodu yazar
+ - burada bir return value tanýmý yoktur
+
+/----------------------------------------------
+/----------------------------------------------
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -33,7 +39,13 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* Functional Macro
+* Functional Macro:
+ - fonsiyona giriþ ve fonksiyondan çýkýþ kodu olmayacaðý için daha hýzlý çalýþmasý beklenmektedir. 
+ - kodu küçük ve çok sýk çaðrýlan fonksiyonlar için tercih edilmelidir. 
+ - yazma kolaylýðýndan dolayý da tercih edilmektedir. 
+ - bit elemanlarýnýn kullanýmý sýrasýnda functional macro kullanýmý yaygýndýr. 
+ - bu macro yapýsýnýn kullanýcýsý 
+ - güvenlik açýsýndan açýðý vardýr; ancak kullanýmýndan da vazgeçilemez. 
 
 #define max(a,b) ((a) > (b) ? (a):(b))
 #include <stdio.h>
@@ -46,3 +58,6 @@ int main() {
 
 	return 0;
 }
+
+/----------------------------------------------
+/----------------------------------------------
