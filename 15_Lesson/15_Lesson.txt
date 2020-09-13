@@ -9,7 +9,7 @@
 #include <time.h>
 #include <stdlib.h>
 
-// Function  wrapper yerine macro tanýmlanabilir. 
+// Function wrapper yerine macro tanýmlanabilir. 
 #define randomizeMacro() srand((unsigned int)time(NULL))
 
 // Function wrapper - forwarding function
@@ -590,7 +590,7 @@ int main() {
 
 /----------------------------------------------
 
-* Fonksiyon aþaðýdaki þekilde de tanýmlanabilir!!! 
+* Eðer makro fonksiyondan önce tanýmlanýrsa, fonksiyon aþaðýdaki þekilde de parantez içinde tanýmlanmalýdýr!!! 
   - int (sum_square)(int a, int b) {
 
 
@@ -615,4 +615,7 @@ int main() {
 
 /----------------------------------------------
 
-* Neden ayný isimli bir fonksiyon makrosu ile fonksiyonu tanýmý ayný dosyada yer alýr? Buna neden ihtiyaç duyulur? s
+* Neden ayný isimli bir fonksiyonel makro ile fonksiyon tanýmý ayný dosyada yer alýr? Buna neden ihtiyaç duyulur? 
+ - Güvenli olmayan durumda fonksiyonun çaðrýlmasý tercih edilebilir. 
+ - Her zaman fonksiyon kullanýmý daha güvenilirdir. Çünkü fonksiyona gönderilen parametrelerin türleri bellidir. Fonksiyonel makrolarda ise deðildir. Bu durum undefined behaviour a yol açabilir. 
+ - Fonksiyonlar debug friendly ve test edilmeye daha uygundur. 

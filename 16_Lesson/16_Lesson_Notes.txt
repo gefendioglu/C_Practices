@@ -1,0 +1,511 @@
+/----------------------------------------------
+/--------------LESSON NOTES-------------------- 
+/----------------------------------------------
+
+* #undef preprocessor command:
+ - #define makro komutunun tersi
+ - #undef MAX ile MAX makrosunun geçerliliði ortadan kalkar
+ - Önceden var olmayan bir makronun #undef edilmesi undefined behaviour deðildir
+ - #define edilen her makronun #undef edilmesi gerekir þeklinde bir kural yoktur. 
+
+#define sum_square(x,y) ((x*x)+(y*y))
+//...
+#undef sum_square
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Bir makronun farklý iki þekilde define edilmesi --> undefined behaviour
+  - Farklý baþlýk dosyalarýnýn include edilmesi ile 
+  - Ýhtiyaç dahilinde ayný makronun temsil ettiði deðerin deðiþmesi gerekebilir. Ancak bu durumda koruma kodu yazýlmalýdýr. 
+
+
+#define MAX 1000
+//...
+#define MAX 5000 //warning C4005 : 'MAX' : macro redefinition
+
+/----------------------------------------------
+
+#define MAX 1000
+//...
+#undef MAX       // koruma kodu 
+#define MAX 5000
+
+/----------------------------------------------
+
+void func() {
+ 
+#define SIZE 1000 // Not have a block scope
+
+}
+/----------------------------------------------
+void func() {
+
+#define SIZE 1000 // Have a block scope
+//...
+#undef SIZE
+
+}
+/----------------------------------------------
+
+#define MAX  // Bir sonraki kod bloðuna girilmesini saðlar!!
+
+#ifdef MAX
+	typedef int Word;
+#endif
+
+#undef MAX    // Bir sonraki kod bloðuna girilmesini engeller!!
+
+#ifdef MAX
+	typedef unsigned char Byte;
+#endif
+
+* Baþlýk dosyalarýnýn artmasý çalýþtýrýlabilir kod byüklüðünü arttýrmaz
+
+/----------------------------------------------
+/---------------------------------------------- 
+
+* #line, #error, #pragma preprocessor commands 
+ - #error --> kodun bilerek isteyerek öniþlemci aþamasýnda sonlandýrýlmasý
+ - #pragma
+
+
+#error this project should not been compiled!!!
+
+/----------------------------------------------
+// c derleyicisi ile derlenmek istendiðinde bu blok içine girecektir:
+// programcý sadece cpp derleyicisi ile derlemek istediðinde 
+
+#ifndef __cplusplus 
+#error this project should not been compiled!!!
+#endif
+
+/----------------------------------------------
+/---------------------------------------------- 
+
+* Predefined symbolic constants (predefined macro)
+ - önceden tanýmlanmýþ makro sabitleri:  __cplusplus 
+ - diðer makrolar ile çakýþma riskini ortadan kaldýrmak için __ ile baþlar ve biter. 
+ __LINE__  : assert makrosu içinde de tanýmlýdýr. 
+ __FILE__
+ __DATE__
+ __TIME__
+ __STDC__
+ __func__
+
+/----------------------------------------------
+
+#include <stdio.h>
+
+int main() {
+	
+	printf("The row of source code :  %d\n", __LINE__); //  : 5
+	printf("The row of source code :  %d\n", __LINE__); //  : 6
+}
+
+/----------------------------------------------
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define DEBUG
+
+void func(int x) {
+#ifdef DEBUG 
+	if (x == 0) {
+		printf("Error error...");
+		abort();
+	}
+#endif
+}
+
+int main() {
+	func(0); // The program was aborted !!!
+}
+
+/----------------------------------------------
+
+* You can use assert functional macro (from <assert.h> library) instead of previous code sample
+ - assert(x != 0); --> parantez içinde doðru olmasý gereken ifade yazýlmalý!
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+void func(int x) {
+	assert(x != 0);
+}
+
+int main() {
+	func(0);
+}
+
+/----------------------------------------------
+* assert functional macro definition in standard lib. 
+
+#ifdef NDEBUG
+
+    #define assert(expression) ((void)0)
+
+#else
+
+    _ACRTIMP void __cdecl _wassert(
+        _In_z_ wchar_t const* _Message,
+        _In_z_ wchar_t const* _File,
+        _In_   unsigned       _Line
+        );
+
+    #define assert(expression) (void)(                                                       \
+            (!!(expression)) ||                                                              \
+            (_wassert(_CRT_WIDE(#expression), _CRT_WIDE(__FILE__), (unsigned)(__LINE__)), 0) \
+        )
+
+#endif
+
+/----------------------------------------------
+
+* #define NDEBUG ile debug süreci sonlandýðýnda assert makrolarýnýn elle silinmesine gerek kalmadan derleme aþamasýnda koddan çýkarýlmasý saðlanýr. 
+ - #define NDEBUG --> #include <assert.h> öncesinde eklenmesi gerekmektedir. 
+ - Bu sayede boþ deyim dönmesi saðlanacaktýr 
+   --> #define assert(expression) ((void)0)
+
+#define NDEBUG
+#include <assert.h>
+
+void func(int x) {
+	assert(x != 0);
+}
+
+/----------------------------------------------
+
+* __DATE__ , __TIME__, __FILE makrolarý
+     - __TIME__ otomatik olarak derleme zamanýna göre deðiþir.
+     - __DATE__ otomatik olarak derleme zamanýna göre deðiþir.
+
+#include <stdio.h>
+
+int main() {
+
+	printf("SOURCE CODE : %s\n", __FILE__);
+	//SOURCE CODE : C:\Users\user\Desktop\GitHub_Repo\C_Practices\16_Lesson\main.c
+
+	printf("Compile date : %s\n", __DATE__); 
+	// Compile time : Sep 13 2020
+
+	printf("Compile time : %s\n", __TIME__);
+	// Compile time : 10 : 08 : 26
+}
+/----------------------------------------------
+* __func__ makrosu:
+
+#include <stdio.h>
+
+void foo(void) {
+	printf("The row %d of %s function in %s file \n", __LINE__, __func__, __FILE__);
+
+}
+int main() {
+	foo();
+}
+
+/----------------------------------------------
+
+* __STDC__ : 
+    - c ile derlenmesi istenen kod bloklarý için koþul olarak kullanýlýr. 
+    - __cpluscplus ifadesi ise ayný makro yapýsýnýn cpp tarafýndaki hali 
+
+#ifdef __STDC__     // Defined for c compiler
+#error C Compiler
+#endif
+
+#ifdef __cpluscplus // Defined for cpp compiler
+#error CPP Compiler
+#endif
+
+/----------------------------------------------
+* #pragma : 
+    - eðer bir derleyici öniþlemci programa ilave iþler yaptýrmak istiyorsa bu komut kullanýlmaktadýr.
+    - hangi amaçla kullanýlacaðý standartlara baðlý deðildir. 
+    - portability sorunu ortaya çýkabilir. Çünkü derleyiciye specifik pragma komutlarý yazýlmaktadýr. 
+    - #pragma once : multiple inclusion guard
+    - #pragma warning(disable:4552) : to disable a warning
+
+#include <stdio.h>
+#pragma warning(disable:4552)
+
+int main() {
+
+	int x = 10;
+	x + 5;
+	// warning C4552: '+': result of expression not used
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* nutility.h:
+--------------------
+#ifndef NUTILITY_H
+#define NUTILITY_H
+
+//isleap
+#define isleap(y)  ((y)%4 == 0 && ((y)%100 != 0 || (y)%400 ==0))
+
+int isprime(int);
+int ndigit(int);
+void dline(void);
+void sleep(double);
+int day_of_week(int, int, int);
+
+#endif
+
+nutility.c:
+------------------------
+#include"nutility.h"
+#include <stdio.h>
+#include <time.h>
+
+
+int isprime(int x){
+	return 0;
+}
+int ndigit(int y){
+	return 0;
+}
+
+void dline(void) {
+	printf("\n-----------------------------------------------------\n");
+}
+
+void sleep(double sec) {
+
+	clock_t start = clock();
+
+	while ((double)(clock() - start) / CLOCKS_PER_SEC < sec)
+		; // null statement
+}
+
+// The Tomohiko Sakamoto Algorithm 
+
+int day_of_week(int day, int month, int year)
+{
+	// array with leading number of days values 
+	// look-up table --> const int[]
+	static const int t[] = { 0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4 };
+
+	// if month is less than 3 reduce year by 1 
+	if (month < 3)
+		year -= 1;
+
+	return ((year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7);
+}
+
+main.c
+------------------------
+#include <stdio.h>
+#include <stdlib.h>
+#include "nutility.h"
+
+int main() {
+
+	int day = 13, month = 7, year = 2017;
+	int n;
+
+	n = day_of_week(day, month, year);
+	return 0;
+}
+
+/----------------------------------------------
+/----------------------------------------------
+* false positive code : 
+	 - int x = 45.7; possible loss of data warning 
+	 - bilerek yazýlan bir durum ise uyarý mesajý çýkmasýný engelleyecek kodlar yazýlmalýdýr. 
+	 - 0 error - 0 warning olana kadar kod kontrol edilmelidir. 
+	 - "treat warnings as errors" ayarý ile warning --> error olarak dönecek þekilde ayarlanmalýdýr. (Properties --> General --> C/C++)
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Kod yazým kurallarý:
+	- Kod test edilmeli
+	- 0 error - 0 warning ile commit edilmeli
+	- false-positive durumlarda compiler uyarý vermemeli
+	- belli bir kod standardýna göre yazýlmalý
+	- +=, %= gibi operatorler kullanýlmalý
+	- int x = 10; yazýlmalý --> yerine
+	  int x; 
+	  x=10;  
+	- deðiþken bildirimleri ayrý ayrý yapýlmalýdýr. 
+	  int ival, cnt=0, *ptr=&ival; yerine -->
+	  int ival;
+	  int cnt=0;
+	  int *ptr= &ival; 
+	- for() için sadece o blok altýnda kullanýlacak bir deðiþken 
+	  for(int i=0;;) olarak ifade edilmeli
+	- döngü deðiþkenleri i,j,k þeklinde isimlendirilebilir. 
+	- cnt++ yerine --> ++cnt yazýlmalý
+	- scope geniþledikçe isimler özelleþtirilmeli 
+	- global isim alanýnda çok genel isimler seçilmemeli 
+	  ör: int counter; yerine --> daha spesifik isimlendirme kullanýlmalý
+	- bob martin "clean code" isimli kitabý okunmalý 
+
+/----------------------------------------------
+/----------------------------------------------
+
+* switch control statement :
+	- her switch --> if e dönüþtürülebilir. Ancak tersi her zaman doðru deðil!
+	- daha iyi compiler optimization için tercih edilebilir.
+	- switch() blok içindeki ifade tamsayý türü olmak zorundadýr (double, float vb. olamaz).
+	- case label ise constant tamsayý deðeri olmak zorundadýr 
+	- her bir case label unique olmalýdýr. 
+	- break; kullanýmý, case geçiþleri arasýnda yaygýndýr (break; deyiminin özellikle kullanýlmak zorunda olmadýðý diller de mevcut!!!)
+	- case label sonrasýnda mutlaka bir ifade bulunmalýdýr. 
+	- geçerli case label kullanýmlarý:
+		- case 'A':        --> geçerli
+		- case "gamze":    --> geçerli deðil, string literal olamaz
+		- case 12.5:       --> geçerli deðil, tamsayý ifade olmalýdýr
+		- case MAX:        --> geçerli veya deðil, MAX deðerine baðlý
+		- case (MIN+MAX)/2:--> geçerli veya deðil, MAX,MIN deðerine baðlý
+		- case -5:		   --> geçerli, positive or negative
+		- case 0X23:       --> geçerli, farklý tamsayý sisteminde ifade
+
+
+if (n == 1) {
+	printf("pazartesi\n");
+}
+else if (n == 2) {
+	printf("sali\n");
+}
+else if (n == 3) {
+	printf("carsamba\n");
+}
+else if (n == 4) {
+	printf("persembe\n");
+}
+else if (n == 5) {
+	printf("cuma\n");
+}
+else if (n == 6) {
+	printf("cumartesi\n");
+}
+else if (n == 7) {
+	printf("pazar\n");
+}
+
+/----------------------------------------------
+
+switch (n) {
+case 1:printf("pazartesi\n"); break; 
+case 2:printf("sali\n"); break;
+case 3:printf("carsamba\n"); break;
+case 4:printf("persembe\n"); break;
+case 5:printf("cuma\n"); break;
+case 6:printf("cumartesi\n"); break;
+case 7:printf("pazar\n"); break;
+}
+
+/----------------------------------------------
+
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+
+	int n;
+	printf("haftanin kacinci gunu: ");
+	scanf("%d", &n);
+
+	switch (n) {
+	case 1:printf("pazartesi\n"); break; 
+	case 2:printf("sali\n"); break;
+	case 3:printf("carsamba\n"); break;
+	case 4:printf("persembe\n"); break;
+	case 5:printf("cuma\n"); break;
+	case 6:printf("cumartesi\n"); break;
+	case 7:printf("pazar\n"); break;
+	}
+
+	return 0;
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Mülakat: Hiç ; kullanmadan ekrana merhaba yazdýrmak :
+
+#include <stdlib.h>
+
+int main() {
+
+	switch (printf("merhaba")) {}
+}
+
+/----------------------------------------------
+* Ekrana merhaba yazdýran farklý bir kullaným:
+
+#include <stdio.h>
+
+int main() {
+	int x = 5;
+
+	switch (x) {
+	case 5 :printf("merhaba");
+	}
+}
+
+/----------------------------------------------
+
+switch (x) {
+case 5,4,3,2,1 :printf("merhaba"); // syntax error
+}
+
+switch (x) {
+case 5; case 4; case 3:printf("merhaba"); // not syntax error
+}
+
+/----------------------------------------------
+
+* // syntax error, case 2 sonrasýndaki case için ifade tanýmlandýðýndan 
+
+#include <stdio.h>
+
+int main() {
+	int x = 3;
+
+	switch (x) {
+	case 4 :
+	case 3 :
+	case 2 :printf("merhaba"); 
+	case 1 :
+	}
+}
+
+/----------------------------------------------
+* Örnekte aþaðýdaki case ifadeleri ayný sonucu verecek þekilde tasarlanmýþtýr: 
+	- case 12, case 1, case 2  --> winter
+    - case 3, case 4, case 5   --> spring
+    - case 6, case 7, case 8   --> summer
+    - case 9, case 10, case 12 --> autumn
+
+#include <stdio.h>
+
+int main() {
+	int x = 3;
+
+	switch (x) {
+	case 12:
+	case 1:
+	case 2:printf("winter"); break;
+	case 3:
+	case 4:
+	case 5:printf("spring"); break;
+	case 6:
+	case 7:
+	case 8:printf("summer"); break;
+	case 9:
+	case 10:
+	case 11:printf("autumn"); break;
+	}
+}
