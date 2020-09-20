@@ -11,5 +11,6 @@ int ndigit(int);
 void dline(void);
 void sleep(double);
 int day_of_week(int, int, int);
+void randomize(void);
 
 #endif

@@ -1,0 +1,772 @@
+/----------------------------------------------
+/--------------LESSON NOTES-------------------- 
+/----------------------------------------------
+
+* int + double --> double
+* integral promotion:
+	- bir iþlemde binary operandýn operandýnda
+	- variadic fonksiyonlarda 
+	- default declare edilmiþ
+
+
+/----------------------------------------------
+/----------------------------------------------
+* #define _CRT_SECURE_NO_WARNINGS makro kullanýmý
+	 - Windows derleyicilerine özel bir makrodur. 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+
+	char s1[100];
+	char s2[100] = "gamze";
+	strcpy(s1, s2);
+	// Error	C4996	'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS.
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* without using #define _CRT_SECURE_NO_WARNINGS macro
+
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+
+	char s1[100];
+	char s2[100] = "gamze";
+	strcpy_s(s1, sizeof(s2), s2);
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* explicit type conversion : kendi irademizle yapýlan dönüþümler
+
+int ival = 10;
+ival --> int, L-Value 
+(double)ival --> double , R-Value
+
+ival = 15;           // OK --> L-Value expression
+(double)ival = 12.5; // NOT OK --> R-Value expression
+
+/----------------------------------------------
+/----------------------------------------------
+* both explicit and implicit conversion
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+	int x = 10, y = 20;
+	(long long)x + y = 28;				// NOT OK --> R-Value expression
+	long long number = (long long)x + y; // OK --> L-Value expression
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+ival + dval --> 
+	- ival türü deðiþmez 
+	- sadece ival için double tür açýsýndan geçici bir nesne oluþturulup iþleme sokulur.
+	- Kodun devamýnda ival kullanýlýrsa, yine int türünden iþlem görecektir.
+	
+/----------------------------------------------
+/----------------------------------------------
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+	double dval;
+	int ival;
+
+	printf("Number: ");
+	scanf("%lf", &dval);
+
+	ival = dval;		// OK --> narrowing conversion
+	printf("ival: %d\n ", ival);
+
+	ival = (int)dval;   // OK --> narrowing conversion with explicit type conv. 
+	printf("ival: %d\n ", ival);
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+	
+	char str[100];
+	str[5] = (char)getchar();
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+	
+	int x, y;
+	double dval; 
+
+	printf("two real numbers: ");
+	scanf("%d%d", &x, &y);      // two real numbers : 5 6
+	
+	dval = x / y;
+	printf("dval: %f\n", dval); // dval : 0.000000
+	
+	dval =(double) x / y; 
+	printf("dval: %f\n", dval); // dval : 0.833333
+
+	int  counter;
+	(long long) dval*counter;
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Implicit Type conversion for ternary operators 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x = 10;
+	int y = 10;
+	double dval = (x > 5 ? y : 3.4) / 3;
+
+	printf("dval: %f\n", dval); // dval: 3.333333
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Mülakat: Sayýyý bir üste veya bir alta yuvarlama
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int ival;
+	double dval;
+
+	printf("real number: "); 
+	scanf("%lf", &dval);
+
+	//ival = (int)round(dval);
+	//ival = (int)(dval + dval > 0 ? .5 : -0.5);
+	ival =(int)(dval + .5) - (dval < 0.);
+	printf("ival : %d\n", ival);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Sabit türünün deðiþtirilerek tür dönüþümünün gerçekleþtirilmesi
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+
+int factorial(int val) {
+	return val < 2 ? 1 : val * factorial(val - 1);
+}
+
+int main() {
+
+	double sum = 0.;
+	for (int i = 0; i < 12; ++i)
+		sum += 1. / factorial(i);
+
+	printf("sum : %f\n", sum); // sum : 2.718282
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Sabit türünün deðiþtirilerek tür dönüþümünün gerçekleþtirilmesi
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int min, sec;
+	printf("dakika ve saniye :  "); 
+	scanf("%d%d", &min, &sec);
+
+	printf("%d dakika ve %d saniye ve %f saat\n", min, sec, min/60.+sec/3600.);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Formatting to print double values
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	double dval = 1.7889765;
+	printf("%f\n",dval);    // 1.788976 --> 6 numbers after comma (default)
+	printf("%.2f\n",dval);  // 1.79     --> 2 numbers after comma
+}
+/----------------------------------------------
+/----------------------------------------------
+
+* Random Number Generator : 
+- tek baþýna bir sayýnýn rasgele olup olmadýðý hakkýnda konuþulamaz
+- bir sayý dizi içinden seçilmiþ bir sayý rasgele olabilir
+- 2 3 5 7 2 3 5 7 2 3 5 ? --> rasgele olma durumu düþük, sayýnýn 7 olma ihtimali yüksek
+- rasgele olmak öngörülemez olmakla ilgilidir. 
+- test iþlemlerinde, simülasyonlarda, oyun programlarýnda, genetik algoritmalarýnda, kriptolojide, olasýlýk hesaplamanýn olduðu her alanda vb. kullanýmlarý bulunmaktadýr. 
+- iki ayrý rasgele sayý üretimi vardýr: 
+	- true(ly) random number generation : 
+		--> doðadan kaynaklanan sayý üretimi
+	- pseudo random number generation   : 
+		--> random number generator engine ile bazý algoritmalara göre ragele sayý üretimidir (kullanýlan algoritmaya göre random number oluþturma hýzý deðiþecektir.)
+		--> mersenne - twister algorithm is used commonly to generate pseudo random number
+		--> ancak baþlangýç deðeri (seed value) ayný olduðunda, uygulanan algoritmanýn da ayný olmasý ile her defasýnda ayný deðerler üretilecektir. 
+		--> bu sebeple ayný algoritma kullanýmlarýnda seed value deðerinin  deðiþmesi  önemlidir !!!
+		--> seed value --> 4 byte unsigned value rasgele olma ihtimali 2 byte unsigned value olmasýna göre daha yüksek ihtimaldir. 
+		--> seed value ne kadar geniþ bir aralýkta olursa olsun bir noktadan sonra tekrarlama olacaktýr.
+		--> doðadan kaynaklý rasgele sayý üretimi saðlayan algoritmalarý çalýþtýran cihazlar mevcuttur; ancak pahallýdýr. 
+		
+/----------------------------------------------
+/----------------------------------------------
+
+bitwise exor iþlemi ile random sayý üretimi : 
+dosya byte deðerlerinin farklý sayýlarla exor iþlemine sokulmasý
+dosyayý açan tarafýn ayný deðerler ile exor iþlemine sokmasý ile ayný byte deðerleri elde edilmektedir.
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Programlama dilleri random number üretiminde verdiði destek: 
+- C   --> yok denecek kadar zayýf 
+- C++ --> random lib. kullanýlan ve istenilen daðýlým modeli seçilebilir. 
+	  --> 3 temel rasgele sayý üretim algoritmasý mevcuttur: 
+		  std::mersenne_twister_engine (mt19937, mt19937_64)
+		  std::subtract_with_carry_engine
+		  std::linear_congruential_engine
+- rasgele sayý üretimi ile, üretilen rasgele sayýlarýn istenilen þekilde daðýtýlmasý birbirinden farklý süreçlerdir. Daðýlým farklý modellere göre gerçekleþtirilir.
+- uniform distribution (her rakamýn ayný sayýda gelmesine dayanan model):
+	--> zarýn 0-6 aralýðýnda rasgele gelen rakamlarýnýn daðýlýmýný temsil edebilir. 
+	--> bu model 0-100yaþ aralýðýndaki insanlar için yaþ daðýlýmýný temsil edemez. 
+	--> bu model 30-250 kilo aralýðýndaki insanlar için kilo daðýlýmýný temsil edemez.
+- bernoulli distribution
+- poisson distribution
+- normal distribution
+- sampling distribution
+
+/----------------------------------------------
+/----------------------------------------------
+
+* C --> random number generator with rand(), srand() functions in stdlib.h
+- int rand(void); // 0 - RAND_MAX (Derleyici tipine göre deðiþir.)
+			      // RAND_MAX : 32767 (generally)
+
+- void srand(unsigned int); // ilk deðer verilerek random number üretmek 
+							// her seed value için 
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Random number generation with different seed values 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+// standart rand fonksiyonun default seed value 1 için üretilen rasgele sayýlar
+int main() {
+
+	srand(1u);
+	for (int i = 0; i < 20; ++i)
+		printf("%d\n",rand());  
+
+	printf("\n\n\n");
+
+	srand(1992);
+	for (int i = 0; i < 20; ++i)
+		printf("%d\n", rand());
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Random number generation with functions and different seed values 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+void printRandomNumbers(unsigned int seed) {
+	
+	printf("seed value : %u\n\n", seed);
+	srand(seed);
+
+	for (int i = 0; i < 100; ++i) {
+		if(i && i%10 == 0)
+			printf("\n");
+		printf("%-5d", rand());
+
+	}
+	printf("\n");
+	_getch();
+	system("cls");
+}
+
+int main() {
+	for (int i = 0; i < 100; ++i) 
+		printRandomNumbers(i);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Belli sayý aralýðýnda random number üretmek 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+#define RANDOM_MIN_YEAR 1960
+#define RANDOM_MAX_YEAR 2010
+
+int main() {
+	
+	// 1960 - 2010 arasýnda random year generator
+	for (int i = 0; i < 20; ++i)
+		printf("%d\n", rand() % (RANDOM_MAX_YEAR - RANDOM_MIN_YEAR + 1) + RANDOM_MIN_YEAR);
+	
+	printf("\n\n\n");
+
+	for (int i = 0; i < 20; ++i)
+		printf("%d\n", rand()%6+1);
+	
+	printf("\n\n\n");
+
+	for (int i = 0; i < 20; ++i)
+		printf("%d\n", rand()%2);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Random Number Generator
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+
+int roll_dice(void) {
+	return rand() % 6 + 1;
+}
+
+int main() {
+
+	for (int i = 0; i < 20; ++i)
+		printf("%d %d\n", roll_dice(), roll_dice());
+
+	printf("\n\n\n");
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* default seed value ayný olduðunda, random number dizisi de ayný olacaktýr. 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+
+int main() {
+
+	srand(rand());
+	for (int i = 0; i < 20; ++i)
+		printf("%d \n", rand());
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Randomize Idiom: 
+- Belli bir sayýdan geçen zamaný bulmak --> time point noktasý (epoch time)
+- 1.1.1970 00:00:00 --> epoch time
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <conio.h>
+#include <time.h>
+
+int main() {
+
+	long long timer;
+
+	for (;;) {
+		time(&timer); // scanf gibi call by reference olarak çaðýrýr
+		printf("%lld\n", timer);
+	}
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Farklý seed deðerleri ile random number üretmek 
+  Epoch time sebebiyle her çalýþtýrma süresi arasýnda en az 1 saniye geçmelidir.
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <time.h>
+
+int main() {
+
+	printf("%lld\n\n", time(NULL));  // 1.1.1970 ten geçen saniye sayýsý alýnýr
+	srand((unsigned int)time(NULL)); // seed value her defasýnda deðiþecektir. 
+	
+	for (int i = 0; i < 20; ++i)
+		printf("%d\n", rand());
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <time.h>
+#include <ctype.h>
+
+void sleep(double sec) {
+
+	clock_t start = clock();
+
+	while ((double)(clock() - start) / CLOCKS_PER_SEC < sec)
+		; // null statement
+}
+
+int main() {
+	int c; 
+	srand((unsigned int)time(NULL)); // seed value her defasýnda deðiþecektir. 
+	
+	for (;;) {
+		putchar(rand()%5 + 'A');
+		sleep(0.05);
+	}
+
+	/*
+	for (;;) {
+		while (!isdigit(c = rand() % 128));
+		putchar(c);
+		sleep(0.05);
+	}
+	*/
+
+	/*
+	for (;;) {
+		while (!ispunct(c = rand() % 128));
+		putchar(c);
+		sleep(0.05);
+	}
+	*/
+
+	/*
+	for (;;) {
+		while (!isprint(c = rand() % 128));
+		putchar(c);
+		sleep(0.05);
+	}
+	*/
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* randomize idiomu, döngüsel yapýda ya da fonksiyon içinde çaðrýldýðýnda ayný deðeri döndürecek kadar hýzlý iþlem görür. 
+- bu sebeple genelde random sayý üretilmeden önce çaðýrýlmasý tercih edilmelidir.  
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <time.h>
+#include <ctype.h>
+
+void printRandomPassword(void) {
+	
+	int len;
+	//srand((unsigned int)time(NULL)); // NOT OK here --> same time value 
+
+	len = rand() % 8 + 5;
+	while (len--) {
+		putchar(rand()%26 + 'A');
+	}
+	putchar('\n');
+}
+
+int main() {
+	
+	srand((unsigned int)time(NULL)); // OK here --> different time value 
+
+	for (int i = 0; i < 10; ++i)
+	{
+		printRandomPassword();
+	}
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Tura Gelme Olasýlýðý 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <time.h>
+#include <ctype.h>
+
+#define NTOSS 100000
+#define HEADS 1
+
+int main() {
+	
+	int headsCount = 0;
+
+	for (int  i = 0; i < NTOSS; ++i)
+	{
+		if (rand() % 2 == HEADS)
+			++headsCount; 
+	}
+
+	printf("tura gelme olasiligi %.12f\n", (double)headsCount / NTOSS);
+	// NTOSS arttýkça olasýlýk artacaktýr.
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Kumar Oyunu
+- 7, 11        --> WIN
+- 2, 3, 12     --> LOSE
+- 4,5,6,8,9,10 --> OYUN ASKIDA, ilk atýlan zarýn atýlmasý gerekir, 7 attýðý ilk anda kaybecektir. 7 atmadan ilk attýðýný atarsa kazanýr. 
+
+Sample: 
+- WIN Case  : 8 12 6 8 
+- LOSE Case : 8 12 6 7
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+#define NGAMES 100'000'000
+
+// NGAMES 100'000'000 --> kazanma olasiligi : 0.492305970000
+// NGAMES 10'000'000  --> kazanma olasiligi : 0.492299200000
+// NGAMES 1'000'000   --> kazanma olasiligi : 0.492245000000
+
+int rollDice(void) {
+
+	int dice1 = rand() % 6 + 1;
+	int dice2 = rand() % 6 + 1;
+
+	return dice1 + dice2;
+}
+
+// kazanýrsa  --> return value = 1
+// kaybederse --> return value = 0
+
+int game_(int dice) {
+
+	int new_dice;
+	for (;;)
+	{
+		new_dice = rollDice();
+			if (new_dice == 7)
+				return 0;
+			if (new_dice == dice)
+				return 1;
+	}
+}
+
+// kazanýrsa  --> return value = 1
+// kaybederse --> return value = 0
+
+int game(void) {
+
+	int dice = rollDice();
+	switch (dice)
+	{
+	case 2:
+	case 3:
+	case 12:
+		return 0;
+	case 7:
+	case 11:
+		return 1;
+	default:
+		return game_(dice);
+	}
+}
+
+int main() {
+	
+	int winCount = 0;
+
+	for (size_t i = 0; i < NGAMES ;++i)
+	{
+		winCount += game();
+	}
+
+	printf("kazanma olasiligi : %.12f\n", (double)winCount/NGAMES );
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* The same example with rollDice() function in cpp 
+ - kazanma olasýlýðý çok daha fazla artar
+
+Cpp_RollDice.cpp
+-------------------
+#include <stdlib.h>
+#include <random>
+
+#define NGAMES 100'000'000
+
+// NGAMES 100'000'000 --> kazanma olasiligi : 0.492305970000
+// NGAMES 10'000'000  --> kazanma olasiligi : 0.492299200000
+// NGAMES 1'000'000   --> kazanma olasiligi : 0.492245000000
+
+int rollDice(void) {
+
+	static std::mt19937 eng; 
+	std::uniform_int_distribution<int> dist{ 1,6 };
+
+	int dice1 = dist(eng);
+	int dice2 = dist(eng);
+
+	return dice1 + dice2;
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example : Bir noktanýn karenin yarý alanýnda bulunma olasýlýðý ve kaç tanesinin bu alanda bulunduðunun bulunmasý  
+
+// main.cpp
+#include <stdio.h>
+#include <stdlib.h>
+#include <random>
+
+// Chudnovsky algorithm
+
+#define NPOINTS 1'000'000
+
+// NPOINTS 1'000'000 --> 3.140452000000
+
+int main() {
+
+	static std::mt19937 eng;
+	std::uniform_real_distribution<> dist{ 0.,1 };
+	int inside_count = 0;
+
+	for (int i = 0; i < NPOINTS; ++i)
+	{
+		double x = dist(eng);
+		double y = dist(eng);
+		if (x*x + y*y <= 1) {
+			++inside_count;
+		}
+	}
+
+	printf("%.12f\n", 4.* inside_count/ NPOINTS);
+}
+
+
+/----------------------------------------------
+/----------------------------------------------
+
+* ARRAYS : 
+- Dizilerin boyutu constant expression olmak zorundadýr!
+- Fixed array dizi yapýsý mevcuttur !!
+  int a[10]; // type : int[10], garbage value
+  int a[0];  // Tanýmlanamaz!
+  static int c[20];
+
+- Ayrýlan bellek alaný bellidir, dinamik olarak deðiþtirilemez. Bu sebeple, diziler üzerinde silme ekleme iþlemleri uygulanamaz
+- Global ve lokal deðiþken olarak tanýmlanabilir!
+- Bir fonksiyonun parametre deðiþkeni dizi olamaz !!!
+  void func(int a[]); --> burada parametre deðiþkeni bir pointer
+					  --> dizi adresi parametre olarak gönderilmektedir.
+- Bir fonksiyonun geri dönüþ deðer deðiþkeni bir dizi türü olamaz !!!
+- Dizilerin boyutlarý genelde sembolik sabitler olarak tanýmlanýr. 
+
+#include <stdio.h>
+
+#define SIZE 100 
+
+int main() {
+	
+	int a[SIZE];
+
+	for (size_t i = 0; i < SIZE; i++)
+	{
+		//...
+	}
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Dizi boyutlarýný belirleyen maksimum bir deðer var mýdýr? 
+
+- Stack otomatik ömürlü deðiþkenlerin tutulduðu bellek alanýdýr. 
+- Static ömürlü varlýklar için ayrýlan alan --> Data segment ? 
+
+int main() {
+	int a[1'000'000'000] = {0};
+	// Error C2148: total size of array must not exceed 0x7fffffff bytes	
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Array Decay --> Array to Pointer Conversion (C, C++)
+- &a[0] --> R-Value Expression 
+- Bir dizi ismi atama operatörünün sol operandý olamaz !!!
+
+#include <stdio.h>
+
+int main() {
+	int a[100] = {0};
+	int b[100] = {0};
+	a = b; // Error	C2106 '=': left operand must be l - value	
+}
+
+/----------------------------------------------
+/----------------------------------------------

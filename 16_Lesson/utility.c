@@ -1,5 +1,6 @@
 #include"utility.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 
 
@@ -37,4 +38,9 @@ int day_of_week(int day, int month, int year)
 
 	return ((year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7);
 }
+
+void randomize(void) {
+	return srand((unsigned int)time(NULL));
+}
+
 
