@@ -11,6 +11,7 @@
 
 /----------------------------------------------
 /----------------------------------------------
+
 * #define _CRT_SECURE_NO_WARNINGS makro kullanýmý
 	 - Windows derleyicilerine özel bir makrodur. 
 

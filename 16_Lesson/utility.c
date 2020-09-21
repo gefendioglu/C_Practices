@@ -40,7 +40,7 @@ int day_of_week(int day, int month, int year)
 }
 
 void randomize(void) {
-	return srand((unsigned int)time(NULL));
+	srand((unsigned int)time(NULL));
 }
 
 

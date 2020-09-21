@@ -1,21 +1,27 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <conio.h>
+#include <time.h>
+#include <stdlib.h>
+
 
 int main() {
-	int x = 3;
+	
+	srand((unsigned)time(NULL));
 
-	switch (x) {
-	case 12:
-	case 1:
-	case 2:printf("kis"); break;
-	case 3:
-	case 4:
-	case 5:printf("ilkbahar"); break;
-	case 6:
-	case 7:
-	case 8:printf("yaz"); break;
-	case 9:
-	case 10:
-	case 11:printf("sonbahar"); break;
+	for (int i = 0; i < 20; ++i)
+	{
+		switch (rand() % 7 + 1){
+		case 1: printf("Monday "); break;
+		case 2: printf("Tuesday "); break;
+		case 3: printf("Wednesday "); break;
+		case 4: printf("Thursday "); break;
+		case 5: printf("Friday "); break;
+		case 6: printf("Saturday "); break;
+		case 7: printf("Sunday "); break;
+		}
+		
+		_getch();
 	}
+	
 }
-
