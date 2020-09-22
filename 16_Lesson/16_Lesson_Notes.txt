@@ -4,9 +4,9 @@
 
 * #undef preprocessor command:
  - #define makro komutunun tersi
- - #undef MAX ile MAX makrosunun geçerliliði ortadan kalkar
- - Önceden var olmayan bir makronun #undef edilmesi undefined behaviour deðildir
- - #define edilen her makronun #undef edilmesi gerekir þeklinde bir kural yoktur. 
+ - #undef MAX ile MAX makrosunun geÃ§erliliÄŸi ortadan kalkar
+ - Ã–nceden var olmayan bir makronun #undef edilmesi undefined behaviour deÄŸildir
+ - #define edilen her makronun #undef edilmesi gerekir ÅŸeklinde bir kural yoktur. 
 
 #define sum_square(x,y) ((x*x)+(y*y))
 //...
@@ -15,9 +15,9 @@
 /----------------------------------------------
 /----------------------------------------------
 
-* Bir makronun farklý iki þekilde define edilmesi --> undefined behaviour
-  - Farklý baþlýk dosyalarýnýn include edilmesi ile 
-  - Ýhtiyaç dahilinde ayný makronun temsil ettiði deðerin deðiþmesi gerekebilir. Ancak bu durumda koruma kodu yazýlmalýdýr. 
+* Bir makronun farklÄ± iki ÅŸekilde define edilmesi --> undefined behaviour
+  - FarklÄ± baÅŸlÄ±k dosyalarÄ±nÄ±n include edilmesi ile 
+  - Ä°htiyaÃ§ dahilinde aynÄ± makronun temsil ettiÄŸi deÄŸerin deÄŸiÅŸmesi gerekebilir. Ancak bu durumda koruma kodu yazÄ±lmalÄ±dÄ±r. 
 
 
 #define MAX 1000
@@ -48,33 +48,33 @@ void func() {
 }
 /----------------------------------------------
 
-#define MAX  // Bir sonraki kod bloðuna girilmesini saðlar!!
+#define MAX  // Bir sonraki kod bloÄŸuna girilmesini saÄŸlar!!
 
 #ifdef MAX
 	typedef int Word;
 #endif
 
-#undef MAX    // Bir sonraki kod bloðuna girilmesini engeller!!
+#undef MAX    // Bir sonraki kod bloÄŸuna girilmesini engeller!!
 
 #ifdef MAX
 	typedef unsigned char Byte;
 #endif
 
-* Baþlýk dosyalarýnýn artmasý çalýþtýrýlabilir kod byüklüðünü arttýrmaz
+* BaÅŸlÄ±k dosyalarÄ±nÄ±n artmasÄ± Ã§alÄ±ÅŸtÄ±rÄ±labilir kod byÃ¼klÃ¼ÄŸÃ¼nÃ¼ arttÄ±rmaz
 
 /----------------------------------------------
 /---------------------------------------------- 
 
 * #line, #error, #pragma preprocessor commands 
- - #error --> kodun bilerek isteyerek öniþlemci aþamasýnda sonlandýrýlmasý
+ - #error --> kodun bilerek isteyerek Ã¶niÅŸlemci aÅŸamasÄ±nda sonlandÄ±rÄ±lmasÄ±
  - #pragma
 
 
 #error this project should not been compiled!!!
 
 /----------------------------------------------
-// c derleyicisi ile derlenmek istendiðinde bu blok içine girecektir:
-// programcý sadece cpp derleyicisi ile derlemek istediðinde 
+// c derleyicisi ile derlenmek istendiÄŸinde bu blok iÃ§ine girecektir:
+// programcÄ± sadece cpp derleyicisi ile derlemek istediÄŸinde 
 
 #ifndef __cplusplus 
 #error this project should not been compiled!!!
@@ -84,9 +84,9 @@ void func() {
 /---------------------------------------------- 
 
 * Predefined symbolic constants (predefined macro)
- - önceden tanýmlanmýþ makro sabitleri:  __cplusplus 
- - diðer makrolar ile çakýþma riskini ortadan kaldýrmak için __ ile baþlar ve biter. 
- __LINE__  : assert makrosu içinde de tanýmlýdýr. 
+ - Ã¶nceden tanÄ±mlanmÄ±ÅŸ makro sabitleri:  __cplusplus 
+ - diÄŸer makrolar ile Ã§akÄ±ÅŸma riskini ortadan kaldÄ±rmak iÃ§in __ ile baÅŸlar ve biter. 
+ __LINE__  : assert makrosu iÃ§inde de tanÄ±mlÄ±dÄ±r. 
  __FILE__
  __DATE__
  __TIME__
@@ -126,7 +126,7 @@ int main() {
 /----------------------------------------------
 
 * You can use assert functional macro (from <assert.h> library) instead of previous code sample
- - assert(x != 0); --> parantez içinde doðru olmasý gereken ifade yazýlmalý!
+ - assert(x != 0); --> parantez iÃ§inde doÄŸru olmasÄ± gereken ifade yazÄ±lmalÄ±!
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -164,9 +164,9 @@ int main() {
 
 /----------------------------------------------
 
-* #define NDEBUG ile debug süreci sonlandýðýnda assert makrolarýnýn elle silinmesine gerek kalmadan derleme aþamasýnda koddan çýkarýlmasý saðlanýr. 
- - #define NDEBUG --> #include <assert.h> öncesinde eklenmesi gerekmektedir. 
- - Bu sayede boþ deyim dönmesi saðlanacaktýr 
+* #define NDEBUG ile debug sÃ¼reci sonlandÄ±ÄŸÄ±nda assert makrolarÄ±nÄ±n elle silinmesine gerek kalmadan derleme aÅŸamasÄ±nda koddan Ã§Ä±karÄ±lmasÄ± saÄŸlanÄ±r. 
+ - #define NDEBUG --> #include <assert.h> Ã¶ncesinde eklenmesi gerekmektedir. 
+ - Bu sayede boÅŸ deyim dÃ¶nmesi saÄŸlanacaktÄ±r 
    --> #define assert(expression) ((void)0)
 
 #define NDEBUG
@@ -178,9 +178,9 @@ void func(int x) {
 
 /----------------------------------------------
 
-* __DATE__ , __TIME__, __FILE makrolarý
-     - __TIME__ otomatik olarak derleme zamanýna göre deðiþir.
-     - __DATE__ otomatik olarak derleme zamanýna göre deðiþir.
+* __DATE__ , __TIME__, __FILE makrolarÄ±
+     - __TIME__ otomatik olarak derleme zamanÄ±na gÃ¶re deÄŸiÅŸir.
+     - __DATE__ otomatik olarak derleme zamanÄ±na gÃ¶re deÄŸiÅŸir.
 
 #include <stdio.h>
 
@@ -211,8 +211,8 @@ int main() {
 /----------------------------------------------
 
 * __STDC__ : 
-    - c ile derlenmesi istenen kod bloklarý için koþul olarak kullanýlýr. 
-    - __cpluscplus ifadesi ise ayný makro yapýsýnýn cpp tarafýndaki hali 
+    - c ile derlenmesi istenen kod bloklarÄ± iÃ§in koÅŸul olarak kullanÄ±lÄ±r. 
+    - __cpluscplus ifadesi ise aynÄ± makro yapÄ±sÄ±nÄ±n cpp tarafÄ±ndaki hali 
 
 #ifdef __STDC__     // Defined for c compiler
 #error C Compiler
@@ -224,9 +224,9 @@ int main() {
 
 /----------------------------------------------
 * #pragma : 
-    - eðer bir derleyici öniþlemci programa ilave iþler yaptýrmak istiyorsa bu komut kullanýlmaktadýr.
-    - hangi amaçla kullanýlacaðý standartlara baðlý deðildir. 
-    - portability sorunu ortaya çýkabilir. Çünkü derleyiciye specifik pragma komutlarý yazýlmaktadýr. 
+    - eÄŸer bir derleyici Ã¶niÅŸlemci programa ilave iÅŸler yaptÄ±rmak istiyorsa bu komut kullanÄ±lmaktadÄ±r.
+    - hangi amaÃ§la kullanÄ±lacaÄŸÄ± standartlara baÄŸlÄ± deÄŸildir. 
+    - portability sorunu ortaya Ã§Ä±kabilir. Ã‡Ã¼nkÃ¼ derleyiciye specifik pragma komutlarÄ± yazÄ±lmaktadÄ±r. 
     - #pragma once : multiple inclusion guard
     - #pragma warning(disable:4552) : to disable a warning
 
@@ -319,218 +319,256 @@ int main() {
 /----------------------------------------------
 * false positive code : 
 	 - int x = 45.7; possible loss of data warning 
-	 - bilerek yazýlan bir durum ise uyarý mesajý çýkmasýný engelleyecek kodlar yazýlmalýdýr. 
+	 - bilerek yazÄ±lan bir durum ise uyarÄ± mesajÄ± Ã§Ä±kmasÄ±nÄ± engelleyecek kodlar yazÄ±lmalÄ±dÄ±r. 
 	 - 0 error - 0 warning olana kadar kod kontrol edilmelidir. 
-	 - "treat warnings as errors" ayarý ile warning --> error olarak dönecek þekilde ayarlanmalýdýr. (Properties --> General --> C/C++)
+	 - "treat warnings as errors" ayarÄ± ile warning --> error olarak dÃ¶necek ÅŸekilde ayarlanmalÄ±dÄ±r. (Properties --> General --> C/C++)
 
 /----------------------------------------------
 /----------------------------------------------
 
-* Kod yazým kurallarý:
+* Kod yazÄ±m kurallarÄ±:
 	- Kod test edilmeli
 	- 0 error - 0 warning ile commit edilmeli
-	- false-positive durumlarda compiler uyarý vermemeli
-	- belli bir kod standardýna göre yazýlmalý
-	- +=, %= gibi operatorler kullanýlmalý
-	- int x = 10; yazýlmalý --> yerine
+	- false-positive durumlarda compiler uyarÄ± vermemeli
+	- belli bir kod standardÄ±na gÃ¶re yazÄ±lmalÄ±
+	- +=, %= gibi operatorler kullanÄ±lmalÄ±
+	- int x = 10; yazÄ±lmalÄ± --> yerine
 	  int x; 
 	  x=10;  
-	- deðiþken bildirimleri ayrý ayrý yapýlmalýdýr. 
+	- deÄŸiÅŸken bildirimleri ayrÄ± ayrÄ± yapÄ±lmalÄ±dÄ±r. 
 	  int ival, cnt=0, *ptr=&ival; yerine -->
 	  int ival;
 	  int cnt=0;
 	  int *ptr= &ival; 
-	- for() için sadece o blok altýnda kullanýlacak bir deðiþken 
+	- for() iÃ§in sadece o blok altÄ±nda kullanÄ±lacak bir deÄŸiÅŸken 
 	  for(int i=0;;) olarak ifade edilmeli
-	- döngü deðiþkenleri i,j,k þeklinde isimlendirilebilir. 
-	- cnt++ yerine --> ++cnt yazýlmalý
-	- scope geniþledikçe isimler özelleþtirilmeli 
-	- global isim alanýnda çok genel isimler seçilmemeli 
-	  ör: int counter; yerine --> daha spesifik isimlendirme kullanýlmalý
-	- bob martin "clean code" isimli kitabý okunmalý 
+	- dÃ¶ngÃ¼ deÄŸiÅŸkenleri i,j,k ÅŸeklinde isimlendirilebilir. 
+	- cnt++ yerine --> ++cnt yazÄ±lmalÄ±
+	- scope geniÅŸledikÃ§e isimler Ã¶zelleÅŸtirilmeli 
+	- global isim alanÄ±nda Ã§ok genel isimler seÃ§ilmemeli 
+	  Ã¶r: int counter; yerine --> daha spesifik isimlendirme kullanÄ±lmalÄ±
 
 /----------------------------------------------
 /----------------------------------------------
 
-* switch control statement :
-	- her switch-case --> if-else dönüþtürülebilir. Ancak tersi her zaman doðru deðil!
-	- daha iyi compiler optimization için tercih edilebilir.
-	- switch() blok içindeki ifade tamsayý türü olmak zorundadýr (double, float vb. olamaz).
-	- case label ise constant tamsayý deðeri olmak zorundadýr !!! Deðiþken veya real sayýlardan biri olamaz.  
-	- her bir case label unique olmalýdýr. 
-	- break; kullanýmý, case geçiþleri arasýnda yaygýndýr (break; deyiminin özellikle kullanýlmak zorunda olmadýðý diller de mevcut!!!)
-	- case label sonrasýnda mutlaka bir ifade bulunmalýdýr. 
-	- default case, switch-case ifadesinin farklý yerlerde bulunmasý anlam açýsýndan fark yaratmaz. Ancak okunabilirlik açýsýndan sonda bulunmasý tercih edilir. 
-	- geçerli case label kullanýmlarý:
-		- case 'A':        --> geçerli
-		- case "gamze":    --> geçerli deðil, string literal olamaz
-		- case 12.5:       --> geçerli deðil, tamsayý ifade olmalýdýr
-		- case MAX:        --> geçerli veya deðil, MAX deðerine baðlý
-		- case (MIN+MAX)/2:--> geçerli veya deðil, MAX,MIN deðerine baðlý
-		- case -5:		   --> geçerli, positive or negative
-		- case 0X23:       --> geçerli, farklý tamsayý sisteminde ifade
+## SWITCH-CASE CONTROL STATEMENT :
+
+- her switch-case --> if-else dÃ¶nÃ¼ÅŸtÃ¼rÃ¼lebilir. Ancak tersi her zaman doÄŸru deÄŸil!
+- daha iyi compiler optimization iÃ§in tercih edilebilir.
+- switch() blok iÃ§indeki ifade tamsayÄ± tÃ¼rÃ¼ olmak zorundadÄ±r (double, float vb. olamaz).
+- case label ise constant tamsayÄ± deÄŸeri olmak zorundadÄ±r !!! DeÄŸiÅŸken veya real sayÄ±lardan biri olamaz.  
+- her bir case label unique olmalÄ±dÄ±r. 
+- break; kullanÄ±mÄ±, case geÃ§iÅŸleri arasÄ±nda yaygÄ±ndÄ±r (break; deyiminin Ã¶zellikle kullanÄ±lmak zorunda olmadÄ±ÄŸÄ± diller de mevcut!!!)
+- case label sonrasÄ±nda mutlaka bir ifade bulunmalÄ±dÄ±r. 
+- default case, switch-case ifadesinin farklÄ± yerlerde bulunmasÄ± anlam aÃ§Ä±sÄ±ndan fark yaratmaz. Ancak okunabilirlik aÃ§Ä±sÄ±ndan sonda bulunmasÄ± tercih edilir. 
+- The usage of case labels: 
+  - case 'A':        --> OK
+  - case "Jane":     --> NOT OK, the case label shall not be string literal 
+  - case 12.5:       --> NOT OK, the case label shall be integer value
+  - case MAX:        --> OK or NOT OK, it depends on MAX value
+  - case (MIN+MAX)/2:--> OK or NOT OK, it depends on MAX, MIN values
+  - case -5:	     --> OK, the case label can be positive or negative integer values 
+  - case 0X23:       --> OK, the case label can be defined in a different number systems
 
 /----------------------------------------------
 /----------------------------------------------
 
-* If-Else Example: 
+```cpp
+switch (x) {
+case 5,4,3,2,1 :printf("hello");        // syntax error
+}
 
+switch (x) {
+case 5; case 4; case 3:printf("hello"); // not syntax error
+}
+```
+
+/----------------------------------------------
+/----------------------------------------------
+
+```cpp
 #define _CRT_SECURE_NO_WARNINGS
-
 #include <stdio.h>
-#include <stdlib.h>
 
 int main() {
-
-	int n;
-	printf("haftanin kacinci gunu: ");
-	scanf("%d", &n);
-
-if (n == 1) {
-	printf("pazartesi\n");
-}
-else if (n == 2) {
-	printf("sali\n");
-}
-else if (n == 3) {
-	printf("carsamba\n");
-}
-else if (n == 4) {
-	printf("persembe\n");
-}
-else if (n == 5) {
-	printf("cuma\n");
-}
-else if (n == 6) {
-	printf("cumartesi\n");
-}
-else if (n == 7) {
-	printf("pazar\n");
-}
-
-/----------------------------------------------
-/----------------------------------------------
-
-* Switch-Case Example: 
-
-#define _CRT_SECURE_NO_WARNINGS
-
-#include <stdio.h>
-#include <stdlib.h>
-
-int main() {
-
-	int n;
-	printf("haftanin kacinci gunu: ");
-	scanf("%d", &n);
-
-	switch (n) {
-	case 1:printf("pazartesi\n"); break; 
-	case 2:printf("sali\n"); break;
-	case 3:printf("carsamba\n"); break;
-	case 4:printf("persembe\n"); break;
-	case 5:printf("cuma\n"); break;
-	case 6:printf("cumartesi\n"); break;
-	case 7:printf("pazar\n"); break;
-	default:printf("gecersiz gun\n"); break;  // default case 
+	int x = 3;
+	
+	switch (x) {
+	case 4 :
+	case 3 :
+	case 2 : printf("hello"); // syntax error
+	case 1 :
 	}
+}
+```
 
+/----------------------------------------------
+/----------------------------------------------
+
+```cpp
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main(){
+	int x; 
+	switch (x)
+		case 1 :printf("hello"); 
+		// This style can be used, but not preferable!
+		// Instead of using this style, use if-else block! 
+}
+```
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Using if-else block instead of switch-case block 
+
+```cpp
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+
+	int day_order;
+	
+	printf("1 : Monday    \n");
+	printf("2 : Tuesday   \n");
+	printf("3 : Wednesday \n");
+	printf("4 : Thursay   \n");
+	printf("5 : Friday    \n");
+	printf("6 : Saturday  \n");
+	printf("7 : Sunday    \n\n");
+	printf("What is the order of the selected day in a week ?: ");
+	scanf("%d", &day_order);
+
+	if (day_order == 1) 
+		printf("Monday\n");
+	else if (day_order == 2) 
+		printf("Tuesday\n");
+	else if (day_order == 3) 
+		printf("Wednesday\n");
+	else if (day_order == 4) 
+		printf("Thursay\n");
+	else if (day_order == 5)
+		printf("Friday\n");
+	else if (day_order == 6)
+		printf("Saturday\n");
+	else if (day_order == 7)
+		printf("Sunday\n");
+}
+```
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Using switch-case block instead of if-else block 
+
+```cpp
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+
+	int day_order;
+	
+	printf("1 : Monday    \n");
+	printf("2 : Tuesday   \n");
+	printf("3 : Wednesday \n");
+	printf("4 : Thursay   \n");
+	printf("5 : Friday    \n");
+	printf("6 : Saturday  \n");
+	printf("7 : Sunday    \n\n");
+	printf("What is the order of the selected day in a week ?: ");
+	
+	scanf("%d", &day_order);
+
+	switch (day_order) {
+	case 1:printf("Monday    \n"); break; 
+	case 2:printf("Tuesday   \n"); break;
+	case 3:printf("Wednesday \n"); break;
+	case 4:printf("Thursay   \n"); break;
+	case 5:printf("Friday    \n"); break;
+	case 6:printf("Saturday  \n"); break;
+	case 7:printf("Sunday    \n"); break;
+	default:printf("Invalid Day Selection!!!\n"); break; 
+	}
+	
 	return 0;
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-* Mülakat: Hiç ; kullanmadan ekrana merhaba yazdýrmak :
+- Example: Printing "hello" without using semi-colon (Interview Question) 
 
+```cpp
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdlib.h>
 
 int main() {
-
-	switch (printf("merhaba")) {}
+	switch (printf("hello")) {}
 }
+```
 
 /----------------------------------------------
 
-* Ekrana merhaba yazdýran farklý bir kullaným:
+- Example: Printing "hello" by using switch-case block (another solution type for the previous example)
 
+```cpp
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 int main() {
 	int x = 5;
-
 	switch (x) {
-	case 5 :printf("merhaba");
+	case 5 :printf("hello");
 	}
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-switch (x) {
-case 5,4,3,2,1 :printf("merhaba");        // syntax error
-}
+- Example: Desingning the following cases with the same results  
+  - case 12, case 1, case 2  --> printing "Winter"
+  - case 3, case 4, case 5   --> printing "Spring"
+  - case 6, case 7, case 8   --> printing "Summer"
+  - case 9, case 10, case 12 --> printing "Autumn"
 
-switch (x) {
-case 5; case 4; case 3:printf("merhaba"); // not syntax error
-}
-
-/----------------------------------------------
-/----------------------------------------------
-
-* // syntax error, case 2 sonrasýndaki case için ifade tanýmlandýðýndan 
-
+```cpp
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 int main() {
-	int x = 3;
+	int month_order = 3;
 
-	switch (x) {
-	case 4 :
-	case 3 :
-	case 2 :printf("merhaba"); 
-	case 1 :
-	}
-}
-
-/----------------------------------------------
-/----------------------------------------------
-
-* Örnekte aþaðýdaki case ifadeleri ayný sonucu verecek þekilde tasarlanmýþtýr: 
-	- case 12, case 1, case 2  --> winter
-    - case 3, case 4, case 5   --> spring
-    - case 6, case 7, case 8   --> summer
-    - case 9, case 10, case 12 --> autumn
-
-
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-
-int main() {
-	int x = 3;
-
-	switch (x) {
+	switch (month_order) {
 	case 12:
 	case 1:
-	case 2:printf("winter"); break;
+	case 2:printf("Winter \n"); break;
 	case 3:
 	case 4:
-	case 5:printf("spring"); break;
+	case 5:printf("Spring \n"); break;
 	case 6:
 	case 7:
-	case 8:printf("summer"); break;
+	case 8:printf("Summer \n"); break;
 	case 9:
 	case 10:
-	case 11:printf("autumn"); break;
+	case 11:printf("Autumn \n"); break;
 	}
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-* Example: Printing season with if-else and switch-case blocks 
+* Example: Printing the season names with if-else and switch-case blocks 
 
+```cpp
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
@@ -539,67 +577,65 @@ void print_season_switch(int month) {
 	switch (month) {
 	case 12:
 	case 1:
-	case 2:printf("winter\n"); break;
+	case 2:printf("Winter \n"); break;
 	case 3:
 	case 4:
-	case 5:printf("spring\n"); break;
+	case 5:printf("Spring \n"); break;
 	case 6:
 	case 7:
-	case 8:printf("summer\n"); break;
+	case 8:printf("Summer \n"); break;
 	case 9:
 	case 10:
-	case 11:printf("autumn\n"); break;
-	default:printf("invalid month selection!!!\n"); break;
+	case 11:printf("Autumn \n"); break;
+	default:printf("Invalid Season Selection!!!\n"); break;
 	}
 }
 
 void print_season_if(int month) {
 
-	if(month ==12 || month == 1 || month == 2 )
-		printf("winter\n");
+	if(month == 12 || month == 1 || month == 2 )
+		printf("Winter\n");
 	else if(month == 3 || month == 4 || month == 5)
-		printf("spring\n");
+		printf("Spring\n");
 	else if (month == 6 || month == 7 || month == 8)
-		printf("summer\n");
+		printf("Summer\n");
 	else if (month == 9 || month == 10 || month == 11)
-		printf("summer\n");
+		printf("Autumn\n");
 	else
-		printf("invalid month selection!!!\n");
+		printf("Invalid Season Selection!!!\n");
 
 }
 
 int main() {
-	int month = 0;
 
-	printf("What is the order of selected month ? : ");
+	int month = 0;
+	
+	printf("12,1,2  : Winter \n");
+	printf("3,4,5   : Spring \n");
+	printf("6,7,8   : Summer \n");
+	printf("9,10,11 : Autumn \n\n");
+	printf("What is the order of the selected month ? : ");
+	
 	scanf("%d", &month);
 
 	print_season_switch(month);
 	print_season_if(month);
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-int main(){
+- Example: Writing "fallthrough" comment in switch-case blocks 
+  - While "fallthrough" comment is written, it means that the faulty case is realized consciously. 
+  - Normally, static code analyser tools (SonarQube, etc.) return a warning message for this kind of cases which not having break statement. 
 
-	int x; 
-	switch (x)
-		case 1 :printf("merhaba"); 
-		//yazýlabilir, ancak tercih edilmez. Yerine if bloðu kullanýlmalýdýr. 
-}
-
-/----------------------------------------------
-/----------------------------------------------
-
-* Switch-case ile "fallthrough" comment kullanýmý : 
-- "fallthrough"  comment olarak yazýldýðýnda, yapýlan hatanýn bilinçli olarak gerçekleþtirildiði belirtilmiþ olur. 
-- Normalde static code analiz araçlarý bu duruma uyarý verecektir. 
-
+```cpp
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 int main() {
+
 	int x = 3;
 
 	switch (x) {
@@ -608,12 +644,14 @@ int main() {
 	//...
 	}
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-* Example: Using switch - case blocks with enumeration and macros
+* Example: Using switch - case blocks with macros
 
+```cpp
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
@@ -643,16 +681,18 @@ int main() {
 	default      : printf("Invalid State Selection"); break;
 	}
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-* Example: Using switch - case blocks with enumeration
+* Example: Using switch - case blocks with enumeration (1)
 
+```cpp
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-// Enumeration Definitions - Underline Type: int
+// Enumeration Definitions --> Underlined Type: int
 enum State {
 	OFF,
 	ON,
@@ -680,12 +720,14 @@ int main() {
 	default      : printf("Invalid State Selection"); break;
 	}
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-* Example: Using switch - case blocks with enumeration
+- Example: Using switch - case blocks with enumeration (2)
 
+```cpp
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
@@ -715,45 +757,31 @@ int main() {
 	case Spade  : printf("Spade Selected!!!"); break;
 	default     : printf("Invalid Card Selection!!!"); break;
 	}
-
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-* Example: Printing date with functions including Switch-Case blocks
+- Example: 
+  - Printing the day of the selected date with functions including switch-case blocks
+  - Considering the following specification: 
+    - The suffix is : st --> 1st  June 2020, 21st June 2020, 31st June 2020
+    - The suffix is : nd --> 2nd  August 2020, 22nd August 2020 
+    - The suffix is : rd --> 3rd  September 2020, 23rd September 2020
+    - The suffix is : th (the other days) --> 15th, 14th, 16th, 17th, 18th, 19th,... May 2020
 
+```cpp
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 #define SIZE 5
-// The suffix is : st
-// 1st  June 2020 
-// 21st June 2020 
-// 31st June 2020 
-
-// The suffix is : nd
-// 2nd  August 2020 
-// 22nd August 2020 
-
-// The suffix is : rd
-// 3rd  September 2020
-// 23rd September 2020
-
-// The suffix is : th (the other days)
-// 15th May 2020
-// 14th May 2020
-// 16th May 2020
-// 17th May 2020
-// 18th May 2020
-// 19th May 2020
 
 void print_date(int day, int month, int year) {
 
-	printf("%02d", day); // 0 is fill charachter 
+	printf("%02d", day); // 0 is the filling charachter here
 
-	switch (day)
-	{
+	switch (day) {
 	case 1:
 	case 21:
 	case 31: printf("st "); break;
@@ -764,8 +792,7 @@ void print_date(int day, int month, int year) {
 	default: printf("th "); break;
 	}
 
-	switch (month)
-	{
+	switch (month) {
 	case 1:  printf("January "); break;
 	case 2:  printf("February "); break;
 	case 3:  printf("March "); break;
@@ -797,52 +824,25 @@ int main() {
 		putchar('\n');
 	}
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-* Example: Formatting printf function
+* Example: Printing the day of weeks with switch-case blocks and random number generators
 
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-
-int main() {
-
-	char s1[] = "Gamze";
-	char s2[] = "Abdullah";
-	int first_number = 10;
-	int second_number = 4859589;
-
-	printf("%d %s\n", first_number, s1);
-	printf("%d %s\n\n", second_number, s2);
-
-	// Right Aligned 
-	printf("%7d %s\n", first_number, s1);
-	printf("%7d %s\n\n", second_number, s2);
-
-	// Left Aligned
-	printf("%-7d %s\n", first_number, s1);  
-	printf("%-7d %s\n\n", second_number, s2);
-}
-
-/----------------------------------------------
-/----------------------------------------------
-
-* Example: Returning the day of weeks with switch-Case and random number generators
-
+```cpp
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <conio.h>
 #include <time.h>
 #include <stdlib.h>
 
-
 int main() {
 	
 	srand((unsigned)time(NULL));
 
-	for (int i = 0; i < 20; ++i)
-	{
+	for (int i = 0; i < 20; ++i) {
 		switch (rand() % 7 + 1){
 		case 1: printf("Monday \n"); break;
 		case 2: printf("Tuesday \n"); break;
@@ -852,17 +852,17 @@ int main() {
 		case 6: printf("Saturday \n"); break;
 		case 7: printf("Sunday \n"); break;
 		}
-		
 		_getch();
 	}
-	
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
 * Example: Finding the day of year with switch-case 
 
+```cpp
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
@@ -878,8 +878,7 @@ int day_of_year(int day, int month, int year) {
 	
 	int sum = day;
 
-	switch (month-1)
-	{
+	switch (month-1) {
 	case 11: sum += 30; // fallthrough
 	case 10: sum += 31; // fallthrough
 	case 9: sum += 30;  // fallthrough
@@ -896,6 +895,7 @@ int day_of_year(int day, int month, int year) {
 
 	return sum;
 }
+
 int main() {
 
 	int day = 0;
@@ -912,12 +912,14 @@ int main() {
 		putchar('\n');
 	}
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-* Example: Swtich-case pseudo code example
+* Example: A pseudo code example with switch-case block 
 
+```cpp
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
@@ -936,30 +938,29 @@ void default_state(void) {}
 
 int main() {
 
-	switch (is_remote_access())
-	{
+	switch (is_remote_access()) {
 	case 0 : off_state(); break;
 	case 1 : on_state(); break;
 	case 2 : standby_state(); break;
 	case 3 : hold_state(); break;
 	default: default_state() ; break;
 	}
-
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
 * Example: Printig selected value with switch-case block
 
+```cpp
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 
 #define SIZE 5 
 
-typedef enum 
-{
+typedef enum {
 	COLOR_BLACK,
 	COLOR_WHITE, 
 	COLOR_PURPLE,
@@ -969,8 +970,7 @@ typedef enum
 
 void print_color(Colors color) {
 
-	switch (color)
-	{
+	switch (color) {
 	case COLOR_BLACK  : printf("Black\n"); break;
 	case COLOR_WHITE  : printf("White\n"); break;
 	case COLOR_PURPLE : printf("Purple\n"); break;
@@ -998,8 +998,7 @@ int main() {
 		putchar('\n');
 	}
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
-
-* 
