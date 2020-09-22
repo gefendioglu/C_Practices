@@ -1,5 +1,6 @@
 
-## Switch-Case Control Statement :
+## SWITCH-CASE CONTROL STATEMENT:
+
 - her switch-case --> if-else dönüştürülebilir. Ancak tersi her zaman doğru değil!
 - daha iyi compiler optimization için tercih edilebilir.
 - switch() blok içindeki ifade tamsayı türü olmak zorundadır (double, float vb. olamaz).
