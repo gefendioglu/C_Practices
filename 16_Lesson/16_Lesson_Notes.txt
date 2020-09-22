@@ -612,7 +612,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* Switch - Case ile Macro ve Enumeration Kullanýmý: 
+* Example: Using switch - case blocks with enumeration and macros
 
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
@@ -647,7 +647,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* Switch - Case ile Enumeration Kullanýmý: 
+* Example: Using switch - case blocks with enumeration
 
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
@@ -684,7 +684,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* Switch - Case ile Enumeration Kullanýmý: 
+* Example: Using switch - case blocks with enumeration
 
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
@@ -721,7 +721,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* Example: Printing date with functions including Switch-Case 
+* Example: Printing date with functions including Switch-Case blocks
 
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
@@ -801,7 +801,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* Formatting printf function
+* Example: Formatting printf function
 
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
@@ -828,7 +828,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* Switch-Case Example with random number generators: 
+* Example: Returning the day of weeks with switch-Case and random number generators
 
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
@@ -844,16 +844,162 @@ int main() {
 	for (int i = 0; i < 20; ++i)
 	{
 		switch (rand() % 7 + 1){
-		case 1: printf("Monday "); break;
-		case 2: printf("Tuesday "); break;
-		case 3: printf("Wednesday "); break;
-		case 4: printf("Thursday "); break;
-		case 5: printf("Friday "); break;
-		case 6: printf("Saturday "); break;
-		case 7: printf("Sunday "); break;
+		case 1: printf("Monday \n"); break;
+		case 2: printf("Tuesday \n"); break;
+		case 3: printf("Wednesday \n"); break;
+		case 4: printf("Thursday \n"); break;
+		case 5: printf("Friday \n"); break;
+		case 6: printf("Saturday \n"); break;
+		case 7: printf("Sunday \n"); break;
 		}
 		
 		_getch();
 	}
 	
 }
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Finding the day of year with switch-case 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+#define isleap(y)  ((y)%4 == 0 && ((y)%100 != 0 || (y)%400 ==0))
+#define SIZE 5 
+
+int is_leap_year(int year) {
+	return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+}
+
+int day_of_year(int day, int month, int year) {
+	
+	int sum = day;
+
+	switch (month-1)
+	{
+	case 11: sum += 30; // fallthrough
+	case 10: sum += 31; // fallthrough
+	case 9: sum += 30;  // fallthrough
+	case 8: sum += 31;  // fallthrough
+	case 7: sum += 31;  // fallthrough
+	case 6: sum += 30;  // fallthrough
+	case 5: sum += 31;  // fallthrough
+	case 4: sum += 30;  // fallthrough
+	case 3: sum += 31;  // fallthrough
+	case 2: sum += 28 + is_leap_year(year);  // fallthrough
+	//case 2: sum += isleap(year) ? 28 : 29; // fallthrough
+	case 1: sum += 31;  // fallthrough
+	}
+
+	return sum;
+}
+int main() {
+
+	int day = 0;
+	int month = 0;
+	int year = 0;
+
+	while (SIZE != 0) {
+		printf("What is the date (day/month/year)? : ");
+		scanf("%d%d%d", &day, &month, &year);
+		
+		int dayOfYear = day_of_year(day, month, year);
+		printf("The day of year : %d", dayOfYear);
+		
+		putchar('\n');
+	}
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Swtich-case pseudo code example
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+#define OFF      0 
+#define ON       1 
+#define STAND_BY 2 
+#define HOLD     3 
+
+int is_remote_access() { return 1; }
+void off_state(void) {}
+void on_state(void) {}
+void standby_state(void) {}
+void hold_state(void) {}
+void default_state(void) {}
+
+int main() {
+
+	switch (is_remote_access())
+	{
+	case 0 : off_state(); break;
+	case 1 : on_state(); break;
+	case 2 : standby_state(); break;
+	case 3 : hold_state(); break;
+	default: default_state() ; break;
+	}
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Printig selected value with switch-case block
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SIZE 5 
+
+typedef enum 
+{
+	COLOR_BLACK,
+	COLOR_WHITE, 
+	COLOR_PURPLE,
+	COLOR_YELLOW,
+	COLOR_GREEN
+}Colors;
+
+void print_color(Colors color) {
+
+	switch (color)
+	{
+	case COLOR_BLACK  : printf("Black\n"); break;
+	case COLOR_WHITE  : printf("White\n"); break;
+	case COLOR_PURPLE : printf("Purple\n"); break;
+	case COLOR_YELLOW : printf("Yellow\n"); break;
+	case COLOR_GREEN  : printf("Green\n"); break;
+	default: printf("Invalid Color Selection\n"); break;
+	}
+}
+
+int main() {
+
+	Colors color = COLOR_BLACK; 
+
+	while (SIZE != 0) {
+
+		printf("0 : Black   \n");
+		printf("1 : White   \n");
+		printf("2 : Purple  \n");
+		printf("3 : Yellow  \n");
+		printf("4 : Green   \n\n");
+		printf("What is the selected card ? (0/1/2/3/4): ");
+
+		scanf("%d", &color);
+		print_color(color);
+		putchar('\n');
+	}
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* 
