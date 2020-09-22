@@ -1,4 +1,4 @@
-##PREPROCESSOR SYMBOLIC CONSTANTS: 
+## PREPROCESSOR SYMBOLIC CONSTANTS: 
 
 * #line, #error, #pragma preprocessor commands 
  - #error --> kodun bilerek isteyerek önişlemci aşamasında sonlandırılması
@@ -8,6 +8,8 @@
 #error this project should not been compiled!!!
 
 /----------------------------------------------
+/----------------------------------------------
+
 // c derleyicisi ile derlenmek istendiğinde bu blok içine girecektir:
 // programcı sadece cpp derleyicisi ile derlemek istediğinde 
 
