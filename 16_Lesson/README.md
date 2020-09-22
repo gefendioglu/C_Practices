@@ -1,23 +1,23 @@
 /----------------------------------------------
 /----------------------------------------------
 
-* switch control statement :
-	- her switch-case --> if-else dönüştürülebilir. Ancak tersi her zaman doğru değil!
-	- daha iyi compiler optimization için tercih edilebilir.
-	- switch() blok içindeki ifade tamsayı türü olmak zorundadır (double, float vb. olamaz).
-	- case label ise constant tamsayı değeri olmak zorundadır !!! Değişken veya real sayılardan biri olamaz.  
-	- her bir case label unique olmalıdır. 
-	- break; kullanımı, case geçişleri arasında yaygındır (break; deyiminin özellikle kullanılmak zorunda olmadığı diller de mevcut!!!)
-	- case label sonrasında mutlaka bir ifade bulunmalıdır. 
-	- default case, switch-case ifadesinin farklı yerlerde bulunması anlam açısından fark yaratmaz. Ancak okunabilirlik açısından sonda bulunması tercih edilir. 
-	- geçerli case label kullanımları:
-		- case 'A':        --> geçerli
-		- case "gamze":    --> geçerli değil, string literal olamaz
-		- case 12.5:       --> geçerli değil, tamsayı ifade olmalıdır
-		- case MAX:        --> geçerli veya değil, MAX değerine bağlı
-		- case (MIN+MAX)/2:--> geçerli veya değil, MAX,MIN değerine bağlı
-		- case -5:		   --> geçerli, positive or negative
-		- case 0X23:       --> geçerli, farklı tamsayı sisteminde ifade
+## Switch-Case Control Statement :
+- her switch-case --> if-else dönüştürülebilir. Ancak tersi her zaman doğru değil!
+- daha iyi compiler optimization için tercih edilebilir.
+- switch() blok içindeki ifade tamsayı türü olmak zorundadır (double, float vb. olamaz).
+- case label ise constant tamsayı değeri olmak zorundadır !!! Değişken veya real sayılardan biri olamaz.  
+- her bir case label unique olmalıdır. 
+- break; kullanımı, case geçişleri arasında yaygındır (break; deyiminin özellikle kullanılmak zorunda olmadığı diller de mevcut!!!)
+- case label sonrasında mutlaka bir ifade bulunmalıdır. 
+- default case, switch-case ifadesinin farklı yerlerde bulunması anlam açısından fark yaratmaz. Ancak okunabilirlik açısından sonda bulunması tercih edilir. 
+- geçerli case label kullanımları:
+  - case 'A':        --> geçerli
+  - case "gamze":    --> geçerli değil, string literal olamaz
+  - case 12.5:       --> geçerli değil, tamsayı ifade olmalıdır
+  - case MAX:        --> geçerli veya değil, MAX değerine bağlı
+  - case (MIN+MAX)/2:--> geçerli veya değil, MAX,MIN değerine bağlı
+  - case -5:	     --> geçerli, positive or negative
+  - case 0X23:       --> geçerli, farklı tamsayı sisteminde ifade
 
 /----------------------------------------------
 /----------------------------------------------
