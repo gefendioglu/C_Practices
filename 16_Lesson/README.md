@@ -1,5 +1,3 @@
-/----------------------------------------------
-/----------------------------------------------
 
 ## Switch-Case Control Statement :
 - her switch-case --> if-else dönüştürülebilir. Ancak tersi her zaman doğru değil!
@@ -10,113 +8,19 @@
 - break; kullanımı, case geçişleri arasında yaygındır (break; deyiminin özellikle kullanılmak zorunda olmadığı diller de mevcut!!!)
 - case label sonrasında mutlaka bir ifade bulunmalıdır. 
 - default case, switch-case ifadesinin farklı yerlerde bulunması anlam açısından fark yaratmaz. Ancak okunabilirlik açısından sonda bulunması tercih edilir. 
-- geçerli case label kullanımları:
-  - case 'A':        --> geçerli
-  - case "gamze":    --> geçerli değil, string literal olamaz
-  - case 12.5:       --> geçerli değil, tamsayı ifade olmalıdır
-  - case MAX:        --> geçerli veya değil, MAX değerine bağlı
-  - case (MIN+MAX)/2:--> geçerli veya değil, MAX,MIN değerine bağlı
-  - case -5:	     --> geçerli, positive or negative
-  - case 0X23:       --> geçerli, farklı tamsayı sisteminde ifade
+- The usage of case labels: 
+  - case 'A':        --> OK
+  - case "Jane":     --> NOT OK, the case label shall not be string literal 
+  - case 12.5:       --> NOT OK, the case label shall be integer value
+  - case MAX:        --> OK or NOT OK, it depends on MAX value
+  - case (MIN+MAX)/2:--> OK or NOT OK, it depends on MAX, MIN values
+  - case -5:	     --> OK, the case label can be positive or negative integer values 
+  - case 0X23:       --> OK, the case label can be defined in a different number systems
 
 /----------------------------------------------
 /----------------------------------------------
-
-* If-Else Example: 
 
 ```cpp
-#define _CRT_SECURE_NO_WARNINGS
-
-#include <stdio.h>
-#include <stdlib.h>
-
-int main() {
-
-	int n;
-	printf("haftanin kacinci gunu: ");
-	scanf("%d", &n);
-
-	if (n == 1) 
-		printf("pazartesi\n");
-	else if (n == 2) 
-		printf("sali\n");
-	else if (n == 3) 
-		printf("carsamba\n");
-	else if (n == 4) 
-		printf("persembe\n");
-	else if (n == 5)
-		printf("cuma\n");
-	else if (n == 6)
-		printf("cumartesi\n");
-	else if (n == 7)
-		printf("pazar\n");
-	
-}
-```
-
-/----------------------------------------------
-/----------------------------------------------
-
-* Switch-Case Example: 
-
-```cpp
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <stdlib.h>
-
-int main() {
-	int n;
-	printf("haftanin kacinci gunu: ");
-	scanf("%d", &n);
-
-	switch (n) {
-	case 1:printf("pazartesi\n"); break; 
-	case 2:printf("sali\n"); break;
-	case 3:printf("carsamba\n"); break;
-	case 4:printf("persembe\n"); break;
-	case 5:printf("cuma\n"); break;
-	case 6:printf("cumartesi\n"); break;
-	case 7:printf("pazar\n"); break;
-	default:printf("gecersiz gun\n"); break;  // default case 
-	}
-	
-	return 0;
-}
-```
-
-/----------------------------------------------
-/----------------------------------------------
-
-* Mülakat: Hiç ; kullanmadan ekrana merhaba yazdırmak :
-
-```cpp
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdlib.h>
-
-int main() {
-	switch (printf("merhaba")) {}
-}
-```
-
-/----------------------------------------------
-
-* Ekrana merhaba yazdıran farklı bir kullanım:
-
-```cpp
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-
-int main() {
-	int x = 5;
-	switch (x) {
-	case 5 :printf("merhaba");
-	}
-}
-```
-
-/----------------------------------------------
-/----------------------------------------------
-
 switch (x) {
 case 5,4,3,2,1 :printf("hello");        // syntax error
 }
@@ -124,11 +28,10 @@ case 5,4,3,2,1 :printf("hello");        // syntax error
 switch (x) {
 case 5; case 4; case 3:printf("hello"); // not syntax error
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
-
-* // syntax error, case 2 sonrasındaki case için ifade tanımlandığından 
 
 ```cpp
 #define _CRT_SECURE_NO_WARNINGS
@@ -140,94 +43,9 @@ int main() {
 	switch (x) {
 	case 4 :
 	case 3 :
-	case 2 :printf("merhaba"); 
+	case 2 : printf("hello"); // syntax error
 	case 1 :
 	}
-}
-```
-/----------------------------------------------
-/----------------------------------------------
-
-- Örnekte aşağıdaki case ifadeleri aynı sonucu verecek şekilde tasarlanmıştır: 
-  - case 12, case 1, case 2  --> winter
-  - case 3, case 4, case 5   --> spring
-  - case 6, case 7, case 8   --> summer
-  - case 9, case 10, case 12 --> autumn
-
-```cpp
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-
-int main() {
-	int x = 3;
-
-	switch (x) {
-	case 12:
-	case 1:
-	case 2:printf("winter"); break;
-	case 3:
-	case 4:
-	case 5:printf("spring"); break;
-	case 6:
-	case 7:
-	case 8:printf("summer"); break;
-	case 9:
-	case 10:
-	case 11:printf("autumn"); break;
-	}
-}
-```
-
-/----------------------------------------------
-/----------------------------------------------
-
-* Example: Printing season with if-else and switch-case blocks 
-
-```cpp
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-
-void print_season_switch(int month) {
-	
-	switch (month) {
-	case 12:
-	case 1:
-	case 2:printf("winter\n"); break;
-	case 3:
-	case 4:
-	case 5:printf("spring\n"); break;
-	case 6:
-	case 7:
-	case 8:printf("summer\n"); break;
-	case 9:
-	case 10:
-	case 11:printf("autumn\n"); break;
-	default:printf("invalid month selection!!!\n"); break;
-	}
-}
-
-void print_season_if(int month) {
-
-	if(month ==12 || month == 1 || month == 2 )
-		printf("winter\n");
-	else if(month == 3 || month == 4 || month == 5)
-		printf("spring\n");
-	else if (month == 6 || month == 7 || month == 8)
-		printf("summer\n");
-	else if (month == 9 || month == 10 || month == 11)
-		printf("summer\n");
-	else
-		printf("invalid month selection!!!\n");
-
-}
-
-int main() {
-	int month = 0;
-	printf("What is the order of selected month ? : ");
-	scanf("%d", &month);
-
-	print_season_switch(month);
-	print_season_if(month);
 }
 ```
 
@@ -241,7 +59,7 @@ int main() {
 int main(){
 	int x; 
 	switch (x)
-		case 1 :printf("merhaba"); 
+		case 1 :printf("hello"); 
 		// This style can be used, but not preferable!
 		// Instead of using this style, use if-else block! 
 }
@@ -250,15 +68,221 @@ int main(){
 /----------------------------------------------
 /----------------------------------------------
 
-* Switch-case ile "fallthrough" comment kullanımı : 
-- "fallthrough"  comment olarak yazıldığında, yapılan hatanın bilinçli olarak gerçekleştirildiği belirtilmiş olur. 
-- Normalde static code analiz araçları bu duruma uyarı verecektir. 
+* Example: Using if-else block instead of switch-case block 
+
+```cpp
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+
+	int day_order;
+	
+	printf("1 : Monday    \n");
+	printf("2 : Tuesday   \n");
+	printf("3 : Wednesday \n");
+	printf("4 : Thursay   \n");
+	printf("5 : Friday    \n");
+	printf("6 : Saturday  \n");
+	printf("7 : Sunday    \n\n");
+	printf("What is the order of the selected day in a week ?: ");
+	scanf("%d", &day_order);
+
+	if (day_order == 1) 
+		printf("Monday\n");
+	else if (day_order == 2) 
+		printf("Tuesday\n");
+	else if (day_order == 3) 
+		printf("Wednesday\n");
+	else if (day_order == 4) 
+		printf("Thursay\n");
+	else if (day_order == 5)
+		printf("Friday\n");
+	else if (day_order == 6)
+		printf("Saturday\n");
+	else if (day_order == 7)
+		printf("Sunday\n");
+}
+```
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Using switch-case block instead of if-else block 
+
+```cpp
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+
+	int day_order;
+	
+	printf("1 : Monday    \n");
+	printf("2 : Tuesday   \n");
+	printf("3 : Wednesday \n");
+	printf("4 : Thursay   \n");
+	printf("5 : Friday    \n");
+	printf("6 : Saturday  \n");
+	printf("7 : Sunday    \n\n");
+	printf("What is the order of the selected day in a week ?: ");
+	
+	scanf("%d", &day_order);
+
+	switch (day_order) {
+	case 1:printf("Monday    \n"); break; 
+	case 2:printf("Tuesday   \n"); break;
+	case 3:printf("Wednesday \n"); break;
+	case 4:printf("Thursay   \n"); break;
+	case 5:printf("Friday    \n"); break;
+	case 6:printf("Saturday  \n"); break;
+	case 7:printf("Sunday    \n"); break;
+	default:printf("Invalid Day Selection!!!\n"); break; 
+	}
+	
+	return 0;
+}
+```
+
+/----------------------------------------------
+/----------------------------------------------
+
+- Example: Printing "hello" without using semi-colon (Interview Question) 
+
+```cpp
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdlib.h>
+
+int main() {
+	switch (printf("hello")) {}
+}
+```
+
+/----------------------------------------------
+
+- Example: Printing "hello" by using switch-case block (another solution type for the previous example)
 
 ```cpp
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 int main() {
+	int x = 5;
+	switch (x) {
+	case 5 :printf("hello");
+	}
+}
+```
+
+/----------------------------------------------
+/----------------------------------------------
+
+- Example: Desingning the following cases with the same results  
+  - case 12, case 1, case 2  --> printing "Winter"
+  - case 3, case 4, case 5   --> printing "Spring"
+  - case 6, case 7, case 8   --> printing "Summer"
+  - case 9, case 10, case 12 --> printing "Autumn"
+
+```cpp
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+	int month_order = 3;
+
+	switch (month_order) {
+	case 12:
+	case 1:
+	case 2:printf("Winter \n"); break;
+	case 3:
+	case 4:
+	case 5:printf("Spring \n"); break;
+	case 6:
+	case 7:
+	case 8:printf("Summer \n"); break;
+	case 9:
+	case 10:
+	case 11:printf("Autumn \n"); break;
+	}
+}
+```
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Printing the season names with if-else and switch-case blocks 
+
+```cpp
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void print_season_switch(int month) {
+	
+	switch (month) {
+	case 12:
+	case 1:
+	case 2:printf("Winter \n"); break;
+	case 3:
+	case 4:
+	case 5:printf("Spring \n"); break;
+	case 6:
+	case 7:
+	case 8:printf("Summer \n"); break;
+	case 9:
+	case 10:
+	case 11:printf("Autumn \n"); break;
+	default:printf("Invalid Season Selection!!!\n"); break;
+	}
+}
+
+void print_season_if(int month) {
+
+	if(month == 12 || month == 1 || month == 2 )
+		printf("Winter\n");
+	else if(month == 3 || month == 4 || month == 5)
+		printf("Spring\n");
+	else if (month == 6 || month == 7 || month == 8)
+		printf("Summer\n");
+	else if (month == 9 || month == 10 || month == 11)
+		printf("Autumn\n");
+	else
+		printf("Invalid Season Selection!!!\n");
+
+}
+
+int main() {
+
+	int month = 0;
+	
+	printf("12,1,2  : Winter \n");
+	printf("3,4,5   : Spring \n");
+	printf("6,7,8   : Summer \n");
+	printf("9,10,11 : Autumn \n\n");
+	printf("What is the order of the selected month ? : ");
+	
+	scanf("%d", &month);
+
+	print_season_switch(month);
+	print_season_if(month);
+}
+```
+
+/----------------------------------------------
+/----------------------------------------------
+
+- Example: Writing "fallthrough" comment in switch-case blocks 
+  - While "fallthrough" comment is written, it means that the faulty case is realized consciously. 
+  - Normally, static code analyser tools (SonarQube, etc.) return a warning message for this kind of cases which not having break statement. 
+
+```cpp
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
 	int x = 3;
 
 	switch (x) {
@@ -309,7 +333,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* Example: Using switch - case blocks with enumeration
+* Example: Using switch - case blocks with enumeration (1)
 
 ```cpp
 #define _CRT_SECURE_NO_WARNINGS
@@ -348,7 +372,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-- Example: Using switch - case blocks with enumeration
+- Example: Using switch - case blocks with enumeration (2)
 
 ```cpp
 #define _CRT_SECURE_NO_WARNINGS
@@ -386,11 +410,13 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-- Example: Printing the day of date with functions including switch-case blocks
-  - The suffix is : st --> 1st  June 2020, 21st June 2020, 31st June 2020
-  - The suffix is : nd --> 2nd  August 2020, 22nd August 2020 
-  - The suffix is : rd --> 3rd  September 2020, 23rd September 2020
-  - The suffix is : th (the other days) --> 15th, 14th, 16th, 17th, 18th, 19th,... May 2020
+- Example: 
+  - Printing the day of the selected date with functions including switch-case blocks
+  - Considering the following specification: 
+    - The suffix is : st --> 1st  June 2020, 21st June 2020, 31st June 2020
+    - The suffix is : nd --> 2nd  August 2020, 22nd August 2020 
+    - The suffix is : rd --> 3rd  September 2020, 23rd September 2020
+    - The suffix is : th (the other days) --> 15th, 14th, 16th, 17th, 18th, 19th,... May 2020
 
 ```cpp
 #define _CRT_SECURE_NO_WARNINGS
@@ -400,10 +426,9 @@ int main() {
 
 void print_date(int day, int month, int year) {
 
-	printf("%02d", day); // 0 is fill charachter 
+	printf("%02d", day); // 0 is the filling charachter here
 
-	switch (day)
-	{
+	switch (day) {
 	case 1:
 	case 21:
 	case 31: printf("st "); break;
@@ -414,8 +439,7 @@ void print_date(int day, int month, int year) {
 	default: printf("th "); break;
 	}
 
-	switch (month)
-	{
+	switch (month) {
 	case 1:  printf("January "); break;
 	case 2:  printf("February "); break;
 	case 3:  printf("March "); break;
@@ -452,35 +476,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* Example: Formatting printf function
-
-```cpp
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-
-int main() {
-	char s1[] = "Gamze";
-	char s2[] = "Abdullah";
-	int first_number = 10;
-	int second_number = 4859589;
-
-	printf("%d %s\n", first_number, s1);
-	printf("%d %s\n\n", second_number, s2);
-
-	// Right Aligned 
-	printf("%7d %s\n", first_number, s1);
-	printf("%7d %s\n\n", second_number, s2);
-
-	// Left Aligned
-	printf("%-7d %s\n", first_number, s1);  
-	printf("%-7d %s\n\n", second_number, s2);
-}
-```
-
-/----------------------------------------------
-/----------------------------------------------
-
-* Example: Returning the day of weeks with switch-case and random number generators
+* Example: Printing the day of weeks with switch-case blocks and random number generators
 
 ```cpp
 #define _CRT_SECURE_NO_WARNINGS
@@ -493,8 +489,7 @@ int main() {
 	
 	srand((unsigned)time(NULL));
 
-	for (int i = 0; i < 20; ++i)
-	{
+	for (int i = 0; i < 20; ++i) {
 		switch (rand() % 7 + 1){
 		case 1: printf("Monday \n"); break;
 		case 2: printf("Tuesday \n"); break;
@@ -530,8 +525,7 @@ int day_of_year(int day, int month, int year) {
 	
 	int sum = day;
 
-	switch (month-1)
-	{
+	switch (month-1) {
 	case 11: sum += 30; // fallthrough
 	case 10: sum += 31; // fallthrough
 	case 9: sum += 30;  // fallthrough
@@ -570,7 +564,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* Example: Swtich-case pseudo code example
+* Example: A pseudo code example with switch-case block 
 
 ```cpp
 #define _CRT_SECURE_NO_WARNINGS
@@ -591,8 +585,7 @@ void default_state(void) {}
 
 int main() {
 
-	switch (is_remote_access())
-	{
+	switch (is_remote_access()) {
 	case 0 : off_state(); break;
 	case 1 : on_state(); break;
 	case 2 : standby_state(); break;
@@ -614,8 +607,7 @@ int main() {
 
 #define SIZE 5 
 
-typedef enum 
-{
+typedef enum {
 	COLOR_BLACK,
 	COLOR_WHITE, 
 	COLOR_PURPLE,
@@ -625,8 +617,7 @@ typedef enum
 
 void print_color(Colors color) {
 
-	switch (color)
-	{
+	switch (color) {
 	case COLOR_BLACK  : printf("Black\n"); break;
 	case COLOR_WHITE  : printf("White\n"); break;
 	case COLOR_PURPLE : printf("Purple\n"); break;
