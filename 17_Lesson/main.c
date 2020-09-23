@@ -1,45 +1,41 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-
-#define SUCCESS 1
-#define ERROR   0
-
-int allocate_memory(void) {
-	//...
-	return 1;
-}
-
-int setup_interrupts(void) {
-	//...
-	return 1;
-}
-
-int setup_registers(void) {
-	//...
-	return 0;
-}
-
-void teardown_interrupts(void) {}
-void free_memory(void){}
-
-
-int init_device(void) {
-
-	if (allocate_memory() != SUCCESS) goto out1;
-	if (setup_interrupts() != SUCCESS) goto out2;
-	if (setup_registers() != SUCCESS) goto out3;
-	//...
-	return SUCCESS;
-out1:
-	teardown_interrupts();
-out2:
-	free_memory();
-out3:
-	return ERROR;
-}
+#include <stdlib.h>
 
 int main() {
-	if (init_device()) {
-		printf("The initialization is successful");
-	}
+
+	// The size of signed data types 
+	printf("sizeof(long double) : %ld\n", sizeof(long double));
+	printf("sizeof(double)      : %lu\n", sizeof(double));
+	printf("sizeof(float)       : %lu\n", sizeof(float));
+	printf("sizeof(long long)   : %lu\n", sizeof(long long));
+	printf("sizeof(long)        : %lu\n", sizeof(long));
+	printf("sizeof(int)         : %lu\n", sizeof(int));
+	printf("sizeof(short)       : %lu\n", sizeof(short));
+	printf("sizeof(_Bool)       : %lu\n\n", sizeof(_Bool));
+
+	// The size of unsigned data types 
+	printf("sizeof(unsigned long long) : %lu\n", sizeof(unsigned long long));
+	printf("sizeof(unsigned long)      : %lu\n", sizeof(unsigned long));
+	printf("sizeof(unsigned int)       : %lu\n", sizeof(unsigned int));
+	printf("sizeof(unsigned short)     : %lu\n", sizeof(unsigned short));
+
+/*
+	sizeof(long double) : 8
+	sizeof(double)      : 8
+	sizeof(float)       : 4
+	sizeof(long long)   : 8
+	sizeof(long)        : 4
+	sizeof(int)         : 4
+	sizeof(short)       : 2
+	sizeof(_Bool)       : 1
+*/
+
+/*
+	sizeof(unsigned long long) : 8
+	sizeof(unsigned long)      : 4
+	sizeof(unsigned int)       : 4
+	sizeof(unsigned short)     : 2
+*/
+
 }
