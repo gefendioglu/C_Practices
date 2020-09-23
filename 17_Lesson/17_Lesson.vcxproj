@@ -143,6 +143,10 @@
   <ItemGroup>
     <Text Include="17_Lesson_Notes.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\..\..\C\Goto_Statement_2.png" />
+    <Image Include="..\..\..\..\..\..\C\Usual_Arithmetic_Conversions.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
