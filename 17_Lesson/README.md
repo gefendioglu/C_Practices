@@ -31,33 +31,35 @@
 /----------------------------------------------
 * Preferable usage of goto statement: 
 
+```cpp
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 int main() {
-
 	goto out;
-
 out:;
 }
+```
 
 /----------------------------------------------
 * Not preferable usage of goto statement: 
 
+```cpp
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 int main() {
-
 out:;
-
 	goto out;
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-* Example: Without using goto statement, how to jump to the end of the outermost loop 
+* Example: Without using goto statement, how to jump to the end of the outermost loop
+
+```cpp
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
@@ -93,11 +95,14 @@ int main() {
 	}
 	// 3: with using of If - flag - break - not guaranteed
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
 * Example: With using goto statement, how to jump to the end of the outermost loop? 
+
+```cpp
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
@@ -129,12 +134,14 @@ out:
 	//...
 	;
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
 * Example: Goto statement
 
+```cpp
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
@@ -180,12 +187,14 @@ int main() {
 		printf("The initialization is successful");
 	}
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
 * The same function defining with different style of code for the previous example (specifically int init_device(void) function): 
 
+```cpp
 int init_device(void) {
 
 	if (allocate_memory() == ERROR) 
@@ -203,6 +212,7 @@ out2:
 out3:
 	return ERROR;
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
