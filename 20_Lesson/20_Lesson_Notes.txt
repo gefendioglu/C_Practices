@@ -1,0 +1,1400 @@
+
+/----------------------------------------------
+/----------------------------------------------
+
+Önceki ders tekrarý: 
+* sizeof operatoru
+	- variable length array sizeof açýsýndan problemlidir.
+	- sizeof(int)
+	- sizeof(x+10)
+	- sizeof(x++) --> x++ iþlemi gerçekleþtirilmez. derleyici sadece x türüne bakacaktýr.
+	- sizeof(array) --> dizinin byte olarak kapladýðý alan 
+	  sizeof(array)/ sizeof(array[0]) --> dizinin eleman sayýsý
+	  ASIZE makrosu eklendi utility.h dosyasýna  
+
+
+* size_t --> not a type, it is a type alias
+	- unsigned int, unsigned long, unsigned long long türlerinden biri olabilir. 
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: unique random number generator
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define URAND_MAX 20
+
+// unique random number generator
+// bir dizide depolanarak ayný sayýnýn ürtilip  üretilmediði kontrol edilebilir. 
+int urand(void) {
+
+	// kontrol dýþý deðiþtirilmesini engellemek için glbal yerine static local 
+	static int array[URAND_MAX] = { 0 };
+
+	// fonksiyonun üretilebilecek bütün rasgele sayýlarý üretip üretmediðini kontrol etmesi gerekir.
+	static int count = 0;
+	int value;
+
+	// C de çýkarým  yapýlabilecek else parçalarýnýn yazýlmasý tercih edilmez. 
+	// hidden else 
+	if (count == URAND_MAX)
+		return -1;
+
+	/*while (1) {
+		value = rand() % URAND_MAX;
+		if (array[value] == 0)
+			break;
+	}*/
+
+
+	while (array[value = rand() % URAND_MAX])
+		;
+
+	++count;
+	array[value] = 1;
+
+	return value;
+}
+
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+
+int main() {
+
+	randomize();
+
+	for (int i = 0; i < URAND_MAX; ++i)
+	{
+		printf("%3d", urand());
+	}
+	printf("\n");
+
+	printf("%3d", urand());
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Dizide unique olan deðerlerin yazdýrýlmasý 
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define SIZE 20
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+
+int main() {
+
+	int array[SIZE];
+	randomize();
+
+	for (int i = 0; i < SIZE; ++i)
+		array[i] = rand() % 20;
+	print("array[%d] : ");
+
+	for (int i = 0; i < SIZE; ++i)
+	{
+		int flag = 0;
+
+		for (size_t k = 0; k < SIZE; ++k)
+		{
+			if (array[i] == array[k] && i != k)
+			{
+				// array[i] unique olmadýðýndan döngüden çýk
+				flag = 1;
+				break;
+			}
+		}
+		if (flag == 0) //-->array[i] bu durumda unique
+			printf("%3d", array[i]);
+	}
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Same example:
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define SIZE 20
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+
+int main() {
+
+	int array[SIZE];
+	int k = 0;
+	randomize();
+
+	for (int i = 0; i < SIZE; ++i) {
+		array[i] = rand() % 20;
+		printf("array[%d] : %d", i, array[i]);
+	}
+		
+
+	for (int i = 0; i < SIZE; ++i)
+	{
+
+		for (size_t k = 0; k < SIZE; ++k)
+		{
+			if (array[i] == array[k] && i != k)
+			{
+				// array[i] unique olmadýðýndan döngüden çýk
+				break;
+			}
+		}
+		if (k == SIZE) //-->array[i] bu durumda unique
+			printf("%3d", array[i]);
+	}
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Dizinin max deðerini bulmak 
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define SIZE 10
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+
+int main() {
+
+	int array[SIZE];
+	int max;
+	int max_index = 0;
+	
+	randomize();
+	//aset(array, SIZE);
+	//aprint(array, SIZE);
+
+	max = array[0];
+
+	for (int k = 0; k < SIZE; k++)
+	{
+		if (array[k] > max)
+		{
+			max = array[k];
+			max_index = k;
+		}
+
+	}
+	printf("max = %d\n", max);
+}
+
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Dizinin min deðerini bulmak 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define SIZE 10
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+
+int main() {
+
+	int array[SIZE];
+	int min;
+	int min_index = 0;
+	
+	randomize();
+	//aset(array, SIZE);
+	//aprint(array, SIZE);
+
+	min = array[0];
+
+	for (int k = 0; k < SIZE; k++)
+	{
+		if (array[k] < min)
+		{
+			min = array[k];
+			min_index = k;
+		}
+
+	}
+	printf("min = %d\n", min);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Finding both min and max values in an array
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define SIZE 10
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+int main() {
+
+	int array[SIZE];
+	int max, min;
+
+	randomize();
+	//aset(array, SIZE);
+	//aprint(array, SIZE);
+
+	max = min = array[0];
+
+	for (int k = 0; k < SIZE; k++)
+	{
+		if (array[k] > max)
+		{
+			max = array[k];
+		}
+		else if (array[k] < min)
+		{
+			min = array[k];
+		}
+
+	}
+	printf("min = %d\n", min);
+	printf("max = %d\n", max);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: runner-up  algoritmasý
+	- Finding the second max  value in an array
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define SIZE 10
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+int main() {
+
+	int array[SIZE];
+	int max, runner_up;
+	//int min_index = 0;
+
+	randomize();
+	//aset(array, SIZE);
+	//aprint(array, SIZE);
+
+	max = array[0];
+	runner_up = array[1];
+	// max = array[0], runner_up = array[1];
+
+	if (array[0] < array[1])
+	{
+		max = array[1], runner_up = array[0];
+	}
+
+	for (int i = 2; i < SIZE; ++i)
+	{
+		if (array[i] > max)
+		{
+			runner_up = max;
+			max = array[i];
+		}
+		else if (array[i] > runner_up)
+		{
+			runner_up = max;
+		}
+	}
+
+	printf("max = %d\n", max);
+	printf("runner-up = %d\n", runner_up);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Dizinin her elemaný kadar * ekleyen bir algoritma tasarýmý
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define SIZE 10
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+int main() {
+
+	int array[SIZE];
+
+	randomize();
+
+	for (int i = 0; i < SIZE; ++i)
+	{
+		array[i] = rand() % 20;
+		printf("array[%d] = %d\n", i, array[i]);
+	}
+
+	for (int i = 0; i < SIZE; i++)
+	{
+		for (int j = 0; j < array[i]; ++j)
+			putchar('*');
+		putchar('\n');
+	}
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Ödev Sorusu: Önceki örneði dikey olacak þekilde gerçekleþtirmek
+
+
+/----------------------------------------------
+/----------------------------------------------
+
+* 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define SIZE 20
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+int main() {
+
+	int array[SIZE];
+	int counts[SIZE] = { 0 };
+
+	randomize();
+
+	for (int i = 0; i < SIZE; ++i)
+	{
+		array[i] = rand() % 20;
+		printf("array[%d] = %d\n", i, array[i]);
+	}
+
+	for (int i = 0; i < SIZE; ++i)
+	{
+		++counts[array[i]];
+	}
+
+	for (int i = 0; i < SIZE; i++)
+	{
+		if (counts[i]==1)
+		{
+			printf("%3d", i);
+
+		}
+
+	}
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* partition algorithm:
+	- verinin koþulu saðlayan ve saðlamayanlar olarak ikiye ayrýlmasý
+	- partition point : koþulu saðlamayan ilk verinin konumunu tutar.
+
+* Ödev sorusu: Koþulu saðlayanlar --> baþta
+		       Koþulu saðlamayanlar --> sonda
+ - Koþul sayýnýn çift olmasý olabilir. 
+
+ #define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define SIZE 100
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+int main() {
+
+	int array[SIZE];
+	int counts[SIZE] = { 0 };
+
+	randomize();
+	// aset (array, SIZE);
+	// aprint (array, SIZE);
+	// partition algorithmn here...
+
+	// Çift sayýlar baþta olacak þekilde yazdýrýlacak.
+	// Tek sayýlar sonra olacak þekilde yazdýrýlacak.
+	// partition point yazdýrýlacak. 
+
+	// Algoritma karmaþýklýðý = O(n) 
+	// Ýç içe iki döngü olmadan tek bir döngü ile yazdýrýlabilir demek
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: c dizisi son kez yazdýrýldýðýnda, c dizisi a ve b dizilerinin birleþtirilmiþ halini temsil etsin
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define SIZE 100
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+int main() {
+
+	int a[SIZE];
+	int b[SIZE];
+	int c[SIZE * 2];
+	int i, k; 
+
+	randomize();
+	// aset (a, SIZE);
+	// aprint (a, SIZE);
+	// aset (b, SIZE);
+	// aprint (b, SIZE);
+
+	for (i = 0; i < SIZE; ++i)
+		c[i] = a[i];
+
+	for (k = 0; k < SIZE; ++k)
+		c[i + k] = b[k];
+
+	// aprint (c, 2*SIZE);
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Sorting Algorithms
+	- sorting criteria
+	- belirli koþullar oluþtuktan sonra swap iþlemi uygulanmalý
+	- bir kritere göre dizinin elemanlarýný yeniden konumlandýrmaktýr
+	- Type of sýrting algorithms: 
+	  - bubble sort
+	  - liner sort
+	  - merge sort
+	  - radix sort
+	  - quick sort
+	  - shell sort
+	  - insertion sort
+	  - intro sort
+	  - selection sort
+
+	Neden farklý sýralama algoritmalarý bulunmaktadýr? 
+	- Bu farklý tipteki sorting algoritmalarýnýn karmaþýklýklarý birbirinden farklýdýr (best case, worst case ve average case a göre karþýlaþtýrma yapýlmalýdýr)
+	- stable olup olmamasý (stable sorting): 
+		- yapýlan farklý sýramalar sonucunda da önceki mantýklý sýralama sonuçlarýnýn deðiþmemesidir. (birden fazla özellik taaþýyan veriler için)
+
+		Yaþa göre yapýlan sýralama: 
+		ahmet  45
+		ali 
+		faruk 
+		selin
+		ahmet  34
+		metin 
+		ahmet  20
+
+		isme göre yapýlan sýralama: 
+		ahmet  45
+		ahmet  34
+		ahmet  20
+		ali
+		faruk
+		metin
+		selin
+
+	- veri yapýsýnýn sýralamadan önceki durumu
+	- en iyisýralama algoritmasý diye bir tanýmlama yapýlamaz. En iyi sýralama, problem açýsýndan en uygun olan sýralamadýr.
+	- en çok kullanýlan quick ve heap sort algoritmalarýdýr
+	- worst case --> n log n, n log^2 n, n^2 karmaþýklýðýna sahip
+
+	- efficiency of sorting algorithms: 
+	  - kullanýlan programlama dili
+	  - c ve cpp derleyicileri optimization iþlemi uygular (optimization ayarlarý da burada önemlidir)
+	  - 
+	 
+
+	- complexity of algorithms (Rýfat Çölkesen) : 
+	  - time complexity
+	  - space complexity
+
+	- bubble sort neden en popüler olan algoritmadr?
+	  - O(n^2) --> karmaþýklýðý --> iç içe döngü ihtiyacý vardýr.
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Benchmarking for sorting algorithms: 
+* Example: Bubble Sort (Doðru çalýþmýyor kontrol edilecek!!!)
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define SIZE 10
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+int main() {
+
+	int array[SIZE] = {0};
+
+	randomize();
+	// aset (array, SIZE);
+	// aprint (array, SIZE);
+
+	for (int i = 0; i < SIZE; ++i) {
+		array[i] = rand() % SIZE;
+		printf("array[%d]: %3d\n", i, array[i]);
+	}
+	printf("\n\n");
+
+	// SIZE-1 : her turda bir öðe yerine konulacak
+	for (int i = 0; i < SIZE-1; ++i) 
+	{
+		for (int k = 0; k < SIZE-1-i; ++k)
+		{
+			// sorting criteria
+			if (array[k] > array[k+1])
+			{
+				// swap function
+				int temp = array[k];
+				array[k] = array[k + 1];
+				array[k + 1] = temp;
+			}
+		}
+		printf("array[%d]: %3d", i, array[i]);
+		getchar();
+	}
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Sorting criteria deðiþtirildi - Tekler baþta ve kendi içinde sýralý, çiftler sonda ve kendi içinde sýralý 
+(array[k] % 2 == 0 && array[k+1] %2 != 0) --> tekler baþa
+(array[k]  % 2 == array[k + 1] ) --> iki sayýnýn tekliði veya çiftliði aynýysa (audity)
+(array[k]>array[k + 1]) --> sýralama için eklenen son kýsým
+
+
+- Doðru çalýþmýyor bende !!!
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define SIZE 10
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+int main() {
+
+	int array[SIZE] = {0};
+
+	randomize();
+	// aset (array, SIZE);
+	// aprint (array, SIZE);
+
+	for (int i = 0; i < SIZE; ++i) {
+		array[i] = rand() % SIZE;
+		printf("array[%d]: %3d\n", i, array[i]);
+	}
+	printf("\n\n");
+
+	// SIZE-1 : her turda bir öðe yerine konulacak
+	for (int i = 0; i < SIZE-1; ++i) 
+	{
+		for (int k = 0; k < SIZE-1-i; ++k)
+		{
+			// sorting criteria
+			if ((array[k] % 2 == 0 && array[k+1] %2 != 0) || (array[k]  % 2 == array[k + 1] % 2 && array[k]>array[k + 1]))
+			{
+				// swap function
+				int temp = array[k];
+				array[k] = array[k + 1];
+				array[k + 1] = temp;
+			}
+		}
+
+		printf("array[%d]: %3d\n", i, array[i]);
+		//getchar();
+	}
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+*
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define SIZE 100
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+int main() {
+
+	// dynamic memory management
+	int* pd = (int*)malloc(SIZE * sizeof(int));
+	clock_t start, end;
+
+	if (!pd)
+	{
+		printf("not enough memory space!!!");
+		return 1;
+	}
+
+	randomize();
+	// aset (pd, SIZE);
+	// aprint (pd, SIZE);
+
+	for (int i = 0; i < SIZE; ++i) {
+		pd[i] = rand() % SIZE;
+		printf("array[%d]: %3d\n", i, pd[i]);
+	}
+
+	start = clock();
+	printf("Sorting starting\n");
+
+	for (int i = 0; i < SIZE-1; ++i) 
+	{
+		for (int k = 0; k < SIZE - 1-i; ++k) {
+
+			if (pd[k] > pd[k+1])
+			{
+				int temp = pd[k];
+				pd[k] = pd[k + 1];
+				pd[k + 1] = temp;
+			}
+		}
+		
+		printf("array[%d]: %3d\n", i, pd[i]);
+
+	}
+	end = clock();
+	printf("Sorting stopped : %f\n", (double)(end-start)/CLOCKS_PER_SEC);
+	getchar();
+
+	free(pd);
+
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: quick sort 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define SIZE 100
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+int icmp(const void* vp1, const void* vp2) {
+
+	return *(const int*)vp1 - *(const int*)vp2;
+}
+
+int main() {
+
+	// dynamic memory management
+	int* pd = (int*)malloc(SIZE * sizeof(int));
+	clock_t start, end;
+
+	if (!pd)
+	{
+		printf("not enough memory space!!!");
+		return 1;
+	}
+
+	randomize();
+	// aset (pd, SIZE);
+	// aprint (pd, SIZE);
+
+	for (int i = 0; i < SIZE; ++i) {
+		pd[i] = rand() % SIZE;
+		printf("array[%d]: %3d\n", i, pd[i]);
+	}
+
+	start = clock();
+	printf("Sorting starting\n");
+	qsort(); // tamamlanacak !!! --> n log n
+	
+	// printf("array[%d]: %3d\n", i, pd[i]); ???
+
+	end = clock();
+	printf("Sorting stopped : %f\n", (double)(end-start)/CLOCKS_PER_SEC);
+	getchar();
+
+	free(pd);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+*  Example: merge sorting algorithm (sýralý birleþtirme)
+2   5 12  80 120 987 1234
+17 23 99 176 234 812
+
+sýralý olarak üçüncü bir dizide birleþtirilsin: 
+2   5 12 17 ...
+
+her iki dizide de kalýnan yeri gösteren bir index tutulmasý gerekir
+diziye eklenen index her iki dizi için ilerletilerek kullanýlýr. 
+
+Kod Kontrol edilecek!!!
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define ASIZE 10
+#define BSIZE 12
+#define CSIZE (ASIZE+BSIZE)
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+int icmp(const void* vp1, const void* vp2) {
+
+	return *(const int*)vp1 - *(const int*)vp2;
+}
+
+int main() {
+
+	int a[ASIZE];
+	int b[BSIZE];
+	int c[CSIZE];
+	int idx_a = 0;
+	int idx_b = 0;
+
+	randomize();
+	// aset (a, ASIZE);
+	// aset (b, BSIZE);
+
+	qsort(a, ASIZE, sizeof(*a), icmp);
+
+	// aprint (a, ASIZE);
+	// aprint (b, BSIZE);
+
+	for (int i = 0; i < ASIZE; ++i) {
+		a[i] = rand() % ASIZE;
+	}
+
+	qsort(a, ASIZE, sizeof(*a), icmp);
+	for (int i = 0; i < ASIZE; ++i) {
+		printf("array[%d]: %3d ", i, a[i]);
+	}
+	printf("\n\n");
+
+	for (int i = 0; i < BSIZE; ++i) {
+		b[i] = rand() % BSIZE;
+		printf("array[%d]: %3d ", i, b[i]);
+	}
+
+	qsort(b, BSIZE, sizeof(*b), icmp);
+	for (int i = 0; i < BSIZE; ++i) {
+		printf("array[%d]: %3d  ", i, b[i]);
+	}
+
+	printf("\n\n");
+
+	for (int i = 0; i < CSIZE; ++i)
+	{
+		if (idx_a == ASIZE)
+		{
+			c[i] = b[idx_b++];
+		}
+		else if (idx_b == BSIZE)
+		{
+			c[i] = a[idx_a++];
+
+		}
+		else if (a[idx_a] < b[idx_b])
+		{
+			c[i] = a[idx_a++];
+
+		}
+		else
+		{
+			c[i] = b[idx_b++];
+
+		}
+
+	}
+
+	for (int i = 0; i < CSIZE; ++i) {
+		printf("array[%d]: %3d\n ", i, c[i]);
+	}
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Ödev Sorusu: maximum subsequence problem 
+	- What is the complexity of this problem? --> O(n)
+	- instead of  O(n^2) or O(n^3) 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define ASIZE 10
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+int main() {
+
+	int a[ASIZE];
+	int idx_a = 0;
+
+	randomize();
+
+	for (int i = 0; i < ASIZE; ++i) {
+		a[i] = ((rand() % 2) ? 1: -1)*(rand()%1000);
+		printf("array[%d]: %3d ", i, a[i]);
+	}
+	printf("\n\n");
+
+	// Find the maximum subsequence value of this array
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* binary search algoritmasý : complexity: --> log n
+ - sýralý bir dizide deðer aramak 
+ - her defasýnda veri setinin ikiye ayrýlarak aramanýn devam etmesi
+ - sýralý dizilerde linear search yapýlmamalýdýr !!!
+
+ Çalýþtý !!!
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define ASIZE 10
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+static int icmp(const void* vp1, const void* vp2) {
+
+	return *(const int*)vp1 - *(const int*)vp2;
+}
+
+void array_sort(int* p, int size) {
+
+	qsort(p, size, sizeof(*p), icmp);
+}
+int main() {
+
+	int a[ASIZE];
+	int idx_first, idx_last, idx_mid;
+	int svalue;
+
+
+	// aset
+	randomize();
+
+	for (int i = 0; i < ASIZE; ++i) {
+		a[i] = (rand() % ASIZE);
+		printf("array[%d]: %3d\n", i, a[i]);
+	}
+	printf("\n\n");
+
+	array_sort(a, ASIZE);
+	for (int i = 0; i < ASIZE; ++i) {
+		printf("array[%d]: %3d\n", i, a[i]);
+	}
+	// aprint
+	printf("\n\n");
+
+	printf("Aranan deger: ");
+	scanf("%d", &svalue);
+	idx_first = 0;
+	idx_last = ASIZE - 1;
+	while (idx_first <= idx_last)
+	{
+		idx_mid = (idx_first + idx_last) / 2;
+		if (a[idx_mid] == svalue)
+		{
+			break;
+		}
+
+		if (a[idx_mid] > svalue)
+		{
+			idx_last = idx_mid - 1; 
+		}
+		else
+		{
+			idx_first = idx_mid + 1;
+
+		}
+	}
+
+	if (idx_first > idx_last)
+	{
+		printf("Bulunamadi \n");
+			
+	}
+	else
+	{
+		printf("Bulundu : %d \n", idx_mid);
+
+	}
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Yazýlarýn kullanýlmasý ve iþleme sokulmasý :
+ - bir yazý elemanlarý char türünden bir dizide tutulmaktadýr. 
+ - c de string data tipi bulunmamaktadýr. 
+ - string str; --> char str[100]; (Yazý dizisi oluþturulmuþtur)
+ - BABA --> 66 65 66 65 (ASCII karakter kodlama)
+ - null terminated byte stream : yazýnýn son karakterinden sonra NULL karakteri eklenmektedir (ASCII Code: 0) 
+	--> bu durumda BABA yazýsý 5 elemanlý bir dizide saklanmaktadýr.
+	    char str[5] = "BABA"; -->  66 65 66 65 \0
+	--> NULL karakteri --> '\0'
+    --> '0 ' --> 0 karakteri --> ASCII Code: 48
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 10
+
+int main() {
+
+	char str[100] = "melahat";
+
+	for (int i = 0; str[i] != '\0'; ++i)
+	{
+		putchar(str[i]);
+	}
+
+}
+/----------------------------------------------
+/----------------------------------------------
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 10
+
+int main() {
+
+	char str[100] = "BABA";
+	int i; 
+
+	for (i = 0; str[i] != '\0'; ++i)
+		printf("%c %d\n", str[i], str[i]);
+
+	printf("%d\n", str[i]);
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 10
+
+int main() {
+
+	char str[100] = "BABA";
+	int i; 
+
+	for (i = 0; str[i]; ++i)
+		printf("%c %d\n", str[i], str[i]);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Undefined Behaviour 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 10
+
+int main() {
+
+	char str[100] = "BABA";
+
+	str[0] = 'A';
+	str[1] = 'L';
+	str[2] = 'P';
+
+	// Not applicable in this case
+	// str[3] is not a NULL char
+	// undefined behaviour
+	for (int i = 0; str[i]!='\0'; ++i)
+		printf("%c\n", str[i]);
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Not Undefined Behaviour 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+char str[100];
+
+int main() {
+
+	str[0] = 'A';
+	str[1] = 'L';
+	str[2] = 'P';
+
+	// not undefined behaviour for global variable
+	for (int i = 0; str[i]!='\0'; ++i)
+		printf("%c\n", str[i]);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Not Undefined Behaviour 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	// initialization
+	char str[100] = {'O', 'N', 'U', 'R'};
+
+	// not undefined behaviour
+	for (int i = 0; str[i]!='\0'; ++i)
+		printf("%c\n", str[i]);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Undefined Behaviour 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	// initialization
+	char str[] = {'O', 'N', 'U', 'R'};
+
+	// undefined behaviour
+	for (int i = 0; str[i]!='\0'; ++i)
+		printf("%c\n", str[i]);
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Not Undefined Behaviour 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	// initialization
+	char str[] = {'O', 'N', 'U', 'R', '\0'};
+
+	// not undefined behaviour
+	for (int i = 0; str[i]!='\0'; ++i)
+		printf("%c\n", str[i]);
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Not Undefined Behaviour 
+  - char str[] = "gamze"; --> the size of str[]:  6
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	// initialization
+	char str[100] = "gamze";
+
+	// not undefined behaviour
+	for (int i = 0; str[i]!='\0'; ++i)
+		printf("%c\n", str[i]);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Undefined Behaviour 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	// initialization 
+	// C : not syntax error, but not having NULL char
+	// CPP : syntax error
+	char str[5] = "gamze";
+
+	// undefined behaviour
+	for (int i = 0; str[i]!='\0'; ++i)
+		printf("%c\n", str[i]);
+}
+
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Undefined Behaviour Cases
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	// initialization 
+	// C : not syntax error, but undefined behaviour 
+	char str1[100];
+	str1[0] = 'O';
+	str1[1] = 'K';
+	// str1[2] --> has garbage value 
+	
+	char str2[] = {'A', 'L', 'I'}; // has not null char
+	
+	char str3[6] = "alican"; // has not null char, not syntax err
+
+		// undefined behaviour
+	for (int i = 0; str1[i]!='\0'; ++i)
+		printf("%c ", str1[i]);
+
+	printf("\n\n");
+
+	for (int i = 0; str2[i] != '\0'; ++i)
+		printf("%c ", str2[i]);
+
+	printf("\n\n");
+
+	for (int i = 0; str3[i] != '\0'; ++i)
+		printf("%c ", str3[i]);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: dizinin tuttuðu yazýnýn uzunluðu: 0
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	//char str[10] = {0};
+	char str[10] = "";
+
+	for (int i = 0; str[i]!='\0'; ++i)
+		printf("%c ", str[i]);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: null karakterin ezilmesi problemi
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x = 1, y = 1;
+	char str[100];
+	str[0] = 'O';
+	str[1] = 'K';
+	str[2] = '\0';
+
+	for (int i = 0; str[i]!='\0'; ++i)
+		printf("%c ", str[i]);
+
+	str[x + y] = 'T';
+	// undefined behaviour -- null karakterin ezilmesi
+	for (int i = 0; str[i] != '\0'; ++i)
+		printf("%c ", str[i]);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
