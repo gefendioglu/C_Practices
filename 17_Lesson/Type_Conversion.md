@@ -59,7 +59,7 @@ _Bool
 
 Example: Finding the size of signed/unsinged data types, considering their rank
 
-```cpp
+```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
@@ -169,3 +169,237 @@ int main() {
 
 /----------------------------------------------
 /----------------------------------------------
+
+* int + double --> double
+* integral promotion:
+	- bir iþlemde binary operandýn operandýnda
+	- variadic fonksiyonlarda 
+	- default declare edilmiþ
+
+
+/----------------------------------------------
+/----------------------------------------------
+
+* #define _CRT_SECURE_NO_WARNINGS makro kullanýmý
+	 - Windows derleyicilerine özel bir makrodur. 
+
+```cpp
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+
+	char s1[100];
+	char s2[100] = "gamze";
+	strcpy(s1, s2);
+	// Error C4996 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. 
+	// To disable deprecation, use _CRT_SECURE_NO_WARNINGS.
+}
+```
+
+/----------------------------------------------
+/----------------------------------------------
+
+* without using #define _CRT_SECURE_NO_WARNINGS macro
+
+```c
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+
+	char s1[100];
+	char s2[100] = "gamze";
+	strcpy_s(s1, sizeof(s2), s2);
+
+}
+```
+
+/----------------------------------------------
+/----------------------------------------------
+
+* explicit type conversion : kendi irademizle yapýlan dönüþümler
+
+int ival = 10;
+ival --> int, L-Value 
+(double)ival --> double , R-Value
+
+ival = 15;           // OK --> L-Value expression
+(double)ival = 12.5; // NOT OK --> R-Value expression
+
+/----------------------------------------------
+/----------------------------------------------
+* both explicit and implicit conversion
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+	int x = 10, y = 20;
+	(long long)x + y = 28;				// NOT OK --> R-Value expression
+	long long number = (long long)x + y; // OK --> L-Value expression
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+ival + dval --> 
+	- ival türü deðiþmez 
+	- sadece ival için double tür açýsýndan geçici bir nesne oluþturulup iþleme sokulur.
+	- Kodun devamýnda ival kullanýlýrsa, yine int türünden iþlem görecektir.
+	
+/----------------------------------------------
+/----------------------------------------------
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+	double dval;
+	int ival;
+
+	printf("Number: ");
+	scanf("%lf", &dval);
+
+	ival = dval;		// OK --> narrowing conversion
+	printf("ival: %d\n ", ival);
+
+	ival = (int)dval;   // OK --> narrowing conversion with explicit type conv. 
+	printf("ival: %d\n ", ival);
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+	
+	char str[100];
+	str[5] = (char)getchar();
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+	
+	int x, y;
+	double dval; 
+
+	printf("two real numbers: ");
+	scanf("%d%d", &x, &y);      // two real numbers : 5 6
+	
+	dval = x / y;
+	printf("dval: %f\n", dval); // dval : 0.000000
+	
+	dval =(double) x / y; 
+	printf("dval: %f\n", dval); // dval : 0.833333
+
+	int  counter;
+	(long long) dval*counter;
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Implicit Type conversion for ternary operators 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x = 10;
+	int y = 10;
+	double dval = (x > 5 ? y : 3.4) / 3;
+
+	printf("dval: %f\n", dval); // dval: 3.333333
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Mülakat: Sayýyý bir üste veya bir alta yuvarlama
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int ival;
+	double dval;
+
+	printf("real number: "); 
+	scanf("%lf", &dval);
+
+	//ival = (int)round(dval);
+	//ival = (int)(dval + dval > 0 ? .5 : -0.5);
+	ival =(int)(dval + .5) - (dval < 0.);
+	printf("ival : %d\n", ival);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Sabit türünün deðiþtirilerek tür dönüþümünün gerçekleþtirilmesi
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+
+int factorial(int val) {
+	return val < 2 ? 1 : val * factorial(val - 1);
+}
+
+int main() {
+
+	double sum = 0.;
+	for (int i = 0; i < 12; ++i)
+		sum += 1. / factorial(i);
+
+	printf("sum : %f\n", sum); // sum : 2.718282
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Sabit türünün deðiþtirilerek tür dönüþümünün gerçekleþtirilmesi
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int min, sec;
+	printf("dakika ve saniye :  "); 
+	scanf("%d%d", &min, &sec);
+
+	printf("%d dakika ve %d saniye ve %f saat\n", min, sec, min/60.+sec/3600.);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Formatting to print double values
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	double dval = 1.7889765;
+	printf("%f\n",dval);    // 1.788976 --> 6 numbers after comma (default)
+	printf("%.2f\n",dval);  // 1.79     --> 2 numbers after comma
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
