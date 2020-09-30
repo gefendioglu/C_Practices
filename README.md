@@ -14,6 +14,10 @@ C sample codes
 
 - [Random Number Generators](https://github.com/gefendioglu/C_Practices/blob/master/18_Lesson/Random_Number_Generators.md)
 
+- [Algorithm Examples](https://github.com/gefendioglu/C_Practices/blob/master/20_Lesson/Algorithm_Examples.md)
+
+
+
 
 
 
