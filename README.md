@@ -2,7 +2,7 @@
 
 C sample codes 
 
-- [Preprocessor Symbolic Constants](https://github.com/gefendioglu/C_Practices/blob/master/16_Lesson/16_Lesson/PREPROCESSOR_SYMBOLIC_CONSTANTS.md)
+- [Preprocessor Symbolic Constants](https://github.com/gefendioglu/C_Practices/blob/master/16_Lesson/PREPROCESSOR_SYMBOLIC_CONSTANTS.md)
 
 - [Switch Case Control Statement](https://github.com/gefendioglu/C_Practices/blob/master/16_Lesson/SWITCH_CASE.md)
 
