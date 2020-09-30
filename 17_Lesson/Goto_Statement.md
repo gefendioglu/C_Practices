@@ -1,6 +1,7 @@
 
 ## GOTO STATEMENT: 
 /----------------------------------------------
+/----------------------------------------------
 
 - There are two different types of jumping style for goto statement:  
   - Long Jump: 
