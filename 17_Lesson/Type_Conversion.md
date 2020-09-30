@@ -1,5 +1,6 @@
 
-## Type Conversion:
+## Type Conversion: 
+
 /----------------------------------------------
 - makine seviyesinde farklý türdeki  sayýlar arasýnda aritmetik iþlemler uygulanamaz. Ayný türde olmalarý gerekmektedir. 
 
@@ -39,25 +40,55 @@ ival = dval; --> double --> int dönüþümü yapýldýktan sonra atama iþlemi 
   unsigned int : 4 byte olduðudan ;
   long - unsigned int --> unsigned long ile iþlem görecektir.
 
- - The rank of data types: 
-long double
-double
-float 
-long long
-long 
-int 
+- The rank of data types: 
+  - long double
+  - double
+  - float 
+  - long long
+  - long 
+  - int
 /----------------------------------------------
-short
-char 
-_Bool 
+  - short
+  - char 
+  - _Bool 
 
 * integral promotion (int altý türlerin int e yükseltilmesi)
 - int altý türlerin hepsi iþleme int e çevrildikten sonra sokulmaktadýr. 
 
+
+
+###Explicit Type Conversion:
+ - This kind of type conversions realized by programmer intentionally
+ 
+###Implicit Type Conversion:
+ - This kind of type conversions realized by automatically
+  
+int ival = 10;
+ival --> int, L-Value 
+(double)ival --> double , R-Value
+
+ival = 15;           // OK --> L-Value expression
+(double)ival = 12.5; // NOT OK --> R-Value expression
+
+
+
+ival + dval --> 
+	- ival türü deðiþmez 
+	- sadece ival için double tür açýsýndan geçici bir nesne oluþturulup iþleme sokulur.
+	- Kodun devamýnda ival kullanýlýrsa, yine int türünden iþlem görecektir.
+	
+* int + double --> double
+* integral promotion:
+	- bir iþlemde binary operandýn operandýnda
+	- variadic fonksiyonlarda 
+	- default declare edilmiþ
+
+
+
 /----------------------------------------------
 /----------------------------------------------
 
-Example: Finding the size of signed/unsinged data types, considering their rank
+- **Example**: Finding the size of signed/unsigned data types (considering their rank)
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -75,14 +106,8 @@ int main() {
 	printf("sizeof(int)         : %lu\n", sizeof(int));
 	printf("sizeof(short)       : %lu\n", sizeof(short));
 	printf("sizeof(_Bool)       : %lu\n\n", sizeof(_Bool));
-
-	// The size of unsigned data types 
-	printf("sizeof(unsigned long long) : %lu\n", sizeof(unsigned long long));
-	printf("sizeof(unsigned long)      : %lu\n", sizeof(unsigned long));
-	printf("sizeof(unsigned int)       : %lu\n", sizeof(unsigned int));
-	printf("sizeof(unsigned short)     : %lu\n", sizeof(unsigned short));
-
-/*
+	
+	/* (Windows-10 x64 Visual Studio 2019 - MSVC) 
 	sizeof(long double) : 8
 	sizeof(double)      : 8
 	sizeof(float)       : 4
@@ -91,23 +116,29 @@ int main() {
 	sizeof(int)         : 4
 	sizeof(short)       : 2
 	sizeof(_Bool)       : 1
-*/
+	*/
 
-/*
+	// The size of unsigned data types 
+	printf("sizeof(unsigned long long) : %lu\n", sizeof(unsigned long long));
+	printf("sizeof(unsigned long)      : %lu\n", sizeof(unsigned long));
+	printf("sizeof(unsigned int)       : %lu\n", sizeof(unsigned int));
+	printf("sizeof(unsigned short)     : %lu\n", sizeof(unsigned short));
+
+	/* (Windows-10 x64 Visual Studio 2019 - MSVC) 
 	sizeof(unsigned long long) : 8
 	sizeof(unsigned long)      : 4
 	sizeof(unsigned int)       : 4
 	sizeof(unsigned short)     : 2
-*/
+	*/
 }
 ```
 
 /----------------------------------------------
 /----------------------------------------------
 
-* Example: Comparing signed and unsigned variables
+- **Example**: Comparing signed and unsigned variables
 
-```cpp
+```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
@@ -128,9 +159,9 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* Example: Aritmetik iþlemlerin uygulanmasý
+- **Example**: Applying arithmetic operations
 
-```cpp
+```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
@@ -148,9 +179,9 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* Example: Char veriler için tür dönüþüm iþlemleri
+- **Example**: Type conversions for char typed data
 
-```cpp
+```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
@@ -170,20 +201,10 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* int + double --> double
-* integral promotion:
-	- bir iþlemde binary operandýn operandýnda
-	- variadic fonksiyonlarda 
-	- default declare edilmiþ
+- **Example**: The macro called "_CRT_SECURE_NO_WARNINGS" is a special macro for Windows copmpilers. 
+  - #define _CRT_SECURE_NO_WARNINGS
 
-
-/----------------------------------------------
-/----------------------------------------------
-
-* #define _CRT_SECURE_NO_WARNINGS makro kullanýmý
-	 - Windows derleyicilerine özel bir makrodur. 
-
-```cpp
+```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
@@ -201,7 +222,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* without using #define _CRT_SECURE_NO_WARNINGS macro
+- **Example**: without using _CRT_SECURE_NO_WARNINGS macro (not specified "#define _CRT_SECURE_NO_WARNINGS")
 
 ```c
 #include <stdio.h>
@@ -215,43 +236,28 @@ int main() {
 
 }
 ```
-
 /----------------------------------------------
 /----------------------------------------------
 
-* explicit type conversion : kendi irademizle yapýlan dönüþümler
+- **Example**: Applying both explicit and implicit type conversions
 
-int ival = 10;
-ival --> int, L-Value 
-(double)ival --> double , R-Value
-
-ival = 15;           // OK --> L-Value expression
-(double)ival = 12.5; // NOT OK --> R-Value expression
-
-/----------------------------------------------
-/----------------------------------------------
-* both explicit and implicit conversion
-
+```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 int main() {
 	int x = 10, y = 20;
-	(long long)x + y = 28;				// NOT OK --> R-Value expression
+	(long long)x + y = 28;	             // NOT OK --> R-Value expression
 	long long number = (long long)x + y; // OK --> L-Value expression
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-ival + dval --> 
-	- ival türü deðiþmez 
-	- sadece ival için double tür açýsýndan geçici bir nesne oluþturulup iþleme sokulur.
-	- Kodun devamýnda ival kullanýlýrsa, yine int türünden iþlem görecektir.
-	
-/----------------------------------------------
-/----------------------------------------------
+- **Example**:
 
+```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
@@ -267,12 +273,15 @@ int main() {
 
 	ival = (int)dval;   // OK --> narrowing conversion with explicit type conv. 
 	printf("ival: %d\n ", ival);
-
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
+- **Example**:
+
+```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
@@ -281,15 +290,19 @@ int main() {
 	char str[100];
 	str[5] = (char)getchar();
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
+- **Example**:
+
+```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 int main() {
-	
+
 	int x, y;
 	double dval; 
 
@@ -305,12 +318,14 @@ int main() {
 	int  counter;
 	(long long) dval*counter;
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-* Implicit Type conversion for ternary operators 
+- **Example**: Implicit Type conversion for ternary operators 
 
+```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
@@ -323,12 +338,14 @@ int main() {
 	printf("dval: %f\n", dval); // dval: 3.333333
 
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-* Mülakat: Sayýyý bir üste veya bir alta yuvarlama
+- **Example**: Rounding down and rounding up a number to a closer value 
 
+```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
@@ -345,15 +362,16 @@ int main() {
 	ival =(int)(dval + .5) - (dval < 0.);
 	printf("ival : %d\n", ival);
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-* Sabit türünün deðiþtirilerek tür dönüþümünün gerçekleþtirilmesi
+- **Example**: Applying type conversion by changing the constant type (?) 
 
+```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-
 
 int factorial(int val) {
 	return val < 2 ? 1 : val * factorial(val - 1);
@@ -364,15 +382,16 @@ int main() {
 	double sum = 0.;
 	for (int i = 0; i < 12; ++i)
 		sum += 1. / factorial(i);
-
 	printf("sum : %f\n", sum); // sum : 2.718282
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-* Sabit türünün deðiþtirilerek tür dönüþümünün gerçekleþtirilmesi
+- **Example**: Applying type conversion by changing the constant type (?)
 
+```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
@@ -384,12 +403,14 @@ int main() {
 
 	printf("%d dakika ve %d saniye ve %f saat\n", min, sec, min/60.+sec/3600.);
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-* Formatting to print double values
+- **Example**: Formatting to print double values
 
+```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
@@ -399,6 +420,7 @@ int main() {
 	printf("%f\n",dval);    // 1.788976 --> 6 numbers after comma (default)
 	printf("%.2f\n",dval);  // 1.79     --> 2 numbers after comma
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
