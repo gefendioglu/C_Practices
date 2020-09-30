@@ -1,0 +1,289 @@
+/----------------------------------------------
+/----------------------------------------------
+
+* Yazýlarýn kullanýlmasý ve iþleme sokulmasý :
+ - bir yazý elemanlarý char türünden bir dizide tutulmaktadýr. 
+ - c de string data tipi bulunmamaktadýr. 
+ - string str; --> char str[100]; (Yazý dizisi oluþturulmuþtur)
+ - BABA --> 66 65 66 65 (ASCII karakter kodlama)
+ - null terminated byte stream : yazýnýn son karakterinden sonra NULL karakteri eklenmektedir (ASCII Code: 0) 
+	--> bu durumda BABA yazýsý 5 elemanlý bir dizide saklanmaktadýr.
+	    char str[5] = "BABA"; -->  66 65 66 65 \0
+	--> NULL karakteri --> '\0'
+    --> '0 ' --> 0 karakteri --> ASCII Code: 48
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 10
+
+int main() {
+
+	char str[100] = "melahat";
+
+	for (int i = 0; str[i] != '\0'; ++i)
+	{
+		putchar(str[i]);
+	}
+
+}
+/----------------------------------------------
+/----------------------------------------------
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 10
+
+int main() {
+
+	char str[100] = "BABA";
+	int i; 
+
+	for (i = 0; str[i] != '\0'; ++i)
+		printf("%c %d\n", str[i], str[i]);
+
+	printf("%d\n", str[i]);
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 10
+
+int main() {
+
+	char str[100] = "BABA";
+	int i; 
+
+	for (i = 0; str[i]; ++i)
+		printf("%c %d\n", str[i], str[i]);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Undefined Behaviour 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 10
+
+int main() {
+
+	char str[100] = "BABA";
+
+	str[0] = 'A';
+	str[1] = 'L';
+	str[2] = 'P';
+
+	// Not applicable in this case
+	// str[3] is not a NULL char
+	// undefined behaviour
+	for (int i = 0; str[i]!='\0'; ++i)
+		printf("%c\n", str[i]);
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Not Undefined Behaviour 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+char str[100];
+
+int main() {
+
+	str[0] = 'A';
+	str[1] = 'L';
+	str[2] = 'P';
+
+	// not undefined behaviour for global variable
+	for (int i = 0; str[i]!='\0'; ++i)
+		printf("%c\n", str[i]);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Not Undefined Behaviour 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	// initialization
+	char str[100] = {'O', 'N', 'U', 'R'};
+
+	// not undefined behaviour
+	for (int i = 0; str[i]!='\0'; ++i)
+		printf("%c\n", str[i]);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Undefined Behaviour 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	// initialization
+	char str[] = {'O', 'N', 'U', 'R'};
+
+	// undefined behaviour
+	for (int i = 0; str[i]!='\0'; ++i)
+		printf("%c\n", str[i]);
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Not Undefined Behaviour 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	// initialization
+	char str[] = {'O', 'N', 'U', 'R', '\0'};
+
+	// not undefined behaviour
+	for (int i = 0; str[i]!='\0'; ++i)
+		printf("%c\n", str[i]);
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Not Undefined Behaviour 
+  - char str[] = "gamze"; --> the size of str[]:  6
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	// initialization
+	char str[100] = "gamze";
+
+	// not undefined behaviour
+	for (int i = 0; str[i]!='\0'; ++i)
+		printf("%c\n", str[i]);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Undefined Behaviour 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	// initialization 
+	// C : not syntax error, but not having NULL char
+	// CPP : syntax error
+	char str[5] = "gamze";
+
+	// undefined behaviour
+	for (int i = 0; str[i]!='\0'; ++i)
+		printf("%c\n", str[i]);
+}
+
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Undefined Behaviour Cases
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	// initialization 
+	// C : not syntax error, but undefined behaviour 
+	char str1[100];
+	str1[0] = 'O';
+	str1[1] = 'K';
+	// str1[2] --> has garbage value 
+	
+	char str2[] = {'A', 'L', 'I'}; // has not null char
+	
+	char str3[6] = "alican"; // has not null char, not syntax err
+
+		// undefined behaviour
+	for (int i = 0; str1[i]!='\0'; ++i)
+		printf("%c ", str1[i]);
+
+	printf("\n\n");
+
+	for (int i = 0; str2[i] != '\0'; ++i)
+		printf("%c ", str2[i]);
+
+	printf("\n\n");
+
+	for (int i = 0; str3[i] != '\0'; ++i)
+		printf("%c ", str3[i]);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: dizinin tuttuðu yazýnýn uzunluðu: 0
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	//char str[10] = {0};
+	char str[10] = "";
+
+	for (int i = 0; str[i]!='\0'; ++i)
+		printf("%c ", str[i]);
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: null karakterin ezilmesi problemi
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x = 1, y = 1;
+	char str[100];
+	str[0] = 'O';
+	str[1] = 'K';
+	str[2] = '\0';
+
+	for (int i = 0; str[i]!='\0'; ++i)
+		printf("%c ", str[i]);
+
+	str[x + y] = 'T';
+	// undefined behaviour -- null karakterin ezilmesi
+	for (int i = 0; str[i] != '\0'; ++i)
+		printf("%c ", str[i]);
+}
+
+/----------------------------------------------
+/----------------------------------------------

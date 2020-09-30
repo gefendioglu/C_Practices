@@ -20,7 +20,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="20_Lesson_Notes.txt">
+    <Text Include="Sorting_Algorithm.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Strings.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Algorithm_Examples.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
