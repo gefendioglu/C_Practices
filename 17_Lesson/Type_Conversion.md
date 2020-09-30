@@ -2,44 +2,44 @@
 ## Type Conversion: 
 
 /----------------------------------------------
-- makine seviyesinde farklý türdeki  sayýlar arasýnda aritmetik iþlemler uygulanamaz. Ayný türde olmalarý gerekmektedir. 
+/----------------------------------------------
 
-- int ival; 
-  double dval; 
-  ival + dval; --> double temp = ival; 
-				   temp + double; olacak þekilde arka planda iþlem uygulanýr.
-
-- usual arithmetic conversions 
-- assignment type conversion 
-ival = dval; --> double --> int dönüþümü yapýldýktan sonra atama iþlemi uygulanýr.
-
-- implicit type conversion : hiçbir iþlem uygulamadan derleyici tarafýndan otomatik olarak gerçekleþtirilmektedir. 
-- Not 
-- int ival;
-  long lval;
-  (long)ival + lval; --> Type Casting: operator yoluyla yapýlan tür dönüþümleri
-
+- There is no arithmetic operations between different types of data. They should be the same type definitions.  
 - Syntax hatasýndan ziyade, undefined behaviour, unspecifed behaviour veya data loss sebebiyle, en fazla kodlama hatasýna yol açacak iþlemlerden biridir.
 
-* Type Conversions and Ranks: 
-- Tür dönüþümü sýra seviyesi (rank) yüksek olana göre gerçekleþtirilmektedir. (ekran görüntüsünde yer alan açýklamalar eklenecek.) 
-- Ayný tamsayý türünün signed ve unsigned olanlarý da ayný rank tedir.???
-- unsigned long - unsigned short --> unsigned long 
-- unsigned long - signed int  --> unsigned long 
-- signed long - unsigned int  --> signed long, unsigned int türünün alabileceði tüm deðerleri temsil edebilebiliyorsa --> signed long türünde iþlem görülür. 
-  Ancak signed long (4 byte), unsigned int (4 byte) olduðunda bu temsil gerçekleþtirilemez. Bu durumda --> unsigned long türünde iþlem görülür. 
+```c
+int ivalue; 
+double dvalue; 
+ivalue + dvalue; 
+```
 
-- double - float --> double
-- float - int --> float
-- unsigned long - long --> same rank --> unsigned long
-- unsigned long - signed int --> unsigned long
-- long - unsigned int --> long, unsigned int türünün alabileceði deðerleri temsil edebiliyorsa, long ile iþlem görecektir. 
-  eðer temsil edilemiyorsa --> unsigned long ile iþlem görecektir. 
-  temsil edilip edilmeme kararý türlerin size'ýna göre verilmektedir. 
-  long: 4 byte
-  unsigned int : 4 byte olduðudan ;
-  long - unsigned int --> unsigned long ile iþlem görecektir.
+- In this case;
+  - Actually, the type of int value (ivalue) is not changed. 
+  - A double type temporary object for int value (ivalue) is generated. --> double temp = ivalue;
+  - Then, the arithmetic operation is applied. --> temp + double;
+  - int value (ivalue) is used with its original type for the remaining part of code.  
 
+```c
+ivalue = dvalue; 
+```
+- In this case;
+  - Firstly, int value is converted to double value
+  - Then the assignment is applied.
+ 
+### Explicit Type Conversion:
+- This kind of type conversions realized by programmer intentionally
+- Type Casting: Type conversions using by operators
+
+```c
+int ivalue;
+long lvalue;
+(long)ivalue + lvalue; 
+```
+ 
+### Implicit Type Conversion:
+- This kind of type conversions realized by automatically
+
+### Type Conversions and Ranks:
 - The rank of data types: 
   - long double
   - double
@@ -51,39 +51,48 @@ ival = dval; --> double --> int dönüþümü yapýldýktan sonra atama iþlemi 
   - short
   - char 
   - _Bool 
-
-* integral promotion (int altý türlerin int e yükseltilmesi)
-- int altý türlerin hepsi iþleme int e çevrildikten sonra sokulmaktadýr. 
-
-
-
-###Explicit Type Conversion:
- - This kind of type conversions realized by programmer intentionally
- 
-###Implicit Type Conversion:
- - This kind of type conversions realized by automatically
   
+- Type conversion is realized with respect to the data with the greater rank.
+- Usual Arithmetic Conversions:
+  - If both operands have the same type, then no further conversion is needed.
+  - Otherwise, if both operands have signed integer types or both have unsigned integer types, the operand with the type of lesser integer conversion rank is converted to the type of the operand with greater rank. 
+  - Otherwise, if the operand that has unsigned integer type has rank greater or equal to the rank of the type of the other operand, then the operand with signed integer type is converted to the type of the operand with unsigned integer type.
+  - Otherwise, if the type of the operand with signed integer type can represent all of the values of the type of the operand with unsigned integer type, then the operand with unsigned integer type is converted to the type of the operand with signed integer type. 
+  - Otherwise, both operands are converted to the unsigned integer type corresponding to the type pf the operand with signed integer type. 
+
+- Both signed and unsigned integer types have the same level of rank.
+  - unsigned long - unsigned short --> unsigned long 
+  - unsigned long - signed int  --> unsigned long 
+  - double - float --> double
+  - float - int --> float
+  - unsigned long - long --> same rank --> unsigned long
+  - signed long - unsigned int  --> 
+    - signed long, unsigned int türünün alabileceði tüm deðerleri temsil edebilebiliyorsa --> signed long türünde iþlem görülür. 
+    - Ancak signed long (4 byte), unsigned int (4 byte) olduðunda bu temsil gerçekleþtirilemez. Bu durumda --> unsigned long türünde iþlem görülür. 
+  - long - unsigned int --> 
+    - long, unsigned int türünün alabileceði deðerleri temsil edebiliyorsa, long ile iþlem görecektir. 
+    - eðer temsil edilemiyorsa --> unsigned long ile iþlem görecektir. 
+    - temsil edilip edilmeme kararý türlerin size'ýna göre verilmektedir. 
+      - long: 4 byte
+      - unsigned int : 4 byte olduðudan ;
+      - long - unsigned int --> unsigned long ile iþlem görecektir.
+
+### Integral Promotion:
+- integral promotion (int altý türlerin int e yükseltilmesi)
+  - bir iþlemde binary operandýn operandýnda
+  - variadic fonksiyonlarda 
+  - default declare edilmiþ
+- int altý türlerin hepsi iþleme int e çevrildikten sonra sokulmaktadýr. 
+  - int + double --> double
+
+```c 
 int ival = 10;
 ival --> int, L-Value 
 (double)ival --> double , R-Value
 
 ival = 15;           // OK --> L-Value expression
 (double)ival = 12.5; // NOT OK --> R-Value expression
-
-
-
-ival + dval --> 
-	- ival türü deðiþmez 
-	- sadece ival için double tür açýsýndan geçici bir nesne oluþturulup iþleme sokulur.
-	- Kodun devamýnda ival kullanýlýrsa, yine int türünden iþlem görecektir.
-	
-* int + double --> double
-* integral promotion:
-	- bir iþlemde binary operandýn operandýnda
-	- variadic fonksiyonlarda 
-	- default declare edilmiþ
-
-
+```
 
 /----------------------------------------------
 /----------------------------------------------
