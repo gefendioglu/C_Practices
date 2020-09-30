@@ -1,8 +1,5 @@
 ## PREPROCESSOR SYMBOLIC CONSTANTS (PREDEFINED MACRO):
 
-/----------------------------------------------
-/----------------------------------------------
-
 - #line, #error, #pragma preprocessor commands: 
   - #error  --> kodun bilerek isteyerek önişlemci aşamasında sonlandırılması
   - #pragma -->
@@ -140,7 +137,7 @@ void func(int x) {
 /----------------------------------------------
 /----------------------------------------------
 
-* __DATE__ , __TIME__, __FILE makroları
+* __DATE__ , __TIME__ , __FILE makroları
      - __TIME__ otomatik olarak derleme zamanına göre değişir.
      - __DATE__ otomatik olarak derleme zamanına göre değişir.
 
