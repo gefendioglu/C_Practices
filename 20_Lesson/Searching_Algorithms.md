@@ -5,6 +5,10 @@
  - her defasýnda veri setinin ikiye ayrýlarak aramanýn devam etmesi
  - sýralý dizilerde linear search yapýlmamalýdýr !!!
 
+/----------------------------------------------
+/----------------------------------------------
+- ** Example**: 
+
 ```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
@@ -84,3 +88,7 @@ int main() {
 	}
 }
 ```
+
+/----------------------------------------------
+/----------------------------------------------
+
