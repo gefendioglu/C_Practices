@@ -27,6 +27,7 @@ ivalue = dvalue;
   - Then the assignment is applied.
  
 ### Explicit Type Conversion:
+
 - This kind of type conversions realized by programmer intentionally
 - Type Casting: Type conversions using by operators
 
@@ -37,9 +38,19 @@ long lvalue;
 ```
  
 ### Implicit Type Conversion:
+
 - This kind of type conversions realized by automatically
 
+### Usual Arithmetic Conversions:
+
+- If both operands have the same type, then no further conversion is needed.
+- Otherwise, if both operands have signed integer types or both have unsigned integer types, the operand with the type of lesser integer conversion rank is converted to the type of the operand with greater rank. 
+- Otherwise, if the operand that has unsigned integer type has rank greater or equal to the rank of the type of the other operand, then the operand with signed integer type is converted to the type of the operand with unsigned integer type.
+- Otherwise, if the type of the operand with signed integer type can represent all of the values of the type of the operand with unsigned integer type, then the operand with unsigned integer type is converted to the type of the operand with signed integer type. 
+- Otherwise, both operands are converted to the unsigned integer type corresponding to the type pf the operand with signed integer type. 
+
 ### Type Conversions and Ranks:
+
 - The rank of data types: 
   - long double
   - double
@@ -47,36 +58,32 @@ long lvalue;
   - long long
   - long 
   - int
-/----------------------------------------------
   - short
   - char 
   - _Bool 
   
-- Type conversion is realized with respect to the data with the greater rank.
-- Usual Arithmetic Conversions:
-  - If both operands have the same type, then no further conversion is needed.
-  - Otherwise, if both operands have signed integer types or both have unsigned integer types, the operand with the type of lesser integer conversion rank is converted to the type of the operand with greater rank. 
-  - Otherwise, if the operand that has unsigned integer type has rank greater or equal to the rank of the type of the other operand, then the operand with signed integer type is converted to the type of the operand with unsigned integer type.
-  - Otherwise, if the type of the operand with signed integer type can represent all of the values of the type of the operand with unsigned integer type, then the operand with unsigned integer type is converted to the type of the operand with signed integer type. 
-  - Otherwise, both operands are converted to the unsigned integer type corresponding to the type pf the operand with signed integer type. 
-
+- Type conversion is realized with respect to the data having with greater rank.
 - Both signed and unsigned integer types have the same level of rank.
+  - unsigned long - long (same rank ) --> unsigned long
+
+- Examples about the final data type after applying arithmetic operations between different data types:
   - unsigned long - unsigned short --> unsigned long 
   - unsigned long - signed int  --> unsigned long 
   - double - float --> double
   - float - int --> float
-  - unsigned long - long --> same rank --> unsigned long
-  - signed long - unsigned int  --> 
-    - signed long, unsigned int türünün alabileceði tüm deðerleri temsil edebilebiliyorsa --> signed long türünde iþlem görülür. 
-    - Ancak signed long (4 byte), unsigned int (4 byte) olduðunda bu temsil gerçekleþtirilemez. Bu durumda --> unsigned long türünde iþlem görülür. 
-  - long - unsigned int --> 
-    - long, unsigned int türünün alabileceði deðerleri temsil edebiliyorsa, long ile iþlem görecektir. 
-    - eðer temsil edilemiyorsa --> unsigned long ile iþlem görecektir. 
-    - temsil edilip edilmeme kararý türlerin size'ýna göre verilmektedir. 
-      - long: 4 byte
-      - unsigned int : 4 byte olduðudan ;
-      - long - unsigned int --> unsigned long ile iþlem görecektir.
-
+  - signed long - unsigned int  --> unsigned long
+    - The size of data type is important to decide the final data type after applying arithmetic operation. 
+    - signed long (4 byte), unsigned int (4 byte)
+      - If unsigned int type can not represent all the values that signed int type has. --> unsigned long
+      - If unsigned int type can represent all the values that signed int type has. --> signed long
+      - That's why, the final data type will be "unsigned long"
+      
+  - long - unsigned int -->  unsigned long 
+    - long (4 byte), unsigned int (4 byte)
+      - If long type can not represent all the values that unsigned int type has. --> unsigned long
+      - If long type can represent all the values that unsigned int type has. --> long
+      - That's why, the final data type will be "unsigned long"
+  
 ### Integral Promotion:
 - integral promotion (int altý türlerin int e yükseltilmesi)
   - bir iþlemde binary operandýn operandýnda
@@ -211,7 +218,6 @@ int main() {
 /----------------------------------------------
 
 - **Example**: The macro called "_CRT_SECURE_NO_WARNINGS" is a special macro for Windows copmpilers. 
-  - #define _CRT_SECURE_NO_WARNINGS
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
