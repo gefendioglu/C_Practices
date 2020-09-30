@@ -4,8 +4,8 @@
 /----------------------------------------------
 /----------------------------------------------
 
-- There is no arithmetic operations between different types of data. They should be the same type definitions.  
-- Syntax hatasýndan ziyade, undefined behaviour, unspecifed behaviour veya data loss sebebiyle, en fazla kodlama hatasýna yol açacak iþlemlerden biridir.
+- There is no arithmetic operations between different types of data. They should have the same type definitions.  
+- Type conversions are very tend to cause undefined behaviours, unspecifed behaviours or data loss.
 
 ```c
 int ivalue; 
