@@ -192,8 +192,8 @@ int main() {
 /----------------------------------------------
 
 - **Example**: Randomize Idiom: 
-- Belli bir sayıdan geçen zamanı bulmak --> time point noktası (epoch time)
-- 1.1.1970 00:00:00 --> epoch time
+  - Belli bir sayıdan geçen zamanı bulmak --> time point noktası (epoch time)
+  - 1.1.1970 00:00:00 --> epoch time
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -216,7 +216,7 @@ int main() {
 /----------------------------------------------
 
 - **Example**: Farklı seed değerleri ile random number üretmek 
-  Epoch time sebebiyle her çalıştırma süresi arasında en az 1 saniye geçmelidir.
+  - Epoch time sebebiyle her çalıştırma süresi arasında en az 1 saniye geçmelidir.
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -249,14 +249,13 @@ int main() {
 #include <ctype.h>
 
 void sleep(double sec) {
-
 	clock_t start = clock();
-
 	while ((double)(clock() - start) / CLOCKS_PER_SEC < sec)
 		; // null statement
 }
 
 int main() {
+
 	int c; 
 	srand((unsigned int)time(NULL)); // seed value her defasında değişecektir. 
 	
@@ -288,7 +287,6 @@ int main() {
 		sleep(0.05);
 	}
 	*/
-
 }
 ```
 
@@ -313,20 +311,17 @@ void printRandomPassword(void) {
 	//srand((unsigned int)time(NULL)); // NOT OK here --> same time value 
 
 	len = rand() % 8 + 5;
-	while (len--) {
+	while (len--)
 		putchar(rand()%26 + 'A');
-	}
+		
 	putchar('\n');
 }
 
 int main() {
 	
 	srand((unsigned int)time(NULL)); // OK here --> different time value 
-
 	for (int i = 0; i < 10; ++i)
-	{
 		printRandomPassword();
-	}
 }
 ```
 
@@ -349,7 +344,6 @@ int main() {
 int main() {
 	
 	int headsCount = 0;
-
 	for (int  i = 0; i < NTOSS; ++i)
 	{
 		if (rand() % 2 == HEADS)
@@ -365,14 +359,14 @@ int main() {
 /----------------------------------------------
 
 - **Example**:
-Oyun: 
-- 7, 11        --> WIN
-- 2, 3, 12     --> LOSE
-- 4,5,6,8,9,10 --> OYUN ASKIDA, ilk atılan zarın atılması gerekir, 7 attığı ilk anda kaybecektir. 7 atmadan ilk attığını atarsa kazanır. 
+  - Oyun: 
+    - 7, 11        --> WIN
+    - 2, 3, 12     --> LOSE
+    - 4,5,6,8,9,10 --> OYUN ASKIDA, ilk atılan zarın atılması gerekir, 7 attığı ilk anda kaybecektir. 7 atmadan ilk attığını atarsa kazanır. 
 
-Sample: 
-- WIN Case  : 8 12 6 8 
-- LOSE Case : 8 12 6 7
+  - Sample: 
+    - WIN Case  : 8 12 6 8 
+    - LOSE Case : 8 12 6 7
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -380,24 +374,20 @@ Sample:
 #include <stdlib.h>
 
 #define NGAMES 100'000'000
-
 // NGAMES 100'000'000 --> kazanma olasiligi : 0.492305970000
 // NGAMES 10'000'000  --> kazanma olasiligi : 0.492299200000
 // NGAMES 1'000'000   --> kazanma olasiligi : 0.492245000000
 
 int rollDice(void) {
-
 	int dice1 = rand() % 6 + 1;
 	int dice2 = rand() % 6 + 1;
-
 	return dice1 + dice2;
 }
 
-// kazanırsa  --> return value = 1
-// kaybederse --> return value = 0
+// Win Case  --> return value = 1
+// Lose Case --> return value = 0
 
 int game_(int dice) {
-
 	int new_dice;
 	for (;;)
 	{
@@ -408,9 +398,6 @@ int game_(int dice) {
 				return 1;
 	}
 }
-
-// kazanırsa  --> return value = 1
-// kaybederse --> return value = 0
 
 int game(void) {
 
@@ -430,13 +417,9 @@ int game(void) {
 }
 
 int main() {
-	
 	int winCount = 0;
-
 	for (size_t i = 0; i < NGAMES ;++i)
-	{
 		winCount += game();
-	}
 
 	printf("kazanma olasiligi : %.12f\n", (double)winCount/NGAMES );
 }
@@ -446,7 +429,7 @@ int main() {
 /----------------------------------------------
 
 - **Example**: The same example with rollDice() function in cpp 
- - kazanma olasılığı çok daha fazla artar
+  - kazanma olasılığı çok daha fazla artar
 
 ```c
 Cpp_RollDice.cpp
@@ -455,19 +438,16 @@ Cpp_RollDice.cpp
 #include <random>
 
 #define NGAMES 100'000'000
-
 // NGAMES 100'000'000 --> kazanma olasiligi : 0.492305970000
 // NGAMES 10'000'000  --> kazanma olasiligi : 0.492299200000
 // NGAMES 1'000'000   --> kazanma olasiligi : 0.492245000000
 
 int rollDice(void) {
-
 	static std::mt19937 eng; 
 	std::uniform_int_distribution<int> dist{ 1,6 };
 
 	int dice1 = dist(eng);
 	int dice2 = dist(eng);
-
 	return dice1 + dice2;
 }
 ```
@@ -483,13 +463,11 @@ int rollDice(void) {
 #include <stdlib.h>
 #include <random>
 
-// Chudnovsky algorithm
-
 #define NPOINTS 1'000'000
+// Chudnovsky algorithm
 // NPOINTS 1'000'000 --> 3.140452000000
 
 int main() {
-
 	static std::mt19937 eng;
 	std::uniform_real_distribution<> dist{ 0.,1 };
 	int inside_count = 0;
