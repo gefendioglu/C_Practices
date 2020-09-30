@@ -23,7 +23,9 @@
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="18_Lesson_Notes.txt" />
+    <Text Include="Type_Conversion.txt" />
+    <Text Include="Arrays.txt" />
+    <Text Include="Random_Number_Generators.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

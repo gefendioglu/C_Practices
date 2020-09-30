@@ -23,7 +23,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="18_Lesson_Notes.txt">
+    <Text Include="Random_Number_Generators.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Arrays.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Type_Conversion.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

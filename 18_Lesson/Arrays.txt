@@ -1,0 +1,62 @@
+/----------------------------------------------
+/----------------------------------------------
+
+* ARRAYS : 
+- Dizilerin boyutu constant expression olmak zorundadýr!
+- Fixed array dizi yapýsý mevcuttur !!
+  int a[10]; // type : int[10], garbage value
+  int a[0];  // Tanýmlanamaz!
+  static int c[20];
+
+- Ayrýlan bellek alaný bellidir, dinamik olarak deðiþtirilemez. Bu sebeple, diziler üzerinde silme ekleme iþlemleri uygulanamaz
+- Global ve lokal deðiþken olarak tanýmlanabilir!
+- Bir fonksiyonun parametre deðiþkeni dizi olamaz !!!
+  void func(int a[]); --> burada parametre deðiþkeni bir pointer
+					  --> dizi adresi parametre olarak gönderilmektedir.
+- Bir fonksiyonun geri dönüþ deðer deðiþkeni bir dizi türü olamaz !!!
+- Dizilerin boyutlarý genelde sembolik sabitler olarak tanýmlanýr. 
+
+#include <stdio.h>
+
+#define SIZE 100 
+
+int main() {
+	
+	int a[SIZE];
+
+	for (size_t i = 0; i < SIZE; i++)
+	{
+		//...
+	}
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Dizi boyutlarýný belirleyen maksimum bir deðer var mýdýr? 
+
+- Stack otomatik ömürlü deðiþkenlerin tutulduðu bellek alanýdýr. 
+- Static ömürlü varlýklar için ayrýlan alan --> Data segment ? 
+
+int main() {
+	int a[1'000'000'000] = {0};
+	// Error C2148: total size of array must not exceed 0x7fffffff bytes	
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Array Decay --> Array to Pointer Conversion (C, C++)
+- &a[0] --> R-Value Expression 
+- Bir dizi ismi atama operatörünün sol operandý olamaz !!!
+
+#include <stdio.h>
+
+int main() {
+	int a[100] = {0};
+	int b[100] = {0};
+	a = b; // Error	C2106 '=': left operand must be l - value	
+}
+
+/----------------------------------------------
+/----------------------------------------------
