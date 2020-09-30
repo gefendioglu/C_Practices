@@ -16,6 +16,9 @@ C sample codes
 
 - [Algorithm Examples](https://github.com/gefendioglu/C_Practices/blob/master/20_Lesson/Algorithm_Examples.md)
 
+- [Algorithm Examples](https://github.com/gefendioglu/C_Practices/blob/master/20_Lesson/Sorting_Algorithms.md)
+
+- [Algorithm Examples](https://github.com/gefendioglu/C_Practices/blob/master/20_Lesson/Searching_Algorithms.md)
 
 
 
