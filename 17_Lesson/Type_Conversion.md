@@ -71,6 +71,7 @@ long lvalue;
   - unsigned long - signed int  --> unsigned long 
   - double - float --> double
   - float - int --> float
+  - int + double --> double
   - signed long - unsigned int  --> unsigned long
     - The size of data type is important to decide the final data type after applying arithmetic operation. 
     - signed long (4 byte), unsigned int (4 byte)
@@ -85,12 +86,8 @@ long lvalue;
       - That's why, the final data type will be "unsigned long"
   
 ### Integral Promotion:
-- integral promotion (int altý türlerin int e yükseltilmesi)
-  - bir iþlemde binary operandýn operandýnda
-  - variadic fonksiyonlarda 
-  - default declare edilmiþ
-- int altý türlerin hepsi iþleme int e çevrildikten sonra sokulmaktadýr. 
-  - int + double --> double
+- The subtypes of int type (short, char, _Bool) are promoted to int type. 
+- Firstly, all subtypes of int type is promoted to int type, then arithmetic operations are applied. 
 
 ```c 
 int ival = 10;
