@@ -156,10 +156,10 @@ int main() {
 		printf("local arrays[%d] : %d\n", i, l_array[i]);
 
 	/*  local arrays[0] : -858993460
-		local arrays[1] : -858993460
-		local arrays[2] : -858993460
-		local arrays[3] : -858993460
-		local arrays[4] : -858993460 */
+	    local arrays[1] : -858993460
+	    local arrays[2] : -858993460
+	    local arrays[3] : -858993460
+	    local arrays[4] : -858993460 */
 
 	printf("\n\n");
 
@@ -167,10 +167,10 @@ int main() {
 		printf("global arrays[%d] : %d\n", i, g_array[i]);
 
 	/*  global arrays[0] : 0
-		global arrays[1] : 0
-		global arrays[2] : 0
-		global arrays[3] : 0
-		global arrays[4] : 0 */
+	    global arrays[1] : 0
+	    global arrays[2] : 0
+	    global arrays[3] : 0
+	    global arrays[4] : 0 */
 }
 ```
 
