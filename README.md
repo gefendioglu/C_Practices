@@ -16,6 +16,8 @@ C sample codes
 
 - [Data Structures](https://github.com/gefendioglu/C_Practices/blob/master/19_Lesson/Data_Structures.md)
 
+- [Algorithms](https://github.com/gefendioglu/C_Practices/blob/master/19_Lesson/Algorithms.md)
+
 - [Algorithm Examples](https://github.com/gefendioglu/C_Practices/blob/master/20_Lesson/Algorithm_Examples.md)
 
 - [Sorting Algorithms](https://github.com/gefendioglu/C_Practices/blob/master/20_Lesson/Sorting_Algorithms.md)
