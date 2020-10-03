@@ -1,0 +1,1479 @@
+
+/----------------------------------------------
+/----------------------------------------------
+
+array decay (array to pointer conversion) ile char dizisine yerleþtirilen bir yazýnýn ismi direk kullanýldýðýnda dizinin ilk öðesinin adresi alýnmýþ olacaktýr.
+char str[5];
+str --> &str[0] 
+
+* Example: Tekrar
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	char str[] = {'G', 'A', 'M', 'Z', 'E'};
+
+	// undefined behaviour 
+	for (int i = 0; str[i] != '\0'; ++i)
+		printf("%c ", str[i]); 
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Tekrar
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	char str[5] = "gamze";
+
+	// undefined behaviour
+	puts(str);  
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: scanf func (test code : alican)
+  - scanf func skips white spaces (test code : alican zeynep)
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	char str[100];
+	printf("Name : ");
+	scanf("%s", str); // %s --> char array address
+	
+	printf("[%s]\n", str); // [%s] --> to see the new line charachter
+
+	/*
+	Name : alican zeynep
+	[alican]
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+Example: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	char s1[100];
+	char s2[100];
+	printf(" Two names : ");
+	scanf("%s%s", s1,s2); // %s --> char array address
+	
+	printf("[%s] [%s]\n", s1, s2); 
+	//printf("[%s] [%s]\n", &s1[0], &s2[0]); --> same definition
+
+	/*
+	Two names : ahmet arcan
+	[ahmet][arcan]
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Why the following errors are received?
+  - Using scanf_s() function
+  - Not using the return value of scanf() function
+  - Bazý fonksiyonlar pointer hatalarýna karþý daha hassas durumdadýr. 
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	char str[10];
+	printf(" Name : "); // Test code : abdulmüttalip
+	scanf("%s", str);
+	
+	printf("[%s]\n", str); 
+	//Run - Time Check Failure #2 - Stack around the variable 'str' wascorrupted.
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: scanf function error
+  - If the macro ( _CRT_SECURE_NO_WARNINGS)  not used, while building (in compile time):
+
+#include <stdio.h>
+
+int main() {
+
+	char str[10];
+	printf(" Name : ");
+	scanf("%s", str);
+	
+	printf("[%s]\n", str);
+
+	/* Severity	Code	Description	Project	File	Line	Suppression State
+		Error	C4996	'scanf': This function or variable may be unsafe.Consider using scanf_s instead.To disable deprecation, use _CRT_SECURE_NO_WARNINGS.
+		*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Controlling the return value of scanf function
+
+Test code : ahmet 12 16
+Test code : 24 36 ali
+
+#define _CRT_SECURE_NO_WARNINGS
+#pragma warning(disable : 4916)  // to close the warning message
+#include <stdio.h>
+
+int main() {
+
+	char str[10];
+	int x, y, z;
+	int retval;
+
+	printf(" Three numbers : ");
+	retval = scanf("%d%d%d", &x, &y, &z);
+	
+	printf("\nretval : [%d]\n", retval);
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 100
+
+int main() {
+
+	char str[SIZE];
+
+	printf(" String : ");
+	gets(str); // dilden kaldýrýldý
+	// warning C4013: 'gets' undefined; assuming extern returning int
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: 
+  - #pragma warning(disable : 4013) eklenebilir gets() fonksiyonun kullanýlabilmesi için
+  - gets() dilden kaldýrýlmýþ olmasýna ve compile time sýrasýdnda uyarý vermesine raðmen, run time sýrasýnda linker hatasý vermeyecektir. 
+  - dilde kodu hala yer almaktadýr.
+
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 100
+
+int main() {
+
+	char str[SIZE];
+
+	printf(" String : ");
+	gets(str); 
+	// warning C4013: 'gets' undefined; assuming extern returning int
+	// yine de linker hatasý vermeyecektir. 
+	printf("[%s]\n ", str);
+
+	/*
+		String: bugün hava çok güzel
+		[bugün hava çok güzel]
+	*/
+
+}
+
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 100
+
+// utility dosyalarýna eklenebilir. 
+char* sgets(char* ptr) {
+	char c;
+	while ((c = (char)getchar()) != '\n')
+		*ptr++ = c;
+
+	*ptr = '\0';
+}
+
+int main() {
+
+	char str[SIZE];
+
+	printf(" String : ");
+	sgets(str); 
+	printf("[%s]\n ", str);
+	/*
+String: ali veli hakan
+[ali veli hakan]
+*/
+}
+
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 100
+
+char* sgets(char* ptr) {
+	char c;
+	char* ptemp = ptr;
+	while ((c = (char)getchar()) != '\n')
+		*ptr++ = c;
+
+	*ptr = '\0';
+	return ptemp;
+}
+
+void gets_string(char* ptr, int size) {
+	
+	int c;
+	int cnt = 0;
+	while (1) {
+
+		c = (char)getchar();
+		if ((cnt == size - 1) || (c == '\n'))
+			break;
+		*ptr++ = (char)c;
+		++cnt;
+	}
+
+	*ptr = '\0';
+}
+
+int main() {
+
+	char str[SIZE];
+
+	printf(" String : ");
+	gets_string(str, SIZE);
+	printf("[%s]\n ", str);
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 100
+
+char* sgets(char* ptr) {
+	char c;
+	char* ptemp = ptr;
+	while ((c = (char)getchar()) != '\n')
+		*ptr++ = c;
+
+	*ptr = '\0';
+	return ptemp;
+}
+
+int main() {
+
+	char str[SIZE];
+	int length = 0; 
+
+	printf("String : ");
+	sgets(str);
+
+	for (int i = 0; str[i] != '\0'; ++i)
+		++length;
+
+	printf("uzunluk : [%d]\n ", length);
+	/*
+		String: alican
+		uzunluk : [6]
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 100
+
+char* sgets(char* ptr) {
+	char c;
+	char* ptemp = ptr;
+	while ((c = (char)getchar()) != '\n')
+		*ptr++ = c;
+
+	*ptr = '\0';
+	return ptemp;
+}
+
+int main() {
+
+	char str[SIZE];
+	int i; 
+
+	printf("String : ");
+	sgets(str);
+
+	for (i = 0; str[i] != '\0'; ++i)
+		; // null statement
+
+	printf("uzunluk : [%d]\n ", i);
+	/*
+		String: alican
+		uzunluk : [6]
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example:
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <ctype.h>
+
+#define SIZE 100
+
+char* sgets(char* ptr) {
+	char c;
+	char* ptemp = ptr;
+	while ((c = (char)getchar()) != '\n')
+		*ptr++ = c;
+
+	*ptr = '\0';
+	return ptemp;
+}
+
+int main() {
+
+	char str[SIZE];
+	int c; 
+	int cnt = 0;
+
+	printf("String : ");
+	sgets(str);
+
+	printf("sayilacak karakteri girin : ");
+	c = getchar();
+
+	for (int i = 0; str[i] != '\0'; ++i) {
+		if (toupper(str[i]) == toupper(c))
+			++cnt;
+	}
+
+	printf("%d tane \n", cnt);
+	/*
+		String : ankara
+		sayilacak karakteri girin : a
+		3 tane
+	*/
+	/*
+		String: Ankara
+		sayilacak karakteri girin : a
+		3 tane
+	*/
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Yazýdaki tüm harf karakterlerinin sayýlmasý
+  - ASCII kod kullanýldýðý soruda belirtilmelidir. 
+  - size_t strlen() standart fonksiyonu  da bulunmaktadýr.
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <ctype.h>
+
+#define SIZE 100
+
+char* sgets(char* ptr) {
+	char c;
+	char* ptemp = ptr;
+	while ((c = (char)getchar()) != '\n')
+		*ptr++ = c;
+
+	*ptr = '\0';
+	return ptemp;
+}
+
+int main() {
+
+	char str[SIZE]; 
+	int cnt[26] = {0};
+
+	printf("String : ");
+	sgets(str);
+
+	for (int i = 0; str[i] != '\0'; ++i) {
+		if (isalpha(str[i]))
+		{
+			// karakter a ise a nýn sayacý arttýrýlmýþ olacak
+			++cnt[toupper(str[i]) - 'A'];
+
+		}
+	}
+
+	for (int i = 0; i<26; ++i) {
+		if(cnt[i])
+			printf("%c %d\n", 'A'+i, cnt[i]);
+	}
+
+	/*
+	  String : Ankara Antalya Eskisehir Mardin
+		A 7
+		D 1
+		E 2
+		H 1
+		I 3
+		K 2
+		L 1
+		M 1
+		N 3
+		R 3
+		S 2
+		T 1
+		Y 1
+	
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Yazýnýn ters çevrilmesi
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <ctype.h>
+
+#define SIZE 100
+
+char* sgets(char* ptr) {
+	char c;
+	char* ptemp = ptr;
+	while ((c = (char)getchar()) != '\n')
+		*ptr++ = c;
+
+	*ptr = '\0';
+	return ptemp;
+}
+
+int main() {
+
+	char str[SIZE]; 
+	int length = 0;
+
+	printf("String : ");
+	sgets(str);
+
+	printf("[%s]\n", str);
+
+	for (length = 0; str[length] != '\0'; ++length)
+		;
+
+	for (int i = 0; i < length/2; ++i)
+	{
+		char temp = str[i];
+		str[i] = str[length - 1 - i];
+		str[length - 1 - i] = temp;
+	}
+
+	printf("[%s]\n", str);
+
+	/*
+		String : mustafa
+		[mustafa]
+		[afatsum]
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Homework : Yazýnýn polindrome olup olmadýðýný test etme
+
+Polindrome test kodlarý: 
+Aç raporunu koy okunur o parça
+Adamla çene çalma da.
+Ah adi demir erimedi daha.
+Al yarýsýný sýrayla. 
+Kýl arap iki namaz ama zaman iki paralýk.
+Madam I'm Adam.
+
+Panama Polindrome:
+A man, a plan, a canal, Panama.
+
+Solution: Ýkinci dizi kullanarak
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <ctype.h>
+
+#define SIZE 100
+
+char* sgets(char* ptr) {
+	char c;
+	char* ptemp = ptr;
+	while ((c = (char)getchar()) != '\n')
+		*ptr++ = c;
+
+	*ptr = '\0';
+	return ptemp;
+}
+
+int main() {
+
+	char str[SIZE]; 
+	char temp[SIZE]; 
+	int len = 0;
+	int k;
+
+	printf("String : ");
+	sgets(str);
+
+	for (int i = 0; str[i] != '\0'; ++i)
+	{
+		if (isalpha(str[i]))
+		{
+			// sadece harf karakterleri temp e kopyalanadý
+			temp[len++] = str[i]; 
+			
+		}
+		
+	}
+
+	for (k = 0; k< len/2; ++k)
+	{
+		if (toupper(temp[k]) != toupper(temp[len - 1 - k]))
+			break;
+		
+	}
+	if (k < len / 2)
+		printf("polindrome degil!!");
+	else
+		printf("polindrome!!");
+
+	/*
+		String : Ah adi demir erimedi daha
+		polindrome!!
+	*/
+}
+
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Homework : Ýkinci dizi kullanmadan ve yazý üzerinde deðiþiklik yapmadan polindrome testinin gerçekleþtirilmesi
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Homework : 
+  - Bir karakter boþluk verilen iki kelime için [ahmet mustafa] --> [mustafa ahmet]
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <ctype.h>
+
+#define SIZE 100
+
+char* sgets(char* ptr) {
+	char c;
+	char* ptemp = ptr;
+	while ((c = (char)getchar()) != '\n')
+		*ptr++ = c;
+
+	*ptr = '\0';
+	return ptemp;
+}
+
+int main() {
+
+	char str[SIZE]; 
+
+	printf("Ýki kelime girin : ");
+	sgets(str);
+	printf("[%s]\n", str); // [ahmet mustafa]
+
+	// ...ikinci dizi kullanýlmadan 
+
+	printf("[%s]\n", str); // [mustafa ahmet]
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <ctype.h>
+
+#define SIZE 100
+
+char* sgets(char* ptr) {
+	char c;
+	char* ptemp = ptr;
+	while ((c = (char)getchar()) != '\n')
+		*ptr++ = c;
+
+	*ptr = '\0';
+	return ptemp;
+}
+
+int main() {
+
+	char s1[SIZE];
+	char s2[SIZE];
+	int i;
+	int flag = 0;
+
+	// Girilen iki yazý eþit mi? 
+	printf("Ýki yazý girin : ");
+	scanf("%s%s", s1, s2);
+	printf("[%s] [%s]\n", s1, s2); // [mustafa] == [mustafa]
+
+	i = 0;
+
+	// ankara antalya --> k ve t eþit olmadýðýndan koþuldan çýkar!
+	while (s1[i] == s2[i]) {
+		if (s1[i] == '\0') {
+			flag = 1;
+			break;
+		}
+		++i;
+	}
+
+	if (flag)
+		printf("Evet - esit!!\n");
+	else
+		printf("No - esit degil!! \n");
+
+	/*
+		String: gül gülden
+		[gül][gülden]
+		No - esit degil!!
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: kopyalama
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <ctype.h>
+
+#define SIZE 100
+
+char* sgets(char* ptr) {
+	char c;
+	char* ptemp = ptr;
+	while ((c = (char)getchar()) != '\n')
+		*ptr++ = c;
+
+	*ptr = '\0';
+	return ptemp;
+}
+
+int main() {
+
+	char s1[SIZE];
+	char s2[SIZE];
+
+
+	int i;
+	int flag = 0;
+	printf("String : ");
+	scanf("%s", s1);
+	// s1 deki yazýyý s2 dizisine kopyala !
+
+	for (i= 0; s1[i] !='\0'; ++i)
+	{
+		s2[i] = s1[i];
+	}
+	s2[i] = '\0'; // null charachter eklenmelidir.
+	puts(s2);
+
+	/*
+		String: mustafa
+		mustafa
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: remove copy
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <ctype.h>
+
+#define SIZE 100
+
+char* sgets(char* ptr) {
+	char c;
+	char* ptemp = ptr;
+	while ((c = (char)getchar()) != '\n')
+		*ptr++ = c;
+
+	*ptr = '\0';
+	return ptemp;
+}
+
+int main() {
+
+	char s1[SIZE];
+	char s2[SIZE];
+	int ch;
+	int write_index;
+
+	printf("String : "); // ankara baskent baba
+	sgets(s1);
+	printf("silinecek karakter : ");
+	ch = getchar(); // a
+
+	write_index = 0;
+
+	for (int i = 0; s1[i] != '\0';  ++i){
+		if (s1[i] != ch)
+		{
+			s2[write_index++] = s1[i];
+		}
+	}
+	s2[write_index++] = '\0';
+
+	printf("[%s]\n ", s1); // [ankara baskent baba]
+	printf("[%s]\n ", s2); // [nkr bskent bb]
+
+	/*
+		String : 940240547694530
+		silinecek karakter : 0
+		[940240547694530]
+		[942454769453]
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Hocam, ard arda iki karakter silinmek istenirse char dizisi kullanýlarak mý koþul oluþturulmalý?
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: kayýt edilen örnek kod
+
+String : 940240547694530
+		silinecek karakter : 0
+		[940240547694530]
+		[942454769453]
+
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: remove if algoritmasý
+kayýt edilen ekran görüntüsünden alýnacak !!!
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: birinci kelime sonuna ikinci kelimeyi eklenmesi (append, concatanate)
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <ctype.h>
+
+#define SIZE 100
+
+int main() {
+
+	char s1[SIZE];
+	char s2[SIZE];
+	int i, k;
+	printf("String : "); 
+	scanf("%s%s", s1, s2); // hasan polatkan
+
+	for (i = 0; s1[i] != '\0'; ++i)
+		; // null statement
+	for (k = 0; s2[k] != '\0'; ++k)
+		s1[i + k] = s2[k];
+
+	s1[i + k] = '\0';
+	printf("[%s]\n", s1);  // hasanpolatkan
+	
+	/*
+		String : hasan polatkan
+		[hasanpolatkan]
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example:
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <ctype.h>
+
+#define SIZE 100
+
+int main() {
+
+	char s1[SIZE] = "kerim";
+	char s2[SIZE] = "ustaoglu";
+	char s3[SIZE];
+	int i, k;
+
+	for (i = 0; s1[i] != '\0'; ++i) {
+		s3[i] = s1[i];
+	}
+	for (k = 0; s2[k] != '\0'; ++k) {
+		s3[i+k] = s2[k];
+	}
+	s3[i + k] = '\0';
+
+	printf("[%s] + [%s] = [%s]\n", s1, s2, s3);  
+
+	/*
+		[kerim] + [ustaoglu] = [kerimustaoglu]
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* yazýdan sayýya, sayýdan yazýya dönüþümler 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <ctype.h>
+
+#define SIZE 100
+
+int main() {
+
+	char str[SIZE];
+	int ival= 0;
+
+	printf("String: ");
+	scanf("%s", str);
+	printf("[%s]\n", str);
+
+	//..code - standard lib : atoi()
+	// str[i] - '0' : ilk sayý karakterinin çýkarýlmasý
+
+	for (int i = 0; str[i] != '\0'; ++i)
+		ival = ival * 10 + str[i] - '0'; // 10luk sayý sisteminde
+		//ival = ival * 8 + str[i] - '0'; // 8lik sayý sisteminde
+		//ival = ival * 2 + str[i] - '0'; // 2lik sayý sisteminde
+
+	printf("ival : [%d]\n", ival);
+	/* 10luk test code:
+		String: 76123
+		[76123]
+		ival : [76123]
+	*/
+}
+
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: sayýdan yazýya 16lýksistemde 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <ctype.h>
+
+#define SIZE 100
+
+char* sgets(char* ptr) {
+	char c;
+	char* ptemp = ptr;
+	while ((c = (char)getchar()) != '\n')
+		*ptr++ = c;
+
+	*ptr = '\0';
+	return ptemp;
+}
+
+int main() {
+
+	char str[SIZE];
+	int ival = 0;
+
+	printf("String: ");
+	scanf("%s", str);
+	printf("[%s]\n", str);
+
+	//..code - standard lib : atoi()
+	// str[i] - '0' : ilk sayý karakterinin çýkarýlmasý
+
+	for (int i = 0; str[i] != '\0'; ++i) {
+		// 16lýk sayý sistemi:  0123456789ABCDEF
+		if (isdigit(str[i]))
+			ival = ival * 16 + (str[i] - '0');
+		else if (isxdigit(str[i]))
+			ival = ival * 16 + (toupper(str[i]) - 'A' + 10);
+	}
+
+	printf("ival : [%d]\n", ival);
+	/*
+		String: 2Fc
+		[2Fc]
+		ival : [764]
+	*/
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: Sayýyý yazýya donuþturmek 
+ileri C ve sistem programlama kursu - 23 ekim 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <ctype.h>
+
+#define SIZE 100
+
+char* sgets(char* ptr) {
+	char c;
+	char* ptemp = ptr;
+	while ((c = (char)getchar()) != '\n')
+		*ptr++ = c;
+
+	*ptr = '\0';
+	return ptemp;
+}
+
+int main() {
+
+	int x;
+	int temp;
+	int idx = 0;
+	char str[SIZE] = "";
+	int ival = 0;
+
+	printf("String: ");
+	scanf("%d", &x);
+	temp = x;
+	// negatif sayýlar yok kabul edilerek yazýlýrsa  
+	// x --> 76123 
+
+	idx = 0;
+	while (temp != 0) {
+		str[idx++] = '0' + temp % 10;
+		temp /= 10;
+	}
+
+	str[idx] = '\0';
+
+	// ters çevirme kodu 
+	for (int i = 0; i < idx/2; ++i) {
+
+		char temp = str[i];
+		str[i] = str[idx - 1 - i];
+		str[idx - 1 - i] = temp;
+	}
+
+	printf("[%s]\n", str);
+	
+	/*
+	KONTROL EDÝLECEK
+	*/
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Homework: Level: hard
+  - aralarýnda boþluk karakteri kullanýlarak girilen yazýlarýn ters yazdýrýlmasý 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <ctype.h>
+
+#define SIZE 100
+
+char* sgets(char* ptr) {
+	char c;
+	char* ptemp = ptr;
+	while ((c = (char)getchar()) != '\n')
+		*ptr++ = c;
+
+	*ptr = '\0';
+	return ptemp;
+}
+
+int main() {
+
+	char str[SIZE];
+	printf("String: "); // [ahmet hasan veli ayse gülden]
+	sgets(str);
+
+	// .... codes
+
+	printf("[%s]\n", str); // [gülden ayse veli hasan ahmet] 
+	
+	/*  The expected result: 
+		String: ahmet hasan veli ayse gülden
+		[ahmet hasan veli ayse gülden]
+		[gülden ayse veli hasan ahmet] 
+	*/
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: bir yazýdaki kelimelerin sayýlmasý (kelime aralarýndaki boþluk sayýsý birden fazla olabilir.)
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <ctype.h>
+
+#define SIZE 100
+#define INWORD  1
+#define OUTWORD 0
+
+char* sgets(char* ptr) {
+	char c;
+	char* ptemp = ptr;
+	while ((c = (char)getchar()) != '\n')
+		*ptr++ = c;
+
+	*ptr = '\0';
+	return ptemp;
+}
+
+int main() {
+
+	char str[SIZE];
+	int flag = OUTWORD; // yazýyý dolaþýrken kelime dýþýnda olduðunu gösterir 
+	int word_count = 0;
+
+	printf("String: "); //___ali___veli___hakan___
+	sgets(str);
+
+	// boþluktan kelimeye geçildiðinde counter arttýrýlmalý
+	// simple state machine can be used for this problem. 
+	
+	for (int i = 0; str[i] != '\0'; ++i) {
+		if (isspace(str[i]))
+		{
+			flag = OUTWORD;
+
+		}
+		else if (flag== OUTWORD)
+		{
+			word_count++;
+			flag = INWORD;
+		}
+
+	}
+
+	printf("Toplam : [%d]\n", word_count);  
+	
+	/*
+		String:    ali   veli    ahmet
+		Toplam : [3]
+	*/
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Example: isseparator fonksiyonu ile ayný örneðin yazýlmasý 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <ctype.h>
+
+#define SIZE 100
+#define INWORD  1
+#define OUTWORD 0
+
+char* sgets(char* ptr) {
+	char c;
+	char* ptemp = ptr;
+	while ((c = (char)getchar()) != '\n')
+		*ptr++ = c;
+
+	*ptr = '\0';
+	return ptemp;
+}
+
+int is_separator(int c) {
+	return isspace(c) || c == '.' || c == ',' || c == '!' || c == ';';
+}
+
+int main() {
+
+	char str[SIZE];
+	int flag = OUTWORD; // yazýyý dolaþýrken kelime dýþýnda olduðunu gösterir 
+	int word_count = 0;
+
+	printf("String: "); //___ali___veli___hakan___
+	sgets(str);
+
+	// boþluktan kelimeye geçildiðinde counter arttýrýlmalý
+	// simple state machine can be used for this problem. 
+	
+	for (int i = 0; str[i] != '\0'; ++i) {
+		if (is_separator(str[i]))
+		{
+			flag = OUTWORD;
+
+		}
+		else if (flag== OUTWORD)
+		{
+			word_count++;
+			flag = INWORD;
+		}
+
+	}
+
+	printf("Toplam : [%d]\n", word_count);  
+	
+	/*
+		String: ...ali,!,veli;;;;ahmet
+		Toplam : [3]
+	*/
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Derleyicinin önemli uyarý ve hata mesajlarý: 
+
+/----------------------------------------------
+  - C4700 : uninitialized local variable 'x' used
+	- ilk deðer verilmemiþ yerel deðiþkenler için alýnan uyarý mesajý (global veya static yerel deðiþkenler için bu hata alýnmaz.)
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x;
+	int y = x; 
+	//	Error C4700 : uninitialized local variable 'x' used	
+
+}
+/----------------------------------------------
+
+  - C4189 : local variable is initialized but not referenced 
+    - Bir yerel deðiþken tanýmlandýktan sonra kullanýlmamýþsa uyarý alýnýr. 
+/----------------------------------------------
+
+  - C4716 : must return a value 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int func(int x, int y) {
+	if (x > y)
+		x -= y;
+
+	++y;
+	++x;
+}
+
+/----------------------------------------------
+
+  - C4715 : not all control paths return a value
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int foo(int a, int b) {
+	if (a > b)
+		return a - 1;
+	//...code
+	if (b > a)
+		return 1;
+	//...code
+	// return ?
+}
+
+/----------------------------------------------
+
+  - C4552 : '+' : result of expression not used
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x = 10;
+	++x;
+	//...code
+	x + 5; // "+=" yerine yanlýþlýkla "+" yazýlmýþsa
+}
+
+/----------------------------------------------
+
+  - C4706 :  assignment within conditinal expression 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x = 10;
+
+	if (x = 5)
+		printf("gamze");
+}
+
+/----------------------------------------------
+
+  - C4702 : unreachable code
+    - return statement sonrasýnda yazýlan kodlar çalýþtýrýlmayacaktýr
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int func(int x) {
+
+	if (x > 10)
+		return x;
+
+	//...
+	return x + 10;
+
+	return x; 
+}
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+void func(int x) {
+
+	++x;
+
+	x += 5;
+	exit(EXIT_FAILURE); 
+	//...
+	return x; 
+}
+
+/----------------------------------------------
+
+  - C4244: '=': conversion from 'double' to 'int', possible loss of data 
+    - narrowing conversion warnings
+	- #pragma warning(disable:4244) ile her türlü uyarý mesajý kapatýlabilir. Ancak temel uyarý mesajlarýnýn kapatýlmasý tercih edilmemelidir. 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+int main() {
+
+	double dval = 234.7878;
+	int ival = 0;
+
+	ival = dval;
+}
+
+
+// no error messages
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+int main() {
+
+	int ival = 10;
+	(void)(ival + 20);
+}
+
+/----------------------------------------------
+  
+   - C4305: 'function': truncation from 'double' to 'float'	
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void func(float);
+
+int main() {
+
+	func(13.78458);
+}
+
+/----------------------------------------------
+ 
+  - C4477	'scanf' : format string '%d' requires an argument of type 'int *', but variadic argument 1 has type 'int'
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x; 
+	scanf("%d", x);
+}
+
+/----------------------------------------------
+ 
+  - C4013: 'func' undefined; assuming extern returning int 
+    - Bildirilmemiþ bir fonksiyona yapýlan çaðrýlar: 
+    - C99 öncesinde bu durum legal 
+	- bu fonksyion için default bildirim yapýlýr --> extern int func();
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+	func();
+}
+
+/----------------------------------------------
+
+  - C4127: conditional expression is constant
+  - C4189: 'size': local variable is initialized but not referenced
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#define SIZE 100
+
+int main() {
+
+	int size = 10;
+	if(SIZE){}
+}
+
+/----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
