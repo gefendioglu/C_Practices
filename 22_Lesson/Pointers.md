@@ -44,57 +44,36 @@
   - pointerlar kullanýlarak gösterilen deðiþkenlere eriþim olanaklýdýr. 
 
   - address operator kullanýlarak oluþturulan ifade --> R-Value kategorisindedir !!!!
+   - Bir adres bilgisi aþaðýdaki ifadelerden biri olabilir:
+     - ptr           (L-Value) --> assignment is available for L-Value cat. 
+     - &x            (R-Value)
+     - a             (L-Value  --> R-Value) the conversion is made by compiler automatically 
+     - (int*)0x1AC4  (R-Value)
 
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** : 
+**Example** : The size of data types and pointers 
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-char* sgets(char* ptr) {
-	char c;
-	char* ptemp = ptr;
-	while ((c = (char)getchar()) != '\n')
-		*ptr++ = c;
-
-	*ptr = '\0';
-	return ptemp;
-}
-
-#define SIZE 100
-
 int main() {
-
-	printf("sizeof(char) = %zu\n", sizeof(char));
-	printf("sizeof(char*) = %zu\n", sizeof(char*));
+	printf("sizeof(char)  = %zu\n", sizeof(char));      // sizeof(char)  = 1
+	printf("sizeof(char*) = %zu\n", sizeof(char*));     // sizeof(char*) = 4
 	printf("\n");
 	
-	printf("sizeof(short) = %zu\n", sizeof(short));
-	printf("sizeof(short*) = %zu\n", sizeof(short*));
+	printf("sizeof(short)  = %zu\n", sizeof(short));    // sizeof(short)  = 2
+	printf("sizeof(short*) = %zu\n", sizeof(short*));   // sizeof(short*) = 4
 	printf("\n");
 
-	printf("sizeof(int) = %zu\n", sizeof(int));
-	printf("sizeof(int*) = %zu\n", sizeof(int*));
+	printf("sizeof(int)  = %zu\n", sizeof(int));        // sizeof(int)  = 4
+	printf("sizeof(int*) = %zu\n", sizeof(int*));       // sizeof(int*) = 4
 	printf("\n");
 
-	printf("sizeof(double) = %zu\n", sizeof(double));
-	printf("sizeof(double*) = %zu\n", sizeof(double*));
-
-    /*
-	sizeof(char) = 1
-	sizeof(char*) = 4
-
-	sizeof(short) = 2
-	sizeof(short*) = 4
-
-	sizeof(int) = 4
-	sizeof(int*) = 4
-
-	sizeof(double) = 8
-	sizeof(double*) = 4 */
+	printf("sizeof(double)  = %zu\n", sizeof(double));  // sizeof(double) = 8
+	printf("sizeof(double*) = %zu\n", sizeof(double*)); // sizeof(double*) = 4
 }
 ```
 
@@ -107,14 +86,11 @@ int main() {
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-#define SIZE 100
-
 int main() {
 
 	int x = 10;
 	int* ptr = &x;
-	printf("sizeof(ptr) = %zu\n", sizeof(ptr));
-	/*sizeof(ptr) = 4*/
+	printf("sizeof(ptr) = %zu\n", sizeof(ptr)); // sizeof(ptr) = 4
 }
 ```
 
@@ -128,14 +104,12 @@ int main() {
 #include <stdio.h>
 
 int* gptr;
-
 void func(int* p) {}
 
 int main() {
-
-	int x = 10;
-	int* ptr = &x;       // pointer to int, ptr points to x
-	static double* sptr; // pointer to double 
+	int value = 10;
+	int* ptr = &value;       // pointer to int, ptr points to x
+	static double* sptr;     // pointer to double 
 }
 ```
 
@@ -143,29 +117,30 @@ int main() {
 / ----------------------------------------------
 
 **Example** : 
-* Address of Operator (&):
-  - 2. öncelik seviyesinde ve saðdan sola öncelik 
-  - the operand of address operators must be L-Value.
-  - to test whether the value is L-value or not --> adres operatorü kullanýlarak check yapýlýr. Syntax hatasý olmazsa --> Lvalue
+  - Address of Operator (&): 
+    - Second level and from right to left priority
+    - The operand of this operator must be L-Value.
+    - If we want to check whether a value is a L-value or not, we can use address operator. 
+      - If there is no syntax error --> L-Value
+      - If there is a syntax error  --> R-Value
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 int main() {
-
 	int x = 10;
 	double dval = 2.3;
 
-	// &10 --> syntax error
-	// &x --> not syntax error --> L-Value
+	// &10 --> syntax error     -->  R-Value 
+	// &x  --> not syntax error --> L-Value
 }
 ```
 
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** : her ifadenin bir türü (data type) ve deðer kategorisi (value category ) vardýr:
+**Example** : Each data has a data type and value category. 
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -174,10 +149,10 @@ int main() {
 int main() {
 
 	int ival1 = 10;
-	int ival2 = 2.3;
+	int ival2 = 20;
 
-	int* iptr = &ival1; // initialization to initialize iptr
-	* iptr = &ival2;    // assignment to change iptr value 
+	int* iptr = &ival1; // an initialization to initialize iptr
+	* iptr = &ival2;    // an assignment to change iptr value 
 }
 ```
 
@@ -186,8 +161,7 @@ int main() {
 
 **Example** : 
   - address operator kullanýlarak oluþturulan ifade --> R-Value kategorisindedir !!!!
-  - ek olarak, nesne adresinin deðiþtirilmesi mümkün deðildir. 
-     &ival1 = ival2; yazýlamaz. 
+  - ek olarak, nesne adresinin deðiþtirilmesi mümkün deðildir. &ival1 = ival2; yazýlamaz. 
   - nesne adreslerinin hayata geldikten sonra bellekte deðiþmesi gibi bir durum söz konusu deðildir. 
 
 ```c
@@ -197,42 +171,33 @@ int main() {
 int main() {
 	int ival1 = 10;
 	int ival2 = 20;
-	&ival1 = ival2; // syntax error --> &ival1 R-Value expression 
+	&ival1 = ival2; // syntax error --> &ival1 : R-Value expression 
 }
 ```
 
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** :
+**Example** : Assigning a pointer to the another pointer
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 int main() {
-
 	int ival1 = 10;
 	int ival2 = 20;
 
 	int* iptr1 = &ival1;
 	int* iptr2 = &ival2;
 	
-	printf("iptr1 = %p\n", iptr1);
-	printf("iptr2 = %p\n", iptr2);
+	printf("iptr1 = %p\n", iptr1);  // iptr1 = 0133F930
+	printf("iptr2 = %p\n", iptr2);  // iptr2 = 1992B532
 	printf("\n");
-	iptr2 = iptr1;
-
-	printf("iptr1 = %p\n", iptr1);
-	printf("iptr2 = %p\n", iptr2);
 	
-	/*
-	iptr1 = 19922532
-	iptr2 = 19922520
-
-	iptr1 = 19922532
-	iptr2 = 19922532
-	*/
+	iptr2 = iptr1;
+	printf("iptr1 = %p\n", iptr1);  // iptr1 = 0133F930
+	printf("iptr2 = %p\n", iptr2);  // iptr2 = 0133F930
 }
 ```
 
@@ -251,19 +216,12 @@ int main() {
 int main() {
 
 	int ival1 = 10;
-
 	int* iptr1 = &ival1;
-	int* iptr2 = ival1; 
-	// warning C4047: 'initializing': 'int *' differs in levels of indirection from 'int'
+	int* iptr2 = ival1;  // warning C4047: 'initializing': 'int *' differs in levels of indirection from 'int'
 
-	printf("iptr1 = %p\n", iptr1);
-	printf("iptr2 = %p\n", iptr2);
+	printf("iptr1 = %p\n", iptr1);  // iptr1 = 0133F930
+	printf("iptr2 = %p\n", iptr2);  // iptr2 = 10
 	printf("\n");
-	
-	/*
-		iptr1 = 12581484
-		iptr2 = 10
-	*/
 }
 ```
 
@@ -280,44 +238,30 @@ int main() {
 #include <stdio.h>
 
 int main() {
-
 	int ival1 = 10;
-	double* iptr1 = &ival1;
-	// warning C4133: 'initializing': incompatible types - from 'int *' to 'double *'
+	double* iptr1 = &ival1;        // warning C4133: 'initializing': incompatible types - from 'int *' to 'double *'
 
-	printf("iptr1 = %p\n", iptr1);
+	printf("iptr1 = %p\n", iptr1); // iptr1 = 0133F930
 	printf("\n");
-	
-	/*
-		iptr1 = 0133F930
-	*/
 }
 ```
 
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** : %p pointer yazdýrmak için kullanýlýr
+**Example** :
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 int main() {
-
 	int ival1 = 10;
 	int* iptr1 = &ival1;
 
-	printf("&ival1 = %p\n", &ival1);
-	printf("iptr1  = %p\n",  iptr1);
-	printf("&iptr1 = %p\n", &iptr1);
-	printf("\n");
-	
-	/*
-		&ival1 = 00B3F9EC
-		iptr1  = 00B3F9EC
-		&iptr1 = 00B3F9E0
-	*/
+	printf("&ival1 = %p\n", &ival1);  // &ival1 = 00B3F9EC
+	printf("iptr1  = %p\n",  iptr1);  // iptr1  = 00B3F9EC
+	printf("&iptr1 = %p\n", &iptr1);  // &iptr1 = 00B3F9E0
 }
 ```
 
@@ -331,22 +275,13 @@ int main() {
 #include <stdio.h>
 
 int main() {
-
 	int ival1 = 10;
 	int* iptr1 = &ival1;
 	int* iptr2 = iptr1;
 
-	printf("&ival1 = %p\n", &ival1);
-	printf("iptr1  = %p\n",  iptr1);
-	printf("iptr2  = %p\n",  iptr2);
-	printf("\n");
-	
-	/*
-		&ival1 = 012FFA34
-		iptr1  = 012FFA34
-		iptr2  = 012FFA34
-
-	*/
+	printf("&ival1 = %p\n", &ival1);  // &ival1 = 012FFA34
+	printf("iptr1  = %p\n",  iptr1);  // iptr1  = 012FFA34
+	printf("iptr2  = %p\n",  iptr2);  // iptr2  = 012FFA34
 }
 ```
 
@@ -365,15 +300,9 @@ int main() {
 #include <stdio.h>
 
 int main() {
-
 	int ival1 = 10;
 	int iptr1 = &ival1;
-	printf("iptr1  = %p\n",  iptr1);
-	printf("\n");
-	
-	/*
-		iptr1  = 00DFFBDC
-	*/
+	printf("iptr1  = %p\n",  iptr1);  // iptr1  = 00DFFBDC
 }
 ```
 
@@ -388,45 +317,19 @@ int main() {
 
 int main() {
 
-	int a[10] = { 0 };
-	int* ptr = a; // --> a = &a[0]
+	int arr[10] = { 0 };
+	int* ptr = arr; // --> arr = &arr[0]
 
-	printf("&a[0] = %p\n", &a[0]);
-	printf("a     = %p\n", a);
-	printf("ptr   = %p\n", ptr);
-	printf("\n");
-	
-	/*
-		&a[0] = 008FF760
-		a     = 008FF760
-		ptr   = 008FF760
-	*/
+	printf("&arr[0] = %p\n", &arr[0]); // &arr[0] = 008FF760
+	printf("arr     = %p\n", arr);     // arr     = 008FF760
+	printf("ptr     = %p\n", ptr);     // ptr     = 008FF760
 }
 ```
 
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** :
-  - int x = 10, * p1 = &x, a[] = { 1,2,3 }, * p2 = a;
-	  int x = 10;
-	  int* p1 = &x;
-	  int  a[] = { 1,2,3 };
-	  int* p2 = a;
-
-/ ----------------------------------------------
-/ ----------------------------------------------
-
- * Bir adres bilgisi aþaðýdaki ifadelerden biri olabilir:
-   - ptr           (L-Value) --> sadece buna atama yapýlabilir. 
-     &x            (R-Value)
-	   a             (L-Value  --> R-Value) derleyici tarafýndan dönüþüm yapýlýr. 
-	   (int*)0x1AC4  (R-Value)
-
-/ ----------------------------------------------
-/ ----------------------------------------------
-
-**Example** :sizeof operator and array to pointer conversion
+**Example** : The definitions of different types of variables, pointers
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -434,15 +337,29 @@ int main() {
 
 int main() {
 
-	int a[10] = { 0 };
-	printf("sizeof(a) = %zu\n", sizeof(a));
-	printf("sizeof(&a[0]) = %zu\n", sizeof(&a[0])); 
-	// array to pointer conversion sizeof operatorü için geçerli deðildir
-	
-	/*
-		sizeof(a) = 40
-		sizeof(&a[0]) = 4 
-	*/
+	// int value = 10, *ptr1 = &value, arr[] = { 1,2,3 }, *ptr2 = arr;
+	int value = 10;
+	int* ptr1 = &value;
+	int  arr[]  = { 1,2,3 };
+	int* ptr2 = arr;
+}
+```
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+**Example** : 
+  - The sizeof operator and array to pointer conversion
+  - array to pointer conversion is not available for sizeof operator
+  
+```c
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+	int arr[10] = { 0 };
+	printf("sizeof(arr)     = %zu\n", sizeof(arr));      // sizeof(arr)     = 40
+	printf("sizeof(&arr[0]) = %zu\n", sizeof(&arr[0]));  // sizeof(&arr[0]) = 4 
 }
 ```
 
@@ -461,40 +378,33 @@ int main() {
 #include <stdio.h>
 
 int main() {
-
-	int a[10] = { 0 };
-	int x = 10;
-	int* ptr = &x;
+	int arr[10] = { 0 };
+	int value = 10;
+	int* ptr = &value;
 	
-	*a;   // not syntax error 
-	*x;   // syntax error
-	*&x;  // not syntax error
-	*ptr; // not syntax error
+	*arr;     // not syntax error 
+	*value;   // syntax error
+	*&value;  // not syntax error
+	*ptr;     // not syntax error
 }
 ```
 
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** : obfuscatiton 
+**Example** :
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 int main() {
-
-	int a[10] = { 0 };
-	int x = 10;   // x --> *(&x) 
-	int* ptr = &x;
+	int arr[10] = { 0 };
+	int value = 10; // value --> *(&value) 
+	int* ptr = &value;
 	
-	printf("x     = %d\n", x);
-	printf("*(&x) = %d\n", *(&x));
-
-	/*
-		x     = 10
-		*(&x) = 10
-	*/
+	printf("value     = %d\n", value);     // value     = 10
+	printf("*(&value) = %d\n", *(&value)); // *(&value) = 10 
 }
 ```
 
@@ -508,58 +418,39 @@ int main() {
 #include <stdio.h>
 
 int main() {
-
-	int a[10] = { 0 };
-	int x = 10;   // x --> *(&x) 
+	int arr[10] = { 0 };
+	int value = 10;   // value --> *(&value) 
 	
-	printf("x     = %d\n", x);
-	printf("*(&x) = %d\n", *(&x));
+	printf("value     = %d\n", value);     // value     = 10
+	printf("*(&value) = %d\n", *(&value)); // *(&value) = 10
 	printf("\n");
 
-	*(&x) = 99;
-	printf("x     = %d\n", x);
-	printf("*(&x) = %d\n", *(&x));
+	*(&value) = 99;
+	printf("value     = %d\n", value);     // value     = 99
+	printf("*(&value) = %d\n", *(&value)); // *(&value) = 99
 	printf("\n");
 
-	++*(&x);
-	printf("x     = %d\n", x);
-	printf("*(&x) = %d\n", *(&x));
-
-	/*
-		x     = 10
-		*(&x) = 10
-
-		x     = 99
-		*(&x) = 99
-
-		x     = 100
-		*(&x) = 100
-	*/
+	++*(&value);
+	printf("value     = %d\n", value);     // value     = 100
+	printf("*(&value) = %d\n", *(&value)); // *(&value) = 100
 }
 ```
 
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** :: 
+**Example** :
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 int main() {
-
 	int a[] = { 1,2,4 };
+	printf("a[0] = %d\n", a[0]);  // a[0] = 1
 	
-	printf("a[0] = %d\n", a[0]);
 	*a = 90; // *a --> a[0] = 90;
-	printf("a[0] = %d\n", a[0]);
-
-	/*
-	a[0] = 1
-    a[0] = 90
-
-	*/
+	printf("a[0] = %d\n", a[0]);  // a[0] = 90
 }
 ```
 
@@ -568,25 +459,19 @@ int main() {
 
  **Example** : 
    - ptr  --> pointer
-   - *ptr --> pointee (gösterilen nesne anlamýnda)
+   - *ptr --> pointee (gösterilen nesne)
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 int main() {
-
-	int ival = 89;
-	int* ptr = &ival;
-	printf("ival = %d\n", ival);
+	int value = 89;
+	int* ptr = &value;
+	printf("value = %d\n", value); // value = 89
 
 	*ptr = 79;
-	printf("ival = %d\n", ival);
-
-	/*
-	 ival = 89
-     ival = 79
-	*/
+	printf("value = %d\n", value); // value = 79
 }
 ```
 
@@ -601,34 +486,26 @@ int main() {
 
 int main() {
 
-	int ival1 = 10;
-	int ival2 = 56;
-	int* ptr1 = &ival1;
-	int* ptr2 = &ival2;
+	int value1 = 10;
+	int value2 = 56;
+	int* ptr1 = &value1;
+	int* ptr2 = &value2;
 
-	printf("* ptr1 = %d\n", *ptr1);
-	printf("* ptr2 = %d\n", *ptr2);
+	printf("* ptr1 = %d\n", *ptr1);  // * ptr1 = 10
+	printf("* ptr2 = %d\n", *ptr2);  // * ptr2 = 56
 
-	*ptr1 = *ptr2; // ival1 = ival2 
-
-	printf("* ptr1 = %d\n", *ptr1);
-	printf("* ptr2 = %d\n", *ptr2);
-
-	/*
-		* ptr1 = 10
-		* ptr2 = 56
-
-		* ptr1 = 56
-		* ptr2 = 56
-	*/
+	*ptr1 = *ptr2; // value1 = value2 
+	printf("* ptr1 = %d\n", *ptr1);  // * ptr1 = 56
+	printf("* ptr2 = %d\n", *ptr2);  // * ptr2 = 56
 }
 ```
 
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** : arithmetic operations with pointees 
-   - ayný deðiþken adresinin birden fazla pointer tarafýndan tutulmasý
+**Example** : 
+  - arithmetic operations with pointees 
+  - the same address of variables can be taken by a few different pointers
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -636,32 +513,22 @@ int main() {
 
 int main() {
 
-	int ival1 = 10;
-	int* ptr1 = &ival1;
+	int value = 10;
+	int* ptr1 = &value;
 	int* ptr2 = ptr1;
 	int* ptr3 = ptr2;
 
-	printf("* ptr1 = %d\n", *ptr1);
-	printf("* ptr2 = %d\n", *ptr2);
-	printf("* ptr3 = %d\n", *ptr3);
+	printf("* ptr1 = %d\n", *ptr1);  // * ptr1 = 10
+	printf("* ptr2 = %d\n", *ptr2);  // * ptr2 = 10
+	printf("* ptr3 = %d\n", *ptr3);  // * ptr3 = 10
 
 	++* ptr1;
 	++* ptr2;
 	++* ptr3;
 
-	printf("* ptr1 = %d\n", *ptr1);
-	printf("* ptr2 = %d\n", *ptr2);
-	printf("* ptr3 = %d\n", *ptr3);
-
-	/*
-		* ptr1 = 10
-		* ptr2 = 10
-		* ptr3 = 10
-
-		* ptr1 = 13
-		* ptr2 = 13
-		* ptr3 = 13
-	*/
+	printf("* ptr1 = %d\n", *ptr1);  // * ptr1 = 13
+	printf("* ptr2 = %d\n", *ptr2);  // * ptr2 = 13
+	printf("* ptr3 = %d\n", *ptr3);  // * ptr3 = 13
 }
 ```
 
@@ -669,6 +536,9 @@ int main() {
 / ----------------------------------------------
 
 **Example** :
+  - arithmetic operations with pointees
+  - the address of different variables can be taken by the same pointer
+
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -676,37 +546,30 @@ int main() {
 
 int main() {
 
-	int ival1 = 10;
-	int ival2 = 40;
-	int ival3 = 90;
+	int value1 = 10;
+	int value2 = 40;
+	int value3 = 90;
 	int* ptr1;
 
-	ptr1 = &ival1;
+	ptr1 = &value1;
 	*ptr1 = 99;
 
-	ptr1 = &ival2;
+	ptr1 = &value2;
 	*ptr1 = 99;
 
-	ptr1 = &ival3;
+	ptr1 = &value3;
 	*ptr1 = 99;
 
-	printf("ival1 = %d\n", ival1);
-	printf("ival2 = %d\n", ival2);
-	printf("ival3 = %d\n", ival3);
-
-
-	/*
-		ival1 = 99
-		ival2 = 99
-		ival3 = 99
-	*/
+	printf("value1 = %d\n", value1);  // value1 = 99
+	printf("value2 = %d\n", value2);  // value2 = 99
+	printf("value3 = %d\n", value3);  // value3 = 99
 }
 ```
 
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** :
+**Example** : arithmetic operations with pointees, but not initialized variables
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -714,131 +577,110 @@ int main() {
 
 int main() {
 
-	int ival1;
-	int ival2;
+	int value1;
+	int value2;
 
-	int* ptr1 = &ival1; 
-	ival2 = *ptr1 + 5; // *ptr --> garbage value / ub
+	int* ptr1 = &value1; 
+	ival2 = *ptr1 + 5; // *ptr --> garbage value, undefined behaviour
 
-	printf("ival1 = %d\n", ival1);
-	printf("ival2 = %d\n", ival2);
-
-	/*
-		ival1 = -858993460
-		ival2 = -858993455
-	*/
+	printf("value1 = %d\n", value1);  // value1 = -858993460
+	printf("value2 = %d\n", value2);  // value2 = -858993455
 }
 ```
 
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** : the same example, but with global value (or static local)
+**Example** : The same example like as previous one, but with global variable (or static local variable)
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-int ival1;
+int value1;
 
 int main() {
+	int value2;
 
-	int ival2;
+	int* ptr1 = &value1; 
+	value2 = *ptr1 + 5; // *ptr --> 0,  not undefined behaviour
 
-	int* ptr1 = &ival1; 
-	ival2 = *ptr1 + 5; // *ptr --> 0 / not ub
-
-	printf("ival1 = %d\n", ival1);
-	printf("ival2 = %d\n", ival2);
-
-	/*
-		ival1 = 0
-		ival2 = 5
-	*/
+	printf("value1 = %d\n", value1);  // value1 = 0
+	printf("value2 = %d\n", value2);  // value2 = 5
 }
 ```
 
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** : Pointerlar niçin kullanýlmaktadýr?
+Pointerlar niçin kullanýlmaktadýr?
    - call by value - call by reference kullanýmýný saðlamak amacýyla 
    - scanf fonksyionunda olduðu gibi --> parametre olarak pointer alýnýr
 
-- call by value: nesne deðeri deðiþmez
+**Example** : call by value: the argument sent to a function is not changed !!!
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-void func(int x) {
+void func(int x) { 
 	x = 9999;
 }
 
 int main() {
-
-	int ival1 = 60;
-	func(ival1);
-	printf("ival1 = %d\n", ival1);
-
-	/*
-		ival1 = 60
-	*/
+	int value = 60;
+	func(value);
+	printf("value = %d\n", value); // value = 60
 }
 ```
 
-- call by reference: nesne deðeri deðiþir 
+**Example** : call by reference: the argument sent to a function is changed !!!
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 void func(int *x) {
-	// x'in deðeri ival'in adresi olacaktýr
+	// x is the address of "val"
 	*x = 9999;
 }
 
 int main() {
-
-	int ival1 = 60;
-	func(&ival1);
-	printf("ival1 = %d\n", ival1);
-
-	/*
-		ival1 = 9999
-	*/
+	int val = 60;
+	func(&val);
+	printf("val = %d\n", val);  // val = 9999
 }
 ```
 
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** : scanf benzeri örnek 
+**Example** : Defining a function called scan_int similar as scanf
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-void scanint(int* ptr) {
+void scan_int(int* ptr) {
 	int ch;
 	*ptr = 0;
 
 	while ((ch = getchar()) != '\n') {
-		*ptr = (*ptr * 10) + ch - '0'; // basamak deðeri elde edilir. 
+		*ptr = (*ptr * 10) + ch - '0'; // the digit value is found !!
 	}
 }
 
 int main() {
 
-	int ival = 60;
-	printf("A number = ");
-	scanint(&ival);
+	int value = 60;
+	printf("Enter a number = "); 
+	scan_int(&value);
 
-	printf("ival = %d\n", ival);
+	printf("value = %d\n", value);
 
 	/*
-		A number = 5612
-		ival = 5612
+	   Enter a number =  5612
+    	   value = 5612
 	*/
 }
 ```
@@ -846,161 +688,132 @@ int main() {
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** : call by value old. --> swap fonk verilmese bile gönderilen deðerler deðiþmez. 
+**Example** : Defining swap function with call by value. Variables are not swapped !!!
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-void swap(int a, int b) {
-	int temp = a;
-	a = b;
-	b = temp;
+void swap(int first_value, int second_value) {
+	int temp = first_value;
+	first_value = second_value;
+	second_value = temp;
 }
 
 int main() {
+	int value1 = 10;
+	int value2 = 45;
+	swap(value1, value2);
 
-	int ival1 = 10;
-	int ival2 = 45;
-	swap(ival1, ival2);
-
-	printf("ival1 = %d\n", ival1);
-	printf("ival2 = %d\n", ival2);
-
-	/*
-		ival1 = 10
-		ival2 = 45
-	*/
+	printf("value1 = %d\n", value1);  // value1 = 10
+	printf("value2 = %d\n", value2);  // value2 = 45
 }
 ```
 
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** : the same problem, but with call by reference. Values are swapped !!!
+**Example** : Defining swap function with call by reference. Variables are swapped !!!
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-void swap(int *a, int *b) {
-	int temp = *a;
-	*a = *b;
-	*b = temp;
+void swap(int *first_value, int *second_value) {
+	int temp = *first_value;
+	*first_value = *second_value;
+	*second_value = temp;
 }
 
 int main() {
+	int value1 = 10;
+	int value2 = 45;
+	swap(&value1, &value2);
 
-	int ival1 = 10;
-	int ival2 = 45;
-	swap(&ival1, &ival2);
-
-	printf("ival1 = %d\n", ival1);
-	printf("ival2 = %d\n", ival2);
-
-	/*
-		ival1 = 45
-		ival2 = 10
-	*/
+	printf("value1 = %d\n", value1);  // value1 = 45 
+	printf("value2 = %d\n", value2);  // value2 = 10
 }
 ```
 
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** : swap function with arrays 
+**Example** : Defining swap function with call by reference and arrays. 
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-void swap(int* a, int* b) {
-	int temp = *a;
-	*a = *b;
-	*b = temp;
+void swap(int *first_value, int *second_value) {
+	int temp = *first_value;
+	*first_value = *second_value;
+	*second_value = temp;
 }
 
 int main() {
-
 	int a[] = { 1, 2, 3 };
 	int b[] = { -1,-2,-3 };
-	swap(a, b); // swap(&a[0], &b[0]);
+	swap(a, b); // --> swap(&a[0], &b[0]);
 
-	printf("a[0] = %d\n", a[0]);
-	printf("b[0] = %d\n", b[0]);
-
-	/*
-		a[0] = -1
-		b[0] = 1
-	*/
+	printf("a[0] = %d\n", a[0]);  // a[0] = -1
+	printf("b[0] = %d\n", b[0]);  // b[0] = 1
 }
 ```
 
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** : pointers with swap function
+**Example** : Defining swap function with call by reference and pointers. 
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-void swap(int* a, int* b) {
-	int temp = *a;
-	*a = *b;
-	*b = temp;
+void swap(int *first_value, int *second_value) {
+	int temp = *first_value;
+	*first_value = *second_value;
+	*second_value = temp;
 }
 
 int main() {
+	int value1 = 23;
+	int value2 = 87;
+	int* ptr1 = &value1;
+	int* ptr2 = &value2;
 
-	int ival1 = 23;
-	int ival2 = 87;
-	int* ptr1 = &ival1;
-	int* ptr2 = &ival2;
-
-	swap(ptr1, ptr2);  // --> swap(&ival1, &ival2);
-
-	printf("ival1 = %d\n", ival1);
-	printf("ival2 = %d\n", ival2);
-
-	/*
-		ival1 = 87
-		ival2 = 23
-	*/
+	swap(ptr1, ptr2);  // --> swap(&value1, &value2);
+	
+	printf("value1 = %d\n", value1);  // value1 = 87
+	printf("value2 = %d\n", value2);  // value2 = 23
 }
 ```
 
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** : pointers with function (call by value and call by reference methods)
+**Example** : Pointers with function (call by value and call by reference methods)
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-void f3(int y) {
+void func3(int y) {
 	y *= 10;
 }
-void f2(int *p) {
+void func2(int *p) {
 	*p *= 5;
 }
 
-void f1(int *ptr) {
+void func1(int *ptr) {
 	f2(ptr);
 	f3(*ptr); // call-by value
 }
 
 int main() {
-	
-	int ival1 = 10;
-	f1(&ival1);
+	int value = 10;
+	func1(&value);
 
-	printf("ival1 = %d\n", ival1);
-
-	/*
-		ival1 = 50 // f3 call by value old
-	*/
+	printf("value = %d\n", value);  // value = 50 --> because, func3 iscall by value
 }
 ```
 
@@ -1019,26 +832,23 @@ int main() {
 #include <math.h>
 
 double get_sum_square(int a, int b) {
-	
 	double value = a * a + b * b;
 	return sqrt(value);
 }
 
 int main() {
-	
-	int ival1, ival2;
-	double dval;
+	int value1, value2;
+	double dvalue;
 
 	printf("Two numbers = " );
-	scanf("%d %d",  &ival1, &ival2);
+	scanf("%d %d",  &value1, &value2);
 
-	dval = get_sum_square(ival1, ival2);
-	printf("dval = %f\n", dval);
+	dval = get_sum_square(value1, value2);
+	printf("dvalue = %f\n", dvalue);
 
 	/*
-		Two numbers = 23 45
-		dval = 50.537115	
-		
+	   Two numbers = 23 45
+	   dvalue = 50.537115	
 	*/
 }
 ```
@@ -1046,34 +856,31 @@ int main() {
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** : KONTROL EDÝLECEK !!!
+**Example** : TO BE CONTROLLED !!!
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <math.h>
 
-void get_sum_square(int a, int b, int*c) {
-	
+void get_sum_square(int a, int b, int *c) {
 	double value = a * a + b * b;
 	*c =  sqrt(value);
 }
 
 int main() {
-	
-	int ival1, ival2;
-	double dval;
+	int value1, value2;
+	double dvalue;
 
 	printf("Two numbers = " );
-	scanf("%d %d",  &ival1, &ival2);
+	scanf("%d %d", &value1, &value1);
 
-	get_sum_square(ival1, ival2, &dval);
-	printf("dval = %f\n", dval);
+	get_sum_square(value1, value2, &dvalue);
+	printf("dvalue = %f\n", dvalue);
 
 	/*
-		Two numbers = 23 45
-		dval = 50.537115	
-		
+	   Two numbers = 23 45
+	   dvalue = 50.537115	
 	*/
 }
 ```
@@ -1089,32 +896,26 @@ int main() {
 #include <math.h>
 
 double get_sum_square(int a, int b) {
-	
 	double value = a * a + b * b;
 	return  sqrt(value);
 }
 
 int main() {
-	
-	int ival1 = 23, ival2 = 45;
-	double dval;
+	int value1 = 23, value2 = 45;
+	double dvalue;
 
-	dval = get_sum_square(ival1, ival2);
-	printf("dval = %f\n", dval);
+	dvalue = get_sum_square(value1, value2);
+	printf("dvalue = %f\n", dvalue); // dvalue = 50.537115
 
 	// double gn = sqrt(value);
-	// dval = gn;
-
-	/*
-		dval = 50.537115	
-	*/
+	// dvalue = gn;
 }
 ```
 
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** : struct size 
+**Example** : The size of struct data type 
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -1126,18 +927,14 @@ struct Matrix {
 };
 
 int main() {
-	
-	printf("sizeof(struct Matrix) = %zu\n", sizeof(struct Matrix));
-	/*
-		sizeof(struct Matrix) = 808	
-	*/
+	printf("sizeof(struct Matrix) = %zu\n", sizeof(struct Matrix));  // sizeof(struct Matrix) = 808
 }
 ```
 
 / ----------------------------------------------
 / ----------------------------------------------
 
-**Example** : DÜZENLENECEK - KONTROL EDÝLECEK!! 
+**Example** : TO BE CONTROLLED !!!
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -1152,19 +949,17 @@ typedef struct  {
 Matrix add_matrix(Matrix a, Matrix b);
 
 // tercih edilmesi gereken yapý budur
-void add_matrix_ptr(Matrix a, Matrix b, Matrix* c) {
-
-}
+void add_matrix_ptr(Matrix a, Matrix b, Matrix* c) {}
 
 int main() {
-	Matrix x, y, z;
+	Matrix val1, val2, val3;
 	Matrix* ptr;
 
-	x = add_matrix(y, z);
-	printf("sizeof(x) = %zu\n", sizeof(x));
+	val1 = add_matrix(val2, val3);
+	printf("sizeof(val1) = %zu\n", sizeof(val1));
 
-	add_matrix_ptr(y, z, ptr);
-	printf("sizeof(x) = %zu\n", sizeof(x));
+	add_matrix_ptr(val2, val3, ptr);
+	printf("sizeof(val1) = %zu\n", sizeof(val1));
 }
 ```
 
