@@ -1,0 +1,199 @@
+
+* Derleyicinin önemli uyarý ve hata mesajlarý: 
+
+/----------------------------------------------
+  - C4700 : uninitialized local variable 'x' used
+	- ilk deðer verilmemiþ yerel deðiþkenler için alýnan uyarý mesajý (global veya static yerel deðiþkenler için bu hata alýnmaz.)
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x;
+	int y = x; 
+	//	Error C4700 : uninitialized local variable 'x' used	
+
+}
+/----------------------------------------------
+
+  - C4189 : local variable is initialized but not referenced 
+    - Bir yerel deðiþken tanýmlandýktan sonra kullanýlmamýþsa uyarý alýnýr. 
+/----------------------------------------------
+
+  - C4716 : must return a value 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int func(int x, int y) {
+	if (x > y)
+		x -= y;
+
+	++y;
+	++x;
+}
+
+/----------------------------------------------
+
+  - C4715 : not all control paths return a value
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int foo(int a, int b) {
+	if (a > b)
+		return a - 1;
+	//...code
+	if (b > a)
+		return 1;
+	//...code
+	// return ?
+}
+
+/----------------------------------------------
+
+  - C4552 : '+' : result of expression not used
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x = 10;
+	++x;
+	//...code
+	x + 5; // "+=" yerine yanlýþlýkla "+" yazýlmýþsa
+}
+
+/----------------------------------------------
+
+  - C4706 :  assignment within conditinal expression 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x = 10;
+
+	if (x = 5)
+		printf("gamze");
+}
+
+/----------------------------------------------
+
+  - C4702 : unreachable code
+    - return statement sonrasýnda yazýlan kodlar çalýþtýrýlmayacaktýr
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int func(int x) {
+
+	if (x > 10)
+		return x;
+
+	//...
+	return x + 10;
+
+	return x; 
+}
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+
+void func(int x) {
+
+	++x;
+
+	x += 5;
+	exit(EXIT_FAILURE); 
+	//...
+	return x; 
+}
+
+/----------------------------------------------
+
+  - C4244: '=': conversion from 'double' to 'int', possible loss of data 
+    - narrowing conversion warnings
+	- #pragma warning(disable:4244) ile her türlü uyarý mesajý kapatýlabilir. Ancak temel uyarý mesajlarýnýn kapatýlmasý tercih edilmemelidir. 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+int main() {
+
+	double dval = 234.7878;
+	int ival = 0;
+
+	ival = dval;
+}
+
+
+// no error messages
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+int main() {
+
+	int ival = 10;
+	(void)(ival + 20);
+}
+
+/----------------------------------------------
+  
+   - C4305: 'function': truncation from 'double' to 'float'	
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void func(float);
+
+int main() {
+
+	func(13.78458);
+}
+
+/----------------------------------------------
+ 
+  - C4477	'scanf' : format string '%d' requires an argument of type 'int *', but variadic argument 1 has type 'int'
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x; 
+	scanf("%d", x);
+}
+
+/----------------------------------------------
+ 
+  - C4013: 'func' undefined; assuming extern returning int 
+    - Bildirilmemiþ bir fonksiyona yapýlan çaðrýlar: 
+    - C99 öncesinde bu durum legal 
+	- bu fonksyion için default bildirim yapýlýr --> extern int func();
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+	func();
+}
+
+/----------------------------------------------
+
+  - C4127: conditional expression is constant
+  - C4189: 'size': local variable is initialized but not referenced
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#define SIZE 100
+
+int main() {
+
+	int size = 10;
+	if(SIZE){}
+}
+
+/----------------------------------------------
