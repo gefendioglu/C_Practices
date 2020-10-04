@@ -24,6 +24,8 @@ C sample codes
 
 - [Searching Algorithms](https://github.com/gefendioglu/C_Practices/blob/master/20_Lesson/Searching_Algorithms.md)
 
+- [Compiler Warnings Errors](https://github.com/gefendioglu/C_Practices/blob/master/21_Lesson/Compiler_Warnings_Errors.md)
+
 
 
 
