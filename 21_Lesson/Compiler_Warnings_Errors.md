@@ -1,12 +1,12 @@
 
 ## COMPILER ERRORS 
 
-- The most important compiler warnings and errors:  
+- The most important compiler warnings and errors are defined hereafter:  
 
 /----------------------------------------------
 /----------------------------------------------
 
-- **Example**:
+**Example**:
   - C4189 : local variable is initialized but not referenced 
   - This error is received when a local variable is defined but not used for the remaining part of the code. 
 
@@ -27,7 +27,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-- **Example**: C4716 : must return a value 
+**Example**: C4716 : must return a value 
   
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -43,7 +43,7 @@ int func(int x, int y) {
 /----------------------------------------------
 /----------------------------------------------
 
-- **Example**: C4715 : not all control paths return a value
+**Example**: C4715 : not all control paths return a value
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -63,7 +63,7 @@ int foo(int a, int b) {
 /----------------------------------------------
 /----------------------------------------------
 
-- **Example**: C4552 : '+' : result of expression not used
+**Example**: C4552 : '+' : result of expression not used
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -74,14 +74,14 @@ int main() {
 	int x = 10;
 	++x;
 	//...code
-	x + 5; // "+=" is yerine yanlýþlýkla "+" yazýlmýþsa
+	x + 5; // "+" is written accidentally instead of "+=" 
 }
 ```
 
 /----------------------------------------------
 /----------------------------------------------
 
-- **Example**: C4706 :  assignment within conditinal expression 
+**Example**: C4706 :  assignment within conditinal expression 
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -97,7 +97,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-- **Example**: C4702 : unreachable code (because of using return statement or exit function)
+**Example**: C4702 : unreachable code (because of using return statement or exit function)
 
 - Because of using return statement:
 ```c
@@ -134,10 +134,11 @@ void func(int x) {
 /----------------------------------------------
 /----------------------------------------------
 
-- **Example**: C4244: '=': conversion from 'double' to 'int', possible loss of data 
-    - Narrowing conversion warnings
-    - Warning or error messages can be disabled at the begining of the programme using pragma directives --> #pragma warning(disable:4244) 
-    - However, some fundamental compiler error/warning messages shall not be disabled !!!
+**Example**: 
+  - C4244: '=': conversion from 'double' to 'int', possible loss of data 
+  - Narrowing conversion warnings
+  - Warning or error messages can be disabled at the begining of the programme using pragma directives --> #pragma warning(disable:4244) 
+  - However, some fundamental compiler error/warning messages shall not be disabled !!!
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -150,21 +151,10 @@ int main() {
 	ival = dval; // double --> int (narrowing conversion)
 }
 ```
-
-```c
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-
-int main() {
-	int ival = 10;
-	(void)(ival + 20); // no error messages 
-}
-```
-
 /----------------------------------------------
 /----------------------------------------------
-  
-- **Example**: C4305: 'function': truncation from 'double' to 'float'	
+
+**Example**: C4305: 'function': truncation from 'double' to 'float'	
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -180,7 +170,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
  
-- **Example**: C4477 'scanf' : format string '%d' requires an argument of type 'int *', but variadic argument 1 has type 'int'
+**Example**: C4477 'scanf' : format string '%d' requires an argument of type 'int *', but variadic argument 1 has type 'int'
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -195,10 +185,11 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
  
-- **Example**: C4013: 'func' undefined; assuming extern returning int 
-    - Calling for an undeclared function 
-    - Before C99 standard, this situation is acceptable. Because even if the function is not declared, it is assumed that the declaration is made automatically like:
-    - extern int func();
+ **Example**: 
+   - C4013: 'func' undefined; assuming extern returning int 
+   - Calling for an undeclared function 
+   - Before C99 standard, this situation is acceptable. Because even if the function is not declared, it is assumed that the declaration is made automatically like:
+   - extern int func();
     
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -212,9 +203,9 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
- **Example**: 
-   - C4127: conditional expression is constant
-   - C4189: 'size': local variable is initialized but not referenced
+**Example**: 
+  - C4127: conditional expression is constant
+  - C4189: 'size': local variable is initialized but not referenced
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
