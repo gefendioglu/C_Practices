@@ -8,11 +8,12 @@
 
 **Example**:
   - C4189 : local variable is initialized but not referenced 
-  - This error is received when a local variable is defined but not used for the remaining part of the code. 
+    - This error is received when a local variable is defined but not used for the remaining part of the code. 
+
 
   - C4700 : uninitialized local variable 'x' used
-  - This error is received when non-static local variables are not initialized. 
-  - This error is not received for global variables and static local variables. They are automatically initialized with zero value. 
+    - This error is received when non-static local variables are not initialized. 
+    - This error is not received for global variables and static local variables. They are automatically initialized with zero value. 
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -188,8 +189,7 @@ int main() {
  **Example**: 
    - C4013: 'func' undefined; assuming extern returning int 
    - Calling for an undeclared function 
-   - Before C99 standard, this situation is acceptable. Because even if the function is not declared, it is assumed that the declaration is made automatically like:
-   - extern int func();
+   - Before C99 standard, this situation is acceptable. Because even if the function is not declared, it is assumed that the declaration is made automatically like: extern int func();
     
 ```c
 #define _CRT_SECURE_NO_WARNINGS
