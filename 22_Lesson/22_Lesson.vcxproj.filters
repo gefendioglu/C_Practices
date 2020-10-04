@@ -20,7 +20,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="21_Lesson_Notes.txt">
+    <Text Include="Pointers.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Const_Variables.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

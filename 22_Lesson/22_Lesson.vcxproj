@@ -141,7 +141,8 @@
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="21_Lesson_Notes.txt" />
+    <Text Include="Const_Variables.txt" />
+    <Text Include="Pointers.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
