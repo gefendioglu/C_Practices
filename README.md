@@ -26,6 +26,8 @@ C sample codes
 
 - [Compiler Warnings Errors](https://github.com/gefendioglu/C_Practices/blob/master/21_Lesson/Compiler_Warnings_Errors.md)
 
+- [Pointers](https://github.com/gefendioglu/C_Practices/blob/master/22_Lesson/Pointers.md)
+
 
 
 
