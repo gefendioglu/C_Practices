@@ -1,31 +1,59 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <time.h>
+
+#define SIZE 100
+
+void dline(void) {
+	printf("\n-----------------------------------------------------\n");
+}
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+void set_random_array(int *ptr, int size)
+{
+	while (size--) {
+		*ptr++ = rand() % 1000;
+	}
+}
+
+void print_array(const int *ptr, int size)
+{
+	for (int i = 0; i < size; ++i)
+	{
+		if (i && i % 20 == 0)
+			printf("\n");
+		printf("%3d ", ptr[i]);
+
+	}
+	dline();
+}
 
 int main() {
 
-	int x = 10, y = 20, z = 30, t = 40;
-	int array[] = {x, y, z+t, t-x}; 
-	// Normally it should be an error
-	// However some compiler extensions provide this spec. (Ex. gcc)
-	
-	int length = sizeof(array) / sizeof(array[0]);
-	for (int i = 0; i < length; ++i)
-		printf("arrays[%d] : %d\n", i, array[i]);
+	int a[SIZE];
+	int value;
+	int i; 
 
-	/*  arrays[0] : 10
-		arrays[1] : 20
-		arrays[2] : 70
-		arrays[3] : 30 */
+	randomize();
+	set_random_array(a, SIZE);
+	print_array(a, SIZE);
+
+	printf("Enter a number : ");
+	scanf("%d", &value);
+
+
+	for (i = 0; i < SIZE; ++i) {
+		if (a[i] == value) 
+			break;
+	}
+		
+	if (i == SIZE)
+		printf("NOT FOUND !!!\n");
+	else 
+		printf("FOUND !!! The array index : %d\n", i);
 }
-
-
-
-
-
-
-
-
-
-
-
-
