@@ -4,7 +4,7 @@
 #include <math.h>
 #include <time.h>
 
-#define SIZE 100
+#define SIZE 10
 
 void dline(void) {
 	printf("\n-----------------------------------------------------\n");
@@ -14,14 +14,14 @@ void randomize(void) {
 	srand((unsigned int)time(NULL));
 }
 
-void set_random_array(int *ptr, int size)
+void set_random_array(int* ptr, int size)
 {
 	while (size--) {
 		*ptr++ = rand() % 1000;
 	}
 }
 
-void print_array(const int *ptr, int size)
+void print_array(const int* ptr, int size)
 {
 	for (int i = 0; i < size; ++i)
 	{
@@ -33,27 +33,18 @@ void print_array(const int *ptr, int size)
 	dline();
 }
 
+int func(void) {
+	printf("func() is called!!\n");
+	return 1;
+}
+
+#define array_size(x)  (sizeof(x)) / (sizeof((x)[0]))
+
 int main() {
 
-	int a[SIZE];
-	int value;
-	int i; 
+	int array[] = { 1,2,3,4,5 };
 
-	randomize();
-	set_random_array(a, SIZE);
-	print_array(a, SIZE);
-
-	printf("Enter a number : ");
-	scanf("%d", &value);
-
-
-	for (i = 0; i < SIZE; ++i) {
-		if (a[i] == value) 
-			break;
-	}
-		
-	if (i == SIZE)
-		printf("NOT FOUND !!!\n");
-	else 
-		printf("FOUND !!! The array index : %d\n", i);
+	for (int i = 0; i < array_size(array); ++i)
+		printf("%d ", i[array]);
+	    // 1 2 3 4 5
 }

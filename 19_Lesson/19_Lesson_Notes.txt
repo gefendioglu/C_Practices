@@ -845,80 +845,360 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* Example: 
+* Example: Reverse Algorithm
+  - Dizinin eleman sayýsýnýn yarýsý için olan bir döngüde , baþtaki ve sondaki elemanlarýn yer deðiþtirmesi
+  - Dizideki eleman sayýsý tek olduðunda da sonuç deðiþmeyecektir. Son kalan eleman baþka bir elemanla yerini deðiþtirmeyecek.
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <time.h>
+
+#define SIZE 10
+
+void dline(void) {
+	printf("\n-----------------------------------------------------\n");
+}
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+void set_random_array(int *ptr, int size)
+{
+	while (size--) {
+		*ptr++ = rand() % 1000;
+	}
+}
+
+void print_array(const int *ptr, int size)
+{
+	for (int i = 0; i < size; ++i)
+	{
+		if (i && i % 20 == 0)
+			printf("\n");
+		printf("%3d ", ptr[i]);
+
+	}
+	dline();
+}
+
+int main() {
+
+	int a[SIZE];
+	int value;
+	int i; 
+
+	randomize();
+	set_random_array(a, SIZE);
+	print_array(a, SIZE);
+
+	for (i = 0; i < SIZE/2; ++i) {
+		int temp = a[i];
+		a[i] = a[SIZE - 1 - i];
+		a[SIZE - 1 - i] = temp; 
+	}
+
+	print_array(a, SIZE);
+	/*
+	461 959 584 646 544 614 373 244 155   3
+	-----------------------------------------------------
+    3 155 244 373 614 544 646 584 959 461
+	-----------------------------------------------------
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+* Sizeof Operator:
+  - Anahtar sözcük ile ifade edilen tek operatordür.
+  - Compile time operator (excep that VLA)
+  - sizeof operatörü ile oluþturulan ifade bir sabit ifadesidir. 
+  - ürettiði deðer bir tamsayýdýr (unsigned).
+  - ürettiði deðerin türü derleyiciye baðlý olmak üzere aþaðýdakilerden biri:
+    - unsigned int 
+	- unsigned long int
+	- unsigned long long int 
+  - size_t ise bu türleri temsil eden bir aliastýr. Like as: 
+    typedef unsigned int size_t; 
+  - en sýk yapýlan hatalardan biri sizeof operatörü ile oluþturulmuþ bir ifadeyi signed int türünden bir ifade ile iþleme sokulduðunda --> iþlem sonucu verinin türü unsigned olana göre convert edilecektir. 
+  - bir data tipinin  bellekte kaç byte yer kapladýðýný göstermektedir. C'de data tiplerinin kapladýklarý alan derleyiciye baðlý olarak deðiþmektedir. Peki derleyici iþletim sistemine baðlý mýdýr???
+  - Kullanýmý:
+    - unary bir operator
+	- Ýkinci öncelik seviyesindedir (second level priority)
+	  1. level : () [] . ->
+	  2. level :  sizeof()
+	  printf("sizeof(int) : %zu\n", sizeof(int));
+	  unsigned int       --> %u 
+	  unsigned lond      --> %lu
+	  unsigned long long --> %llu
+	  size_t --> %zu conversion specifier eklenmiþtir. 
+   - constant expression olduðundan --> int array[sizeof(int)];
+   - sizeof operatörü tek operand aldýðýnda parantez kullanýmýna ihtiyaç duyulmaz. 
+   - sizeof operatörü iþlem kodu üretmez, sadece tür bilgisi ile ilgilenir. 
+     sizeof(++x); --> x data type 
+/----------------------------------------------
+/----------------------------------------------
+
+*Example: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
 
-2:30 - 2. DERS Sonu
+int main() {
+	int value;
+	int array[sizeof(int)];
+	double dvalue;
+	
+	sizeof 5;
+	sizeof value;
+	sizeof array;
+	sizeof dvalue;
+	sizeof dvalue + 3.4; // = sizeof(dvalue) + 3.4;
 
+	printf("sizeof dvalue : %zu\n", sizeof dvalue);             
+	// sizeof dvalue : 8
 
+	printf("sizeof dvalue + 3.4 : %zu\n", sizeof dvalue + 3.4); 
+	// sizeof dvalue + 3.4 : 3435973837
+}
 
+/----------------------------------------------
+/----------------------------------------------
 
+*Example: 
 
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
 
+int main() {
 
+	int value = 10;
+	char c1 = 4, c2 = 5;
 
+	printf("sizeof dvalue : %zu\n", sizeof value);
+	printf("sizeof dvalue : %zu\n", sizeof(value));
+	printf("sizeof dvalue : %zu\n", sizeof(value+3.4));
+	printf("sizeof dvalue : %zu\n", sizeof(c1+ c2)); // !!! integral promotion !!!
 
+	/*
+	sizeof dvalue : 4
+	sizeof dvalue : 4
+	sizeof dvalue : 8
+	sizeof dvalue : 4
+    */
+}
 
+/----------------------------------------------
+/----------------------------------------------
 
+*Example: 
 
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
 
+int main() {
 
+	int value = 10;
+	printf("sizeof value+5 : %zu\n", sizeof value+5);  //sizeof value+5 : 9
+	printf("sizeof(value+5): %zu\n", sizeof(value+5)); //sizeof(value+5): 4
+}
 
+/----------------------------------------------
+/----------------------------------------------
 
+*Example: 
 
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
 
+int main() {
 
+	int ivalue = 10;
+	unsigned int uivalue = sizeof(++ivalue);
+	printf("uivalue : %u\n", uivalue);  // uivalue: 4
+	printf("ivalue  : %d\n", ivalue);   // ivalue : 10
+}
 
+/----------------------------------------------
+/----------------------------------------------
 
+*Example: 
 
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
 
+int func(void) {
+	printf("func() is called!!\n");
+	return 1;
+}
 
+int main() {
 
+	int ivalue = 20;
+	unsigned int uivalue = sizeof(func());
+	printf("uivalue : %u\n", uivalue);// uivalue: 4 --> not calling func()
+}
 
+/----------------------------------------------
+/----------------------------------------------
 
+*Example:  
+ - sizeof operatörünün operandý array olduðu durumda,  
+ - sizeof array --> kullanýmý array'ýn toplamda kapladýðý alaný verecektir. 
 
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
 
+int main() {
 
+	int array[10] = { 0 };
+	char carray[20] = { 0 };
+	double darray[30] = { 0 };
 
+	printf("sizeof(&array[0]) : %zu\n", sizeof(array[0])); 
+	printf("sizeof array      : %zu\n", sizeof array); 
+	// sizeof(&array[0]) : 4
+	// sizeof array      : 40 --> (10 x 4 byte)
 
+	printf("sizeof(&carray[0]) : %zu\n", sizeof(carray[0]));
+	printf("sizeof carray      : %zu\n", sizeof carray);
+	// sizeof(&carray[0]) : 1
+	// sizeof carray      : 20 --> (20 x 1 byte)
 
+	printf("sizeof(&darray[0]) : %zu\n", sizeof(darray[0]));
+	printf("sizeof darray      : %zu\n", sizeof darray);
+	// sizeof(&darray[0]) : 4
+	// sizeof darray      : 240 --> (30 x 8 byte)
+}
 
+/----------------------------------------------
+/----------------------------------------------
 
+*Example: The size of array with sizeof operator
 
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
 
+int main() {
 
+	int array[10] = { 0 };
+	char carray[20] = { 0 };
+	double darray[30] = { 0 };
 
+	printf("The size of array : %zu\n", sizeof(array) / sizeof(array[0]));
+	printf("The size of carray: %zu\n", sizeof(carray) / sizeof(carray[0]));
+	printf("The size of darray: %zu\n", sizeof(darray) / sizeof(darray[0]));
 
+	/*
+	The size of array : 10
+	The size of carray : 20
+	The size of darray : 30
+	*/
+}
 
+/----------------------------------------------
+/----------------------------------------------
 
+*Example: The size of dynamic arrays with sizeof operator
 
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#define array_size(x)  (sizeof(x)) / (sizeof((x)[0]))
 
+int main() {
 
+	int array[] = { 12, 25, 56, 89, 55, 32, 56, 78 };
 
+	for (int i = 0; i < array_size(array); ++i)
+		printf("%d ", array[i]);
+}
 
+/----------------------------------------------
+/----------------------------------------------
 
+*Example: The size of dynamic arrays with sizeof operator
 
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#define array_size(x)  (sizeof(x)) / (sizeof((x)[0]))
 
+int main() {
 
+	int array[] = { 12, 25, 56, 89, 55, 32, 56, 78 };
+	int numbers[2 * array_size(array)] = { 0 };
 
+	for (int i = 0; i < array_size(numbers); ++i)
+		printf("%d ", numbers[i]);
+	    // 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+}
 
+/----------------------------------------------
+/----------------------------------------------
 
+*Example: The size of dynamic arrays with sizeof operator
+ - array_size(array) - 2 --> sonucu unsigned old.
+ - i < array_size(array) - 2 --> iþaretsiz türe dönüþüm yapýlýr. 
+ - i en büyük tam sayýnýn bir altý olacaktýr ve bu durumda i < array_size(array) - 2 iþlemi tanýmsýz olacaktýr. 
+ - Dolayýsýyla ekrana herhangi bir sonuç yazýlamaz. 
 
 
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#define array_size(x)  (sizeof(x)) / (sizeof((x)[0]))
 
+int main() {
 
+	int array[] = { 1,2,3,4,5 };
 
+	for (int i = -2; i < array_size(array) - 2; ++i)
+		printf("%d ", array[i + 2]);
+		// nothing prints 
+}
 
 
+/----------------------------------------------
+/----------------------------------------------
 
+*Example: 
+ - Normally, this code prints 1 2 3 4 5
+ - But, the warning message labelled as C6294 is received in my compiler
 
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#define array_size(x)  (sizeof(x)) / (sizeof((x)[0]))
 
+int main() {
 
+	int array[] = { 1,2,3,4,5 };
 
+	for (int i = -2; i < (int)array_size(array) - 2; ++i)
+		printf("%d ", array[i + 2]);
 
+	// Warning	C6294	Ill - defined for - loop:  initial condition does not satisfy test.Loop body not executed. 
+}
 
+/----------------------------------------------
+/----------------------------------------------
 
+*Example: 
+ - using "i[array]" instead of "array[i]"
+ - because of pointers 
 
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#define array_size(x)  (sizeof(x)) / (sizeof((x)[0]))
 
+int main() {
 
+	int array[] = { 1,2,3,4,5 };
 
- 
+	for (int i = 0; i < array_size(array); ++i)
+		printf("%d ", i[array]);
+	    // 1 2 3 4 5
+}
+
+/----------------------------------------------
+/----------------------------------------------
