@@ -1,0 +1,1096 @@
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+- const deðiþkenlerin deðiþtirilememesi ve deðiþtirilmek istendiðinde syntax hatasý vermesi
+- bir deðiþkenin const olup olmamasý kodu okuyan kiþiye de yardýmcý olacaktýr. 
+- const correctness --> kodun kalitesini etkileyen en önemli konulardan biri (compiler optimization açýsýndan)
+- bellekten eriþime ihtiyaç duyulduðu oranda maliyet artacaktýr. deðiþmeyen veriler için belleðe ulaþmaz, register üzerinde bulunan halini kullanacaktýr. Bu anlamda, compiler optimizasyonuna destek verir.
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+const veriler için C ve CPP farklarý: 
+
+- C'de   --> const verilere ilk deðer vermek zorunlu deðildir!!
+  const int x; 
+- CPP'de --> const verilere ilk deðer vermemek syntax error !!!
+  const int x; --> syntax error
+
+- C dilinde ilk deðerini bir sabit ifadesinden (const expression) almýþ olan const deðiþkenlerin oluþturduðu ifadeler sabit ifadesi gereken yerlerde kullanýlamazlar. Ancak cpp dilinde kullanýlabilirler. Bu da C dilinde makrolarýn kullanýlma nedenlerinden biridir. 
+  // Syntax error in C, not syntax error in Cpp
+  const int size = 100;
+  int array[size] = { 0 };
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+- const bir deðiþkeni deðiþtirme giriþiminde bulunmak --> undefined behviour 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	const int value = 100;
+	int* ptr = &value;
+	*ptr = 200; // undefined behaviour 
+    // warning C4090: initializing different const qualifiers
+    // However, this can be disabled !!!
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+* const anahtar sözcüðü ve pointer deðiþken bildirimleri:
+  const int *ptr = &ival; --> pointer to const int 
+  int const *ptr = &ival;
+
+  int *const ptr = &ival; --> ptr is a const pointer to int 
+						  --> const pointer
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+-Example: const anahtar sözcüðünün bildirimde asterik atomundan sonra kullanýlmasý 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int value1 = 34;
+	int value2 = 50;
+	int *const ptr = &value1;
+	// ptr'nin deðeri deðiþtirilmeyecek
+	// ptr deðiþkeni her zaman value deðiþkenini gösterecektir
+	ptr = &value2; // syntax error 
+	*ptr = 50;     // not syntax error 
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+-Example: const anahtar sözcüðünün bildirimde asterik atomundan sonra kullanýlmasý 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int value1 = 34;
+	int value2 = 50;
+	const int* ptr = &value1; 
+	// *ptr is a read only
+	//	ptr can be changed 
+
+	*ptr = value2; // syntax error
+	ptr = &value2; // not syntax error
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+-Example: const pointer to const int 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int value1 = 34;
+	int value2 = 50;
+	const int* const ptr = &value1; 
+
+	*ptr = value2; // syntax error
+	ptr = &value2; // syntax error
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+	
+- Cpp 
+int *const ptr = &value; --> top level const (const pointer to int) 
+const int* ptr = &value; --> low level const (pointer to const int)
+
+C'de low level const bulunup bulunmamasý önemlidir !!!
+
+Example: not having a low level const parameter 
+void func(T *ptr); 
+--> bu fonksiyon alýnan adres deðiþkenini set edecektir. 
+--> set function, setter, mutator
+--> out parameter (output parameter)
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void func(int* ptr);
+
+int main() {
+
+	int value1 = 34;
+	func(&value1);
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: having a low level const parameter 
+void func(const T *ptr); 
+--> bu fonksiyon alýnan adres deðiþkenini set etmeyecektir.
+--> sadece eriþim amaçlý kullanýr.  
+--> get function, getter, accessor
+--> in parameter (input parameter)
+--> Örnek : void print_array(const int *ptr, int size) {}
+    parametre elemanlarý sadece console'a yazdýrmak için kullanýlacak
+	üzerinde herhangi bir deðiþiklik uygulanmayacaktýr
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void func(const int* ptr);
+
+int main() {
+
+	int value1 = 34;
+	func(&value1);  --> value bilgisi deðiþtirilmeyecektir.  
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: call by value and const parameters 
+
+void func(int x); 
+--> const yazýlmasýna gerek yoktur, zaten call by value olduðundan gönderilen argümaný deðiþtirmeyecektir.
+--> void func(int x) =  void func(const int x)
+    Derleyiciler açýsýndan bu bildirimler birbirine özdeþtir ve function redecleration olarak etiketlenir. 
+--> kullanýlacaksa bile header yerine cpp dosyasýnda kullanýlmalýdýr !!! Ancak normalde const kullanýlmasý bu durumda tercih edilmemelidir. 
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:
+- The followings are the same
+int const *ptr = &x;
+const int *ptr = &y; 
+- const pointer to const int:
+int const *const ptr = &x;
+const int *const ptr = &x;
+- const anahtar sözcüðü neyden önce gelirse const olan odur. 
+int *const ptr = &x; --> const olan ptr
+int const *ptr = &x; --> const olan *ptr 
+
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+- const anahtar sözcüðü ve type conversion ( T* and const T*)
+
+int x = 10;                     // &x --> int*
+const int ival = 45 ;           // &ival --> const int*
+int array[] = {2,5,6,7};        // array --> &array[0] --> int*
+const int barray[] = {1,3,5,7}; // barray --> &barray[0] --> const int*
+int *ptr = &x ;				    // ptr --> int*
+const int *cptr = &x;		    // cptr --> const int*
+
+
+T* --> const T* // possible 
+int x = 10;
+const int *ptr = &x; // implicitly conversion from T* --> const T* 
+
+const T* --> T* // CPP --> syntax error 
+const T* --> T* // C --> hatalý ancak geçerlidir; main stream compilers logic uyarý mesajý verecektir.  
+
+const int x = 34;
+int *ptr = &x;  // const T* --> T* --> cpp syntax error
+
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+- Example: const T* --> T* in C
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+	const int x = 34;
+	int* ptr = &x;
+	//warning C4090 : 'initializing' : different 'const' qualifiers
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+- Example:
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	const int array[] = { 2,4,6,7 };
+	int* ptr;
+	ptr = array;
+	// warning C4090 : '=' : different 'const' qualifiers
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+- Example:
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int* ptr1, *ptr2;
+	int x = 10;
+	ptr1 = x; 
+	ptr1 = ptr2; 
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+- Example:
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x = 10;
+	const int* p = &x;
+	int* ptr; 
+	ptr = p;
+	// warning C4090: '=': different 'const' qualifiers
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+-Code yazým biçimleri:
+tokenler arasýnda ya br karakter boþluk olacak ya da iki token birleþik yazýlacak. 
+anahtar sözcüklerden(int, return, if,etc) sonra bir karakter boþluk býrakýlmasý 
+binary operatorler ile operandlar arasýnda bir karakter boþluk býrakýlmasý
+unary operatorler ile operandlar arasýnda boþluk olmayacak þekilde yazýlmasý
+ - ++x
+
+açýlan parantezlerden sonra kapanan parantezlerden önce 
+ - (x + y)
+ - func((x > y))
+ - ((x + y) * (a - c))
+
+kontrol deyimleri 
+ - while (x > 10) {
+	// gövde tab içerde
+	if (x > 10){
+		// gövde tab içerde
+	}
+	++x;
+   }
+lojik açýdan farklý iþlemler yapanlar arasýnda bir boþluk bulunmasý 
+eski C kodlarýnda; lokal bildirimlerin kodun baþýnda yapýlmasý ve bildirimler ile kodun geri  kalaný arasýnda bir satýr boþluk bulunmasý 
+virgül atomundan sonra bir karakter ýboþluk býrakýlmasý
+virgül kendisinden önce yazýlan atoma bitiþik olacaktýr.
+ - func(x, y, z)
+function definition : birinci sütuna dayalý olarak yazýlmalýdýr. 
+ - int ndigit(int val)
+   {
+		int digit_count = 0;
+
+		if (val == 0)
+			return 1;
+
+		while (val != 0){
+			++digit_count;
+			val /= 0;
+		}
+
+		return digit_count; 
+   }
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Pointer Aritmetiði ve Subscript Operator
+
+- ++, --, +, - gibi operatörlerin operandý olduðunda pointerler --> pointer aritmetiði
+
+C de aþaðýdaki iþlemler geçerlidir ve elde edilen deðer adrestir. 
+- bir adres ile bir tamsayý toplanabilir. 
+- bir adres ile bir toplandýðýnda;Bellekteki bir sonraki elemanýn adresi elde edilir. 
+- bir tamsayý ile bir adres toplanabilir. 
+- bir adresten bir tamsayý çýkarýlabilir. 
+
+C de aþaðýdaki iþlemler geçersizdir: 
+- bir tamsayýdan bir adresin çýkartýlmasý geçersizdir (syntax error).
+
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x = 10;
+	&x + 1; // NOT sytnax error
+	&x - 1; // NOT sytnax error
+	1 + &x; // NOT sytnax error
+	1 - &x; // sytnax error
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	char c = 0;
+	short s = 0;
+	int ival = 0;
+	double dval = 0;
+
+	printf("&c = %p\n", &c);
+	printf("&c+1 = %p\n\n", &c + 1);
+
+	printf("&s = %p\n", &s);
+	printf("&s+1 = %p\n\n", &s + 1);
+
+	printf("&ival = %p\n", &ival);
+	printf("&ival+1 = %p\n\n", &ival + 1);
+
+	printf("&dval = %p\n", &dval);
+	printf("&dval+1 = %p\n\n", &dval + 1);
+
+	/*
+		&c = 012FF90F
+		& c + 1 = 012FF910
+
+		& s = 012FF900
+		& s + 1 = 012FF902
+
+		& ival = 012FF8F4
+		& ival + 1 = 012FF8F8
+
+		& dval = 012FF8E4
+		& dval + 1 = 012FF8EC
+		*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: 
+- ++ptr   --> dizinin bir sonraki elemaný gösterilir. 
+- --ptr   --> dizinin bir önceki elemaný gösterilir. 
+- ptr +=3 --> dizinin 3 indisli elemaný olur, eðer ptr ilk elemaný gösteriyorsa
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int iarray[8] = { 0 };
+	int* ptr = iarray;
+
+	for (int i = 0; i < 8; ++i)
+	{
+		printf("&iarray[%p] = %p iarray+i = %p ptr = %p\n", i, &iarray[i], iarray + i, ptr);
+		++ptr;
+	}
+
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int iarray[8] = { 0,1,2,3,4,5,6,7 };
+	int* ptr = iarray;
+	int n = 8;
+
+	while (n--) {
+		printf("*ptr = %d\n", *ptr);
+		++ptr;
+	}
+
+	/*
+		* ptr = 0
+		* ptr = 1
+		* ptr = 2
+		* ptr = 3
+		* ptr = 4
+		* ptr = 5
+		* ptr = 6
+		* ptr = 7
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int iarray[8] = { 0,1,2,3,4,5,6,7 };
+
+	for (int i = 0; i < 8; ++i)
+	{
+		printf("*(iarray + %d) = %d\n", i, *(iarray + i));
+	}
+
+
+	/*
+	*(iarray + 0) = 0
+	*(iarray + 1) = 1
+	*(iarray + 2) = 2
+	*(iarray + 3) = 3
+	*(iarray + 4) = 4
+	*(iarray + 5) = 5
+	*(iarray + 6) = 6
+	*(iarray + 7) = 7
+	
+	*/
+}
+
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: 
+- a[5] --> *(a +5) --> *(5 +a) ayný olduðundan --> 5[a] yazýlabilir. 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int iarray[8] = { 0,1,2,3,4,5,6,7 };
+	int* ptr = iarray;
+
+	for (int i = 0; i < 8; ++i)
+	{
+		printf(" iarray[i]     = %d ", iarray[i]);
+		printf(" *(iarray + i) = %d ", *(iarray + i));
+		printf(" *(i + iarray) = %d ", *(i + iarray));
+		printf(" *ptr          = %d ", *ptr);
+		printf("\n");
+	}
+
+	/*
+		iarray[i] = 0 * (iarray + i) = 0 * (i + iarray) = 0 * ptr = 0
+		iarray[i] = 1 * (iarray + i) = 1 * (i + iarray) = 1 * ptr = 0
+		iarray[i] = 2 * (iarray + i) = 2 * (i + iarray) = 2 * ptr = 0
+		iarray[i] = 3 * (iarray + i) = 3 * (i + iarray) = 3 * ptr = 0
+		iarray[i] = 4 * (iarray + i) = 4 * (i + iarray) = 4 * ptr = 0
+		iarray[i] = 5 * (iarray + i) = 5 * (i + iarray) = 5 * ptr = 0
+		iarray[i] = 6 * (iarray + i) = 6 * (i + iarray) = 6 * ptr = 0
+		iarray[i] = 7 * (iarray + i) = 7 * (i + iarray) = 7 * ptr = 0
+		*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: index operator 
+- operatorler arasýnda en yüksek öncelik seviyesine ait
+- öncelik yönü soldan saða
+  - x[y] -->  *(x+y) ile ayný anlamdadýr
+  - y[x] -->  *(y+x) ile ayný anlamdadýr
+  - ptr[5] --> *(ptr+5)
+
+
+ #define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int iarray[10] = { 0,1,2,3,4,5,6,7,8,9 };
+	int* ptr = iarray;
+
+	for (int i = 0; i < 10; ++i)
+	{
+		printf(" ptr[i]     = %d ", ptr[i]);
+		printf(" *(ptr + i) = %d ", *(ptr + i));
+		printf(" *(i+ptr)   = %d ", *( i+ptr));
+		printf(" i[ptr]     = %d ", i[ptr]);
+		printf("\n");
+	}
+
+	/*
+		ptr[i] = 0 * (ptr + i) = 0 * (i + ptr) = 0  i[ptr] = 0
+		ptr[i] = 1 * (ptr + i) = 1 * (i + ptr) = 1  i[ptr] = 1
+		ptr[i] = 2 * (ptr + i) = 2 * (i + ptr) = 2  i[ptr] = 2
+		ptr[i] = 3 * (ptr + i) = 3 * (i + ptr) = 3  i[ptr] = 3
+		ptr[i] = 4 * (ptr + i) = 4 * (i + ptr) = 4  i[ptr] = 4
+		ptr[i] = 5 * (ptr + i) = 5 * (i + ptr) = 5  i[ptr] = 5
+		ptr[i] = 6 * (ptr + i) = 6 * (i + ptr) = 6  i[ptr] = 6
+		ptr[i] = 7 * (ptr + i) = 7 * (i + ptr) = 7  i[ptr] = 7
+		ptr[i] = 8 * (ptr + i) = 8 * (i + ptr) = 8  i[ptr] = 8
+		ptr[i] = 9 * (ptr + i) = 9 * (i + ptr) = 9  i[ptr] = 9
+		*/
+}
+
+
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: 
+- p[0] --> *(p+0) --> *p
+- p[-3] --> *(p-3)  
+- &p[4] --> &(*(p+4)) 
+- p[2] --> L Value expression
+ 
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int iarray[10] = { 0,1,2,3,4,5,6,7,8,9 };
+	int* ptr = iarray + 4;
+
+	printf("ptr[0] = %d\n ", ptr[0]);   // ptr[0] = 4
+	printf("*ptr   = %d\n", *ptr);      // * ptr = 4
+	printf("ptr[3] = %d\n", ptr[3]);    // ptr[3] = 7
+	printf("ptr[-3] = %d\n", ptr[-3]);  // ptr[-3] = 1
+
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: valid pointer - invalid pointer
+- invalid pointer sadece atama yapýlarak valid hale getirildikten sonra aritmetik iþlemlerde kullanýlabilir. 
+  int *ptr;     --> indetermined value, invalid pointer, wild pointer
+  ptr = &value; --> valid pointer
+
+- valid pointers (derefere edilebilme garantisi vermez): 
+ - eðer bir pointer deðiþken hayatý devam etmekte olan bir nesneyi gösteriyorsa 
+   -derefere edilebilir. 
+ - eðer bir pointer deðiþken dizinin ilk elemanýn adresi ile dizinin boyutunun eklenmesi ile elde edilen adresi gösteriyorsa (dizinin bittiði yerin adresi) 
+   - derefere edilemez (içerik operatorunun operandý olamaz). 
+ - eðer bir pointer deðiþkenin deðeri NULL pointer ise
+   - derefere edilemez (içerik operatorunun operandý olamaz). 
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int* ptr;
+
+	if (1) {
+		int value = 10;
+		ptr = &value;  // valid pointer
+	}
+	
+	ptr; // invalid pointer, dangling pointer
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int iarray[8] = { 0,1,2,3,4,5,6,7 };
+	int x = 10;
+
+	int* ptr1;
+	int* ptr2 = iarray;
+	int* ptr3 = &x;
+	int* ptr4 = iarray;
+	int* ptr5 = iarray + 8;
+	int* ptr6 = &iarray[8];
+	int* ptr7 = &8[iarray];
+
+	// ptr1       --> invalid
+	// ++ptr1     --> invalid
+	// ptr2 + 8   --> valid
+	// ptr2 + 9   --> invalid 
+	// ptr4 - 4   --> invalid
+	// ptr3 + 1   --> valid 
+	// ptr5       --> valid
+	// *ptr5      --> undefined behaviour
+	// iarray[8]  --> undefined behaviour
+	// &iarray[8] --> valid *(a + 8)
+	// ptr5 - ptr6 ayný anlamda
+	// ptr6, ptr7 --> valid
+
+	// TODO:
+	// printf("ptr1 = %d\n ", ptr[0]);   // ptr[0] = 4
+
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:
+- adresler birbirinden çýkarýlabilir. return value : unsigned int 
+- genelde ayný dizi ile ilgili iþlemlerde kullanýlmasý anlamlýdýr. 
+- bir dizinin bittiði yerin adresinden dizinin ilk elemanýnýn adresini çýkartýrsak dizinin boyutunu (size)
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int iarray[8] = { 0,1,2,3,4,5,6,7 };
+	int* ptr1 = &iarray[2];
+	int* ptr2 = &iarray[5];
+
+	printf("ptr1 - ptr2 = %d\n ", ptr1 - ptr2); // ptr1 - ptr2 = -3
+	printf("ptr2 - ptr1 = %d\n ", ptr2 - ptr1); // ptr2 - ptr1 = 3
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:
+-  C ve Cpp dillerinde iki adresin toplanmasý iþlemi geçersizdir. 
+- tamsayi - adres --> invalid
+- adres + adres   --> invalid 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int iarray[8] = { 0,1,2,3,4,5,6,7 };
+	int* ptr1 = &iarray[2];
+	int* ptr2 = &iarray[5];
+
+	printf("ptr2 + ptr1 = %d\n ", ptr2 + ptr1); // syntax error
+    //	Error	C2110	'+': cannot add two pointers	
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:
+- bir dizinin bir elemanýnýn indeksini bilmekle o elemanýn adresini bilmek arasýnda fark yoktur. 
+Soru: 
+- ptr a dizisinin bir elemanýný göstermektedir. 
+- ptrnin gösterdiði elemanýn indeksi nedir? 
+  --> ptr - a --> ptr - &a[0]  adresten adres çýkarýldýðýnda return value unsigned int
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int iarray[8] = { 0,1,2,3,4,5,6,7 };
+	int* ptr = iarray+5;
+
+	printf("The index of array = %d\n ", ptr - iarray);
+	// The index of array = 5
+
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:
+a dizisinin n indexli elemanýn adresi --> &a[n] --> a+n ile aynýdýr
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: Diziler üzerinde iþlem yapan fonksiyonlar 
+- bir fonskiyon bir dizinin ilk elemanýnýn adresini aldýðýnda tüm elemanlarýna eriþebilir. Ancak dizi boyutu hakkýnda bilgi edinemez. Bu sebeple, dizi iþlemleri yapan fonksiyon parametrelerinde ilk elemanýn adresi ve size bilgisi yer almalýdýr. 
+  void print_array(const int * ptr, int size){}
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+
+void print_array1(const int* ptr, int size)
+{
+	for (int i = 0; i < size; ++i) {
+		if (i && i%20 ==0)
+			printf("\n");
+		printf("%3d ", ptr[i]);
+	}
+}
+
+void print_array1(const int* ptr, int size) 
+{
+	for (int i = 0; i < size; ++i)	{
+		printf("%d ", ptr[i]);
+	}
+	printf("\n");
+}
+
+// Daha uygun kullaným - compiler optimizasyonu açýsýndan 
+void print_array2(const int* ptr, int size)
+{
+	while (size--) {
+		printf("%d ", *ptr);
+		++ptr;
+	}
+	printf("\n");
+
+}
+
+int main() {
+
+	int iarray[10] = { 0,1,2,3,4,5,6,7,8,9 };
+	print_array1(iarray, 10); // 0 1 2 3 4 5 6 7 8 9
+	print_array2(iarray, 10); // 0 1 2 3 4 5 6 7 8 9
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+
+void print_array(const int* ptr, int size)
+{
+	while (size--) {
+		printf("%d ", *ptr);
+		++ptr;
+	}
+	printf("\n");
+}
+
+#define SIZE 20 
+
+int main() {
+
+	int iarray[SIZE]; 
+	int n;
+	randomize();
+	print_array(iarray+4, 4); // 4 5 6 7
+
+	for (int i = 0; i < SIZE; ++i)	{
+		iarray[i] = rand() % 1000;
+	}
+	print_array(iarray, SIZE);
+	printf("Dizinin son kaç elemaný yazdýrýlacak: ");
+	scand("%d", n);
+
+	print_array(iarray+SIZE-n, n);
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 10 
+
+void print_array(const int* ptr, int size)
+{
+	while (size--) {
+		printf("%d ", *ptr);
+		++ptr;
+	}
+	printf("\n");
+}
+
+void set_random_array(int* ptr, int size) {
+	while (size--) {
+		*ptr = rand() % 1000;
+		++ptr;
+	}
+}
+
+void randomize(void) {
+	srand((unsigned int)time(NULL));
+}
+
+int main() {
+
+	int iarray[SIZE]; 
+	int n;
+	randomize();
+	set_random_array(iarray, SIZE);
+	print_array(iarray, SIZE);
+
+	// 96 436 715 632 757 492 484 41 206 360
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 10 
+
+void randomize(void) 
+{
+	srand((unsigned int)time(NULL));
+}
+
+void print_array(const int* ptr, int size)
+{
+	while (size--) {
+		printf("%d ", *ptr);
+		++ptr;
+	}
+	printf("\n");
+}
+
+void set_random_array(int* ptr, int size) 
+{
+	while (size--) {
+		*ptr = rand() % 1000;
+		++ptr;
+	}
+}
+
+int get_array_max(const int *ptr, int size) 
+{
+	int max = *ptr; // p[0]
+	for (int i = 1; i < size; ++i)
+	{
+		if (ptr[i]>max)
+		{
+			max = ptr[i];
+		}
+	}
+	return max;
+
+}
+
+int main() {
+
+	int iarray[SIZE]; 
+	int n;
+	int max_value;
+	randomize();
+	set_random_array(iarray, SIZE);
+	print_array(iarray, SIZE);
+	max_value = get_array_max(iarray, SIZE);
+	printf("max_value = %d", max_value);
+	
+
+	// 834 744 553 453 555 197 770 837 273 152
+	// max_value = 837
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 10 
+
+void randomize(void) 
+{
+	srand((unsigned int)time(NULL));
+}
+
+void print_array(const int* ptr, int size)
+{
+	while (size--) {
+		printf("%d ", *ptr);
+		++ptr;
+	}
+	printf("\n");
+}
+
+void set_random_array(int* ptr, int size) 
+{
+	while (size--) {
+		*ptr = rand() % 1000;
+		++ptr;
+	}
+}
+
+int get_array_max(const int *ptr, int size) 
+{
+	int max = *ptr; // p[0]
+	for (int i = 1; i < size; ++i)
+	{
+		if (ptr[i]>max)
+		{
+			max = ptr[i];
+		}
+	}
+	return max;
+
+}
+
+int get_array_min(const int* ptr, int size)
+{
+	int min = *ptr; // p[0]
+	for (int i = 1; i < size; ++i)
+	{
+		if (ptr[i] < min)
+		{
+			min = ptr[i];
+		}
+	}
+	return min;
+
+}
+
+int main() {
+
+	int iarray[SIZE]; 
+	int n;
+	int max_value;
+	int min_value;
+	randomize();
+	set_random_array(iarray, SIZE);
+	print_array(iarray, SIZE);
+	max_value = get_array_max(iarray, SIZE);
+	min_value = get_array_min(iarray, SIZE);
+
+
+	printf("max_value = %d\n", max_value);
+	printf("min_value = %d\n", min_value);
+	
+	/*
+		167 970 691 311 66 508 560 167 288 641
+		max_value = 970
+		min_value = 66
+	*/
+
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: Both min and max value 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 10 
+
+void randomize(void) 
+{
+	srand((unsigned int)time(NULL));
+}
+
+void print_array(const int* ptr, int size)
+{
+	while (size--) {
+		printf("%d ", *ptr);
+		++ptr;
+	}
+	printf("\n");
+}
+
+void set_random_array(int* ptr, int size) 
+{
+	while (size--) {
+		*ptr = rand() % 1000;
+		++ptr;
+	}
+}
+
+int get_array_max(const int *ptr, int size) 
+{
+	int max = *ptr; // p[0]
+	for (int i = 1; i < size; ++i)
+	{
+		if (ptr[i]>max)
+		{
+			max = ptr[i];
+		}
+	}
+	return max;
+
+}
+
+int get_array_min(const int* ptr, int size)
+{
+	int min = *ptr; // p[0]
+	for (int i = 1; i < size; ++i)
+	{
+		if (ptr[i] < min)
+		{
+			min = ptr[i];
+		}
+	}
+	return min;
+
+}
+
+void get_array_min_max(const int* ptr, int size, int *pmax, int *pmin)
+{
+	*pmax = *pmin = *ptr;
+
+	for (int i = 1; i < size; ++i)
+	{
+		if (ptr[i] > *pmax)
+			*pmax = ptr[i];
+		else if (ptr[i] < *pmin)
+			*pmin = ptr[i];
+	}
+}
+
+int main() {
+
+	int iarray[SIZE]; 
+	int n;
+	int max_value;
+	int min_value;
+	randomize();
+	set_random_array(iarray, SIZE);
+	print_array(iarray, SIZE);
+	max_value = get_array_max(iarray, SIZE);
+	min_value = get_array_min(iarray, SIZE);
+
+	printf("max_value = %d\n", max_value);
+	printf("min_value = %d\n", min_value);
+	printf("\n");
+
+	get_array_min_max(iarray, SIZE, &max_value, &min_value);
+	printf("max_value = %d\n", max_value);
+	printf("min_value = %d\n", min_value);
+
+	/*
+		385 429 123 495 546 618 624 406 727 172
+		max_value = 727
+		min_value = 123
+
+		max_value = 727
+		min_value = 123
+	*/
+
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+
+
