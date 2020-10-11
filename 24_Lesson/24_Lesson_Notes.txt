@@ -1,0 +1,979 @@
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example: 
+
+int sum_array(const int* ptr,int size) {
+	int sum = 0;
+	for (int i = 0; i < size; ++i)
+	{
+		sum += ptr[i];
+	}
+	return sum;
+}
+
+int main() {
+
+	int iarray[SIZE];
+	randomize();
+	set_random_array(iarray, SIZE);
+	print_array(iarray, SIZE);
+
+	printf("sum array = %d\n", sum_array(iarray, SIZE));
+
+	/*
+		49 479 492 435 764 164 607 26 888 304
+		sum array = 4208
+	*/
+
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example: 
+
+int sum_array(const int* ptr,int size) {
+	int sum = 0;
+	while (size--) {
+		sum += *ptr;
+		++ptr;
+	}
+	return sum;
+}
+
+int main() {
+
+	int iarray[SIZE];
+	randomize();
+	set_random_array(iarray, SIZE);
+	print_array(iarray, SIZE);
+
+	printf("sum array = %d\n", sum_array(iarray, SIZE));
+
+	/*
+		294 410 817 944 925 757 665 88 73 951
+		sum array = 5924
+	*/
+
+}
+
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example: kontrol edilecek (%f yerine %d kullanýlmýþ - tekrar sonuç üretilecek.)
+
+double get_mean(const int* ptr, int size) {
+	return (double)sum_array(ptr, size) / size;
+}
+
+int main() {
+
+	int iarray[SIZE];
+	randomize();
+	set_random_array(iarray, SIZE);
+	print_array(iarray, SIZE);
+
+	printf("mean array = %f\n", get_mean(iarray, SIZE));
+
+	/*
+		784 39 235 961 15 942 780 749 444 245
+		mean array = 858993459
+	*/
+
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example:
+
+double get_std_dev(const int *ptr, int size) {
+	double sum_square = 0.0;
+	double mean = get_mean(ptr, size);
+	for (int i = 0; i < size; ++i)
+	{
+		sum_square += (ptr[i] - mean) * (ptr[i] - mean);
+	}
+	return sqrt(sum_square / size);
+}
+
+int main() {
+
+	int iarray[SIZE];
+	randomize();
+	set_random_array(iarray, SIZE);
+	print_array(iarray, SIZE);
+
+	printf("standard deviation = %f\n", get_std_dev(iarray, SIZE));
+
+	/*
+		132 978 166 846 655 396 895 661 312 758
+		standard deviation = 291.553580
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example:
+
+void reverse_array(int *ptr, int size) {
+	for (int i = 0; i < size/2; ++i)
+	{
+		int temp = ptr[i];
+		ptr[i]= ptr[SIZE - 1 - i];
+		ptr[SIZE - 1 - i] = temp;
+	}
+}
+
+int main() {
+
+	int iarray[SIZE];
+	randomize();
+	set_random_array(iarray, SIZE);
+	print_array(iarray, SIZE);
+	
+	reverse_array(iarray, SIZE);
+	print_array(iarray, SIZE);
+
+	/*
+		102 990 409 226 660 755 789 996 54 790
+		790 54 996 789 755 660 226 409 990 102
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example: reverse_array function with different style
+
+void reverse_array(int *ptr, int size) {
+	for (int i = 0; i < size/2; ++i)
+	{
+		swap(&ptr[i], &ptr[SIZE - 1 - i]);
+		// OR --> swap(ptr + i, ptr + size - 1 - i);
+	}
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example: reverse_array function with different style
+
+void reverse_array(int* ptr, int size) {
+
+	int* pe = ptr + size;  // dizinin sonu, ptr[size] deðil!!
+	int n = size / 2;
+	while (size--) {
+		swap(ptr++, --pe);
+		// döngünün ilk turunda; 
+		// --pe dizinnin son elemanýn adresi
+		// ptr++ dizinin ilk elemanýn adresi
+	}
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example: Dizinin son elemanýn adresinden sonraki adres --> valid pointer, ancak o bellekte bir nesne olmadýýðý için derefere edilemez --> undefined behaviour
+
+void copy_array(int *pdest, const int *psource, int size ) {
+	for (int i = 0; i < size; ++i)
+	{
+		pdest[i] = psource[i];
+
+	}
+}
+
+int main() {
+
+	int array1[SIZE];
+	int array2[SIZE];
+	char carray[4] = { 0 };
+	randomize();
+	set_random_array(array1, SIZE);
+	print_array(array1, SIZE);
+
+	copy_array(array2, array1, SIZE);
+	print_array(array2, SIZE);
+
+	//printf("standard deviation = %f\n", get_std_dev(iarray, SIZE));
+
+	/*
+		658 829 67 775 807 356 144 690 312 216
+		658 829 67 775 807 356 144 690 312 216
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example:
+void copy_array(int *pdest, const int *psource, int size ) {
+
+	while (size--) {
+		*pdest = *psource;
+		++pdest;
+		++psource;
+	}
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example:
+
+void copy_array(int *pdest, const int *psource, int size ) {
+
+	while (size--) {
+		*pdest++ = *psource++;
+	}
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example:
+
+void copy_array(int *pdest, const int *psource, int size ) {
+
+	while (size--) {
+		*pdest++ = *psource++;
+	}
+}
+
+int main() {
+
+	int array1[SIZE];
+	int array2[SIZE] = {0};
+	int idx_a, idx_b, n;
+
+	randomize();
+	set_random_array(array1, SIZE);
+	print_array(array1, SIZE);
+
+	printf("a'da index = ");
+	scanf("%d", &idx_a);
+
+	printf("b'de index = ");
+	scanf("%d", &idx_b);
+
+	printf("kac eleman kopyalanacak = ");
+	scanf("%d", &n);
+
+	copy_array(&array2[idx_b], &array1[idx_a], n);
+	// OR --> copy_array(array2+idx_b, array1+idx_a, n);
+	print_array(array2, SIZE);
+
+	/*
+		50 130 260 363 904 974 560 855 129 579 375 407 170 474 748 632 934 803 808 134
+		a'da index = 3
+		b'de index = 4
+		kac eleman kopyalanacak = 3
+		0 0 0 0 363 904 974 0 0 0 0 0 0 0 0 0 0 0 0 0
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: Sorting array --> sadece swap fonksiyonu kullanýlarak yazýlan fonksyion çalýþtýrýlacak - swap fonksiyon bulunamadý!!!
+
+void sort_array(int *ptr, int size) {
+	for (int i = 0; i < size-1; ++i)
+	{
+		for (int k = 0; k < size-1-i; ++k)
+		{
+			if (ptr[k] > ptr[k+1])
+			{
+				//swap(ptr + k, ptr + k + 1);
+				int temp = ptr[k];
+				ptr[k] = ptr[k+1];
+				ptr[k + 1] = temp;
+			}
+		}
+	}
+}
+
+int main() {
+
+	int iarray[SIZE];
+
+	randomize();
+	set_random_array(iarray, SIZE);
+	print_array(iarray, SIZE);
+
+	sort_array(iarray, SIZE);
+	print_array(iarray, SIZE);
+
+	/*
+		985 387 830 402 363 929 373 442 145 258
+		145 258 363 373 387 402 442 830 929 985
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Homework: Dutch Flag Algorithm Problem
+
+// istenilen aralýkta [low,high] diziyi doldurur
+void set_random_array_2(int* ptr, int size, int low, int high)
+{
+	while (size--) {
+		*ptr = rand() % (high - low + 1) + low;
+		++ptr;
+	}
+}
+
+void sort_dutch_flag(int *ptr, int size) {
+	// ilave bellek alaný kullanýlmayacak
+	// algoritma karmaþýklýðý O(n) olmalý
+	// dizide yalnýzca 0,1,2 deðerlerinden oluþacak
+	// adresteki diziyi küçükten büyüðe sýralayacak.
+}
+
+int main() {
+
+	int iarray[SIZE];
+
+	randomize();
+	set_random_array_2(iarray, SIZE, 0,2);
+	print_array(iarray, SIZE);
+
+	sort_dutch_flag(iarray, SIZE);
+	print_array(iarray, SIZE);
+
+	/*
+		Input:  {0, 1, 2, 0, 1, 2}
+		Output: {0, 0, 1, 1, 2, 2}
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Homework: çift sayýlar baþta, tek sayýlar sonda olacak!
+koþulu saðlamayan ilk öðenin adresi --> partition point olacak!
+
+// 2 76 44 98 50 3 13 5 7
+// partition point : 5 (?)
+// O(n) karmaþýklýðýnda olacak
+// ilave bellek alaný kullanýlmayacak. 
+int even_partition(int* ptr, int size);
+
+int main() {
+
+	int iarray[SIZE];
+	int partition = 0;
+
+	randomize();
+	set_random_array(iarray, SIZE);
+	print_array(iarray, SIZE);
+
+	partition = even_partition(iarray, SIZE);
+	printf("partition point : %d", partition);
+	/*
+		
+	*/
+}
+
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+coding style (coding guide) for arrays as a function parameter: 
+void func(int* ptr, int size);
+void func(int ptr[], int size); --> yukarýdaki gibi bir pointer deðiþken almaktadýr. 
+
+iki þekilde de kullanýmý mevcut!!!
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+pointer idioms: 
+idiom / pattern 
+--> idiom programlama diline baðlý
+--> pattern programlama dilinden baðýmsýzdýr
+
+/ ----------------------------------------------
+
+++, --, &, * --> ile ilgili idiomlar
+2. öncelik seviyesi   ++ -- & *  (saðdan sola)
+
+/ ----------------------------------------------
+
+& operand --> L-Value expression
+&x        --> R-Value expression
+* operand --> shall be address 
+*ptr      --> L-Value
+[]        --> L-Value
+array[b]  --> *(a+b) --> address[tamsayý]
+
+/ ----------------------------------------------
+
+Example: Öncelik ekran görüntüsünü 
+
+int x = 10; 
+&x++; // syntax error --> & operandý L-Value olmalý --> x++ L-Value deðildir
+&++x; // syntax error --> & operandý L-Value olmalý --> ++x L-Value deðildir
+
+int main() {
+
+	int x = 10;
+	int array[] = { 0,1,2,3,4 };
+	int* ptr = array;
+	// *ptr++; --> L-Value
+
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: 
+
+int main() {
+
+	int x = 10;
+	int array[] = { 0,1,2,3,4 };
+	int* ptr = array;
+	// *ptr++; --> L-Value
+	print_array(array, 5);
+
+	*ptr++ = 99; // array[0] = 99 
+	print_array(array, 5);
+
+	*ptr = 77; // ptr burada önceki ptr++ etkisi sebebiyle &array[1]
+	print_array(array, 5);
+
+	/*
+		0 1 2 3 4
+		99 1 2 3 4
+		99 77 2 3 4
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+- pointerlar için en çok kullanýlan idiom: 
+  *ptr++ = 10 --> ptr nin gösterdiði nesneye eriþilir, 
+			  --> daha sonra ptr deðeri arttýrýlýr !!!
+  *ptr = 10;
+  ptr++;
+
+
+Example:
+
+void set_random_array(int *ptr, int size){
+	while(size--){
+		*ptr++ = rand() % 1000;
+	}
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: C ve Cpp dillerinde array bir dizi ismi olmak üzere,
+         array = ?? --> ?? ne yazýlýrsa yazýlsýn syntax hatasý olacaktýr !!!
+
+int main() {
+
+	int array[] = { 0,1,2,3,4 };
+	*array++ = 77; // syntax error !!! Expression must be a modifiable l-value
+	++array;       // syntax error !!! Expression must be a modifiable l-value
+	array++;       // syntax error !!! Expression must be a modifiable l-value
+
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: *++ptr -->  not syntax error 
+
+int main() {
+
+	int array[] = { 0, 1, 2, 3, 4 };
+	int* ptr = array;
+	print_array(array, 5);  // 0 1 2 3 4
+
+	*++ptr = 10; 
+	print_array(array, 5);  // 0 10 2 3 4
+	
+	*ptr = 77;
+	print_array(array, 5); // 0 77 2 3 4
+
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: reverse and copy an array to another array 
+
+void reverse_copy(int *pdest, const int *psource, int size) {
+	
+	pdest += size; // dizinin bittiði yerin adresine gidilir. 
+	// pdest += size-1; // dizinin son elemanýn adresine gidilir. 
+	while (size--) {
+		*--pdest = *psource++;
+	}
+}
+
+int main() {
+
+	int array1[SIZE];
+	int array2[SIZE];
+
+	randomize();
+	set_random_array(array1, SIZE);
+	print_array(array1, SIZE);
+
+	reverse_copy(array2, array1, SIZE);
+	print_array(array2, SIZE);
+
+	/*
+	447 600 655 430 316 934 367 650 352 377
+	377 352 650 367 934 316 430 655 600 447
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: reverse copy function in different style (but not preferable)
+
+void reverse_copy(int *pdest, const int *psource, int size) {
+	pdest += size-1; 
+	while (size--) {
+		*pdest-- = *psource++;
+	}
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: 
+
+int main() {
+
+	//int array[SIZE];
+	int array[5] = {0, 1, 2, 3, 4};
+	int* ptr = array;
+	print_array(array, 5);
+
+	*ptr++;
+	print_array(array, 5);
+
+	(*ptr)++;
+	print_array(array, 5);
+
+	/*
+		0 1 2 3 4
+		0 1 2 3 4
+		0 2 2 3 4
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:
+
+int main() {
+
+	int array[5] = {0, 1, 2, 3, 4};
+	int* ptr = array;
+	print_array(array, 5);
+
+	++*ptr;
+	print_array(array, 5);
+
+	++(* ptr);
+	print_array(array, 5);
+
+	/*
+		0 1 2 3 4
+		1 1 2 3 4
+		2 1 2 3 4
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:
+
+int main() {
+
+	int array[5] = {0, 1, 2, 3, 4};
+	int* ptr = array;
+	print_array(array, 5);
+
+	++*array; 
+	// array decay * operandý olabilir.
+	// *array = array[0]
+	print_array(array, 5);
+
+	/*
+		0 1 2 3 4
+		1 1 2 3 4
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:
+
+*ptr++ --> açýklama ? 
+*++ptr --> açýklama ? 
+++*ptr --> açýklama ? 
+
+*array++ --> syntax error
+*++array --> syntax erro
+++*array --> not sytnax error
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: Adreslerin karþýlaþtýrýlmasý
+
+== ve != 
+< <= ve > >=
+
+C ve CPP dillerinde iki adres karþýlaþtýrma operatörleri ile karþýlaþtýrýlabilir. 
+  p1 == p2 --> p1 ve p2 valid pointer olmalý 
+
+iki pointer aþapýdaki durumalarda eþittir:
+ - ikisi de ayný nesneyi gösteriyorsa
+ - ikisi de ayný dizinin bittiði yeri gösteriyorsa (pbegin --> pend)
+ - ikisi de NULL pointer ise 
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:
+
+int main() {
+	int x = 10;
+	int y = 20;
+
+	int* p1 = &x;
+	int* p2 = &y;
+	if (p1 == p2)
+		printf("True");
+	else
+		printf("False");
+
+	p1 = &y;
+	if (p1 == p2)
+		printf("True");
+	else
+		printf("False");
+
+	/*
+		False
+		True
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:
+
+int main() {
+
+	int array[SIZE] = { 0,1,2,3,4,5,6,7,8,9 };
+	int* ps = array;
+	int* pe = array + SIZE; // valid pointer 
+
+	while (ps != pe) {
+		printf("%d " ,* ps++);
+	}
+	/*
+	 0 1 2 3 4 5 6 7 8 9
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: 
+- pend nesnesine eriþilmeyecek, sadece adres bilgisi kullanýlacaktýr. 
+- print_array_2 kullanýmý tercih edilmez. 
+
+void print_array_2(const int *pbeg, const int *pend) {
+	while (pbeg != pend) {
+		printf("%d ", *pbeg++);
+	}
+}
+
+int main() {
+
+	int array[SIZE] = { 0,1,2,3,4,5,6,7,8,9 };
+	print_array(array, SIZE);           // 0 1 2 3 4 5 6 7 8 9
+	print_array_2(array, array + SIZE); // 0 1 2 3 4 5 6 7 8 9
+	print_array_2(array, array + 5);    // 0 1 2 3 4 
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: NULL pointer karþýlaþtýrmasý 
+NULL pointer bir sabittir ve adres deðeri de bellidir. 
+
+int main() {
+	int x = 10;
+	int* ptr1 = &x;
+	int* ptr2 = NULL; 
+
+	if (ptr1 == ptr2)
+		printf("True\n");
+	else
+		printf("False\n");
+
+	ptr1 = NULL;
+	if (ptr1 == ptr2)
+		printf("True\n");
+	else
+		printf("False\n");
+
+	/*
+		False
+		True
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:
+
+p1 == p2   --> adres karþýlaþtýrmasý 
+*p1 == *p2 --> pointerlarýn gösterdiði nesnelerin karþýlaþtýrýlmasý 
+
+int main() {
+	int x = 10;
+	int y = 20;
+	int* ptr1 = &x;
+	int* ptr2 = &y;
+
+	if (*ptr1 == *ptr2)
+		printf("True\n");
+	else
+		printf("False\n");
+
+	*ptr1 = 20;
+	if (*ptr1 == *ptr2)
+		printf("True\n");
+	else
+		printf("False\n");
+
+	/*
+		False
+		True
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: String karþýlaþtýrmasý (in C)
+
+int main() {
+
+	char s1[] = "alican";
+	char s2[] = "alican";
+
+	// comparing address of char array 
+	if (s1 == s2) 
+		printf("True\n");
+	else
+		printf("False\n");
+
+	/*
+		False
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: array +5 , array +3 --> hangisi daha büyüktür ?
+
+int main() {
+
+	int array[10] = { 0 };
+	int* p1 = array + 7;
+	int* p2 = array + 5;
+
+	printf("p1 > p2 ==> %d\n", p1 > p2); // p1 > p2 ==> 1
+	printf("p1 > p2 ==> %d\n", p1 < p2); // p1 > p2 ==> 0
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: Ayný dizinin nesnelerinin adresleri karþýlaþtýrma için uygundur.
+- Diðer durumlarda undefined behaviour
+
+int main() {
+
+	int x = 10;
+	int y = 20;
+
+	// undefined behaviour 
+	if (&x > & y)
+		printf("True\n");
+	else
+		printf("False\n");
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: reverse array kontrol edilecek!!!
+
+void reverse_array_2(int* ptr, int size) {
+	int* pe = ptr + size; // pe dizinin bittiði yerin adresini tutar.
+	while (ptr < pe) {
+		swap(ptr++, --pe);
+	}
+}
+
+int main() {
+
+	int array[SIZE];
+	randomize();
+	set_random_array(array, SIZE);
+	print_array(array, SIZE);
+	
+	reverse_array_2(array, SIZE);
+	print_array(array, SIZE);
+
+	reverse_array_2(array, SIZE);
+	print_array(array, SIZE);
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Tür Eþ Ýsim Bildirimleri - I
+- type alias
+- the usage of typedef keyword :
+
+typedef unsigned char Byte;   --> Byte kullanýldýðýnda unsigned char kullanýlýr !!!
+typedef Byte          Byte_x; --> Byte_x kullanýldýðýnda Byte kullanýlýr !!!
+
+void f1(Byte);
+Byte f2(Byte);
+Byte f3(Byte*);
+
+Byte x; 
+
+/ ----------------------------------------------
+
+void func(void) {
+	typedef int Word;
+	Word wx = 34;
+	//...
+}
+
+void foo(void) {
+	Word wy; // Syntax error
+	//...
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+- header dosyalarýnda bildirilmesi uygundur !!! 
+
+Aþaðýdakilerin farký nedir? 
+#define Byte unsigned char
+typedef unsigned char Byte;
+
+#define Byte unsigned char
+#define IPTR int*
+- Bir isim tanýmlamasý olmadýðýndan , Byte için scope kavramý yoktur. 
+- Byte yerine unsigned char yerleþtirilecektir compiler tarafýndan.
+- IPTR p1,p2,p3; yazýldýðýnda p2 ve p3 int olarak kalacaktýr !!! (C p2 ve p3 için otomatik int tanýmlamasý yapacaktýr)
+- int(*fptr)(int); için define ön iþlemci komutu ile tanýmlama yapýlamaz 
+
+
+typedef unsigned char Byte;
+typedef int* IPTR
+typedef int int(*Fptr)(int); 
+- ile pointer türlerine de eþ isim tanýmlamasý yapýlabilmektedir. 
+- IPTR p1,p2,p3; yazýldýðýnda her bir deðiþken int* türünde olacaktýr. 
+- Fptr f1, f2, f3; yazýldýðýnda her bir deðiþken bir function pointer olacaktýr. 
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Bir türe eþ isim verilmek istendiðinde;
+ - hangi türe eþ isim verilmek isteniyorsa o türden bir deðiþken tanýmlanýr. 
+ - tanýmlamanýn baþýna typedef anahtar sözcüðü konulur.
+ - deðiþken ismi, tür eþ ismi olarak deðiþtirilir. 
+
+ 	typedef int Word;
+	typedef int* Tptr;
+	typedef const int* Tcptr;
+	typedef int (*Fcmp) (const char*, const char*);
+
+	Tcptr p1, p2, p3;
+	const int* p1;
+	const int* p2;
+	const int* p3;
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+
+int main() {
+
+	int x = 10;
+	typedef const int* Tcptr;
+	Tcptr p1, p2, p3;
+	p1 = &x;
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: 
+
+typedef int Tarray[10];
+
+int main() {
+
+	Tarray a, b, c;
+	randomize();
+	set_random_array(a, 10);
+	set_random_array(b, 10);
+	set_random_array(c, 10);
+
+	print_array(a, 10);
+	print_array(b, 10);
+	print_array(c, 10);
+
+	/*
+		729 446 766 479 117 391 545 236 757 187
+		995 492 674 571 929 24 875 526 235 994
+		364 99 117 807 831 218 291 979 667 172
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:  bazý temel türleri kullanýrken daha okunabilir olmasý için tercih edilir. 
+
+typedef double Kilogram;
+Kilogram k1, k2, k3;
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: sýk kullanýlan tipler için tek bir noktadan deðiþim saðlayabilmek amacýyla tercih edilmektedir. 
+
+typedef int CounterType;
+CounterType cnt = 0;
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+- Adres döndüren fonksyionlar
+- null pointer
+- standart kütüphanenin pointer parametreli fonksiyonlar 
