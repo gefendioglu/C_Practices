@@ -1,0 +1,300 @@
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Typedef Continued...
+
+1 - Bazý temel türlere onlarý kýsýtlý bir baðlamda kullanýrken bunu vurgulayacak eþ isimler vermek
+	- for counters --> CounterType 
+
+2 - Karmaþýk bildirimleri daha basit hale getirerek kodun okunmasýný ve yazýlmasýný kolaylaþtýrmak
+
+3- Kodda türlere iliþkin deðiþiklik yapmayý kolaylaþtýrmaktadýr. 
+   For Seconds type definition: 
+   typedef long int Seconds;
+   typedef int Seconds;
+   typedef double Seconds;
+
+4- Tür eþ isimleri özellikle standart kütüphane tarafýndan taþýnabilirlik amaçlý kullanýlmaktadýr. (Type alias are used by especially standard library for portability!!!)
+  long double vb. gibi türler farklý derleyicilerde farklý büyüklüklerle temsil edilebilir.
+  Bu durumda type alias kullanýmý farklý derleyiciler arasýnda taþýnabilirlik saðlar.
+  
+- Typedef types : 
+  size_t    --> unsigned int (for this compiler)
+  ptrdiff_t --> int (for this compiler) and pointer difference type 
+  clock_t   --> long (for this compiler)
+  time_t    --> long long (for this compiler)
+  fpos_t
+  ldiv_t
+
+  int32_t
+  uint32_t
+  int16_t
+
+- Type Aliases using in the functions from standard library:
+  malloc(size_t _Size);
+  calloc(size_t _Count, size_t _Size);
+  time(time_t *const _Time);
+  clock_t clock();
+  strncpy(char* _Destination, const char* _Source, size_t _Count);
+  strncmp(const char* _Str1, const char* _Str2, size_t _MaxCount)
+  
+
+- Type Aliases in C and Cpp:
+  - typedef int Word;  // C
+	using Word = int;  // Cpp
+
+  - typedef int* Iptr; // C
+	using Iptr = int*; // Cpp
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example: Function Pointers with typedef definitions
+
+Pointers :
+ - Object Pointers --> for objects address
+ - Function Pointers --> for function address
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+typedef int (*FPTR)(const char*, const char*);
+
+void func(int (*fptr)(const char*, const char*));
+void func(FPTR fptr); // --> The same function definition with typedef
+
+int main() {
+
+	int (*fptr)(const char*, const char*); // function pointer
+	FPTR fptr_type;  // --> The same pointer definition with typedef
+	
+	int (**fpp)(const char*, const char*); // function pointer address
+	FPTR* fpp_type;  // --> The same address definition with typedef
+	
+	int (*fparray[10])(const char*, const char*); // function pointer array
+	FPTR fparray_type[10];  // --> The same array definition with typedef
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:  
+- size_t sizeof operatorünün ürettiði deðerin türüdür!!!
+- size_t bir iþaretsiz tamsayý türüdür. 
+- Hangi gerçek türün eþ ismi olacaðý derleyici kararýna býrakýlmýþtýr.
+- size_t --> unsigned int, unsigned long, unsigned long long int türlerinden biridir !!!
+
+The usage of size_t by standard library:
+- for the parameters of array size 
+- for the generated value of sizeof operator
+- tane (adet) sayýsý talep edilen yerlerde 
+- for the type of string size 
+
+ unsigned int strlen(const char *p); // unsigned int yerine type alias kullanýlmalý !
+ size_t strlen(const char *p); --> yazýnýn adresini parametre olarak almaktadýr.
+
+ // array.h file 
+ // stddef.h header file shall be included in array.h for size_t
+ void print_array(const int *p, size_t size);
+ void reverse_array(int *p, size_t size);
+ void copy_array(int* pdest, const int* psource, size_t size);
+ void set_random_array(int *p, size_t size);
+ void sort_array(int *p, size_t size);
+ and apply this for other array functions ....
+
+ after changing return values as size_t, there is a problem in all for loops
+ warning C4018 : '<' : signed / unsigned mismatch
+ cause i --> int; size --> unsigned int !!!
+ for(int i = 0; i < size; ++i){...}
+ for(size_t i = 0; i < size; ++i){...} --> to eliminate this warning
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: stdint.h standard library
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdint.h> // C
+#include <cstdint>  // Cpp
+
+- int64_t x = 10; --> int (64 bits : 8 bytes for all compilers)
+- int32_t y = 20; --> int (32 bits : 4 bytes for all compilers)
+- int16_t z = 30; --> int (16 bits : 2 bytes for all compilers)
+
+- uint64_t ux = 10; --> unsigned int (64 bits : 8 bytes for all compilers)
+- uint32_t uy = 20; --> unsigned int (32 bits : 4 bytes for all compilers)
+- uint16_t uz = 30; --> unsigned int (16 bits : 2 bytes for all compilers)
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: size_t type and printf() --> %zu 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	char str[100];
+	size_t lenght; 
+	// size_t --> unsigned int : %u
+	// size_t --> unsigned long int : %lu
+	// size_t --> unsigned long long int : %llu
+	// size_t --> independent of the types : %zu
+
+	lenght = strlen(str);
+	printf("length = %zu\n", lenght);
+	printf("sizeof(int) = %zu\n", sizeof(int));
+	
+    /*
+		length = 111
+		sizeof(int) = 4
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+- Function Returning Pointers
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int func1(void);
+int* func2(void);
+
+int main() {
+	int* ptr;
+	int value;
+
+	value = func1();
+	ptr = func2();
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int g = 10;
+int* foo(void) {
+
+	//...
+	return &g;
+}
+
+int main() {
+
+	int* ptr = foo();
+	printf("g = %d\n", g);  // g = 10 
+
+	*ptr = 222;
+	printf("g = %d\n", g);  // g = 222
+	 
+	++* foo();
+	printf("g = %d\n", g);  // g = 223
+
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int g = 10;
+int* foo(void) {
+
+	//...
+	return &g;
+}
+
+void func(int* ptr) {
+	*ptr = 999;
+}
+
+int main() {
+
+	func(foo());
+	printf("g = %d\n", g);  // g = 999
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example:
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int g1 = 10;
+int g2 = 20;
+int* foo1(void) {
+
+	//...
+	return &g1;
+}
+
+int* foo2(void) {
+
+	//...
+	return &g2;
+}
+
+int main() {
+
+	func(foo());
+	printf("g1 = %d\n", g1);  // g1 = 10
+	printf("g2 = %d\n", g2);  // g2 = 20 
+
+	swap(foo1(), foo2()); // from utility.h
+
+	printf("g1 = %d\n", g1);  // g1 = 20
+	printf("g2 = %d\n", g2);  // g2 = 10
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:Do not return the address of local variable 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+// There is a logic error because of x local variable
+// x is only defined and available in this function scope
+// the return value of get_value() points a dangling pointer
+// warning C4172 : returning address of local variable or temporary : x
+int* get_value(void) {
+	
+	int x;
+	printf("Enter a number : ");
+	scanf("%d", &x);
+
+	return &x;
+}
+
+// warning C4172 : returning address of local variable or temporary : x
+int* func(int value) {
+
+	int* ptr = &value;
+	int* p = ptr;
+	//...
+
+	return p;
+}
+
+int main() {
+
+	int* ptr;
+	ptr = get_value(); // ptr is a dangling pointer, ub
+
+	printf("the value = %d\n", *ptr); 
+
+	/* 
+	Enter a number : 3465
+	the value = 3465
+	*/
+}
