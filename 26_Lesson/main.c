@@ -287,9 +287,9 @@ int main() {
 	int x = 10;
 	int* ptr = &x;
 
-	
+
 	if (ptr != NULL) // --> if(ptr)
-		printf("Equal\n");  
+		printf("Equal\n");
 	else
 		printf("Not equal\n");
 

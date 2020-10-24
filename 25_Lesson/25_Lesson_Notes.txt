@@ -1,22 +1,22 @@
-/ ----------------------------------------------
+﻿/ ----------------------------------------------
 / ----------------------------------------------
 
 Typedef Continued...
 
-1 - Baz� temel t�rlere onlar� k�s�tl� bir ba�lamda kullan�rken bunu vurgulayacak e� isimler vermek
+1 - Bazı temel türlere onları kısıtlı bir bağlamda kullanırken bunu vurgulayacak eş isimler vermek
 	- for counters --> CounterType 
 
-2 - Karma��k bildirimleri daha basit hale getirerek kodun okunmas�n� ve yaz�lmas�n� kolayla�t�rmak
+2 - Karmaşık bildirimleri daha basit hale getirerek kodun okunmasını ve yazılmasını kolaylaştırmak
 
-3- Kodda t�rlere ili�kin de�i�iklik yapmay� kolayla�t�rmaktad�r. 
+3- Kodda türlere ilişkin değişiklik yapmayı kolaylaştırmaktadır. 
    For Seconds type definition: 
    typedef long int Seconds;
    typedef int Seconds;
    typedef double Seconds;
 
-4- T�r e� isimleri �zellikle standart k�t�phane taraf�ndan ta��nabilirlik ama�l� kullan�lmaktad�r. (Type alias are used by especially standard library for portability!!!)
-  long double vb. gibi t�rler farkl� derleyicilerde farkl� b�y�kl�klerle temsil edilebilir.
-  Bu durumda type alias kullan�m� farkl� derleyiciler aras�nda ta��nabilirlik sa�lar.
+4- Tür eş isimleri özellikle standart kütüphane tarafından taşınabilirlik amaçlı kullanılmaktadır. (Type alias are used by especially standard library for portability!!!)
+  long double vb. gibi türler farklı derleyicilerde farklı büyüklüklerle temsil edilebilir.
+  Bu durumda type alias kullanımı farklı derleyiciler arasında taşınabilirlik sağlar.
   
 - Typedef types : 
   size_t    --> unsigned int (for this compiler)
@@ -78,19 +78,19 @@ int main() {
 / ----------------------------------------------
 
 Example:  
-- size_t sizeof operator�n�n �retti�i de�erin t�r�d�r!!!
-- size_t bir i�aretsiz tamsay� t�r�d�r. 
-- Hangi ger�ek t�r�n e� ismi olaca�� derleyici karar�na b�rak�lm��t�r.
-- size_t --> unsigned int, unsigned long, unsigned long long int t�rlerinden biridir !!!
+- size_t sizeof operatorünün ürettiği değerin türüdür!!!
+- size_t bir işaretsiz tamsayı türüdür. 
+- Hangi gerçek türün eş ismi olacağı derleyici kararına bırakılmıştır.
+- size_t --> unsigned int, unsigned long, unsigned long long int türlerinden biridir !!!
 
 The usage of size_t by standard library:
 - for the parameters of array size 
 - for the generated value of sizeof operator
-- tane (adet) say�s� talep edilen yerlerde 
+- tane (adet) sayısı talep edilen yerlerde 
 - for the type of string size 
 
- unsigned int strlen(const char *p); // unsigned int yerine type alias kullan�lmal� !
- size_t strlen(const char *p); --> yaz�n�n adresini parametre olarak almaktad�r.
+ unsigned int strlen(const char *p); // unsigned int yerine type alias kullanılmalı !
+ size_t strlen(const char *p); --> yazının adresini parametre olarak almaktadır.
 
  // array.h file 
  // stddef.h header file shall be included in array.h for size_t
@@ -263,19 +263,6 @@ Example:Do not return the address of local variable
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-// There is a logic error because of x local variable
-// x is only defined and available in this function scope
-// the return value of get_value() points a dangling pointer
-// warning C4172 : returning address of local variable or temporary : x
-int* get_value(void) {
-	
-	int x;
-	printf("Enter a number : ");
-	scanf("%d", &x);
-
-	return &x;
-}
-
 // warning C4172 : returning address of local variable or temporary : x
 int* func(int value) {
 
@@ -301,4 +288,683 @@ int main() {
 
 / ----------------------------------------------
 / ----------------------------------------------
-01:36'dan itibaren devam edilecek.
+
+Example: otomatik ömürlü nesnelerin adresi fonksiyonların geri dönüş değeri olmamalıdır
+ 
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+// There is a logic error because of x local variable
+// x is only defined in this function scope
+// return value points a dangling pointer 
+int* get_value(void) {
+	int x;
+	printf("Enter a number : ");
+	scanf("%d", &x);
+
+	return &x;
+}
+
+// return value points a dangling pointer 
+char* get_name(void) {
+
+	char str[100];
+	printf("Enter a name: ");
+	scanf("%s", str);
+
+	return str;
+}
+
+int main() {
+	char* pstr = get_name();
+	int* ptr = get_value();
+	printf("The name: %s", pstr);
+	printf("The value: %d", ptr);
+	/*
+	enter a name: gamze
+	Enter a number : 456
+	The name: ╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠¸YThe value: 5896124
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+- the address of static variables can be used for the functions' return value: 
+  - global variables
+  - static local variables 
+  - string literals 
+
+
+Example: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+// return value points a dangling pointer 
+int* get_value(void) {
+	int x;
+	static* ptr;
+	printf("Enter a number : ");
+	scanf("%d", &x);
+
+	ptr = &x;
+	return ptr; // undefined behaviour  
+}
+
+int main() {
+
+	int* ptr = get_value();
+	printf("The value: %d", ptr);
+	/*
+		Enter a number : 345
+		The value: 5961848
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: static local variable with functions, but logical errors 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int* func(void) {
+	static int x = 10;
+	//...
+	return &x;
+}
+
+int main() {
+
+	int* ptr1 = func();
+	int* ptr2 = func();
+	int* ptr3 = func();
+
+	++* ptr1;
+	++* ptr2;
+	++* ptr3;
+
+	printf("*ptr1 : %d\n", *ptr1); // *ptr1 : 13
+	printf("*ptr2 : %d\n", *ptr2); // *ptr2 : 13
+	printf("*ptr3 : %d\n", *ptr3); // *ptr3 : 13
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: static local variable with functions, but logical errors 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+char* get_name(void) {
+
+	static char buffer[100];
+	printf("enter a name: ");
+	scanf("%s", buffer);
+
+	return buffer;
+}
+
+int main() {
+
+	char* ptr1 = get_name();
+	char* ptr2 = get_name();
+	char* ptr3 = get_name();
+	char* ptr4 = get_name(); 
+
+	// Returns the last given name 
+	printf("First name  : %s\n", ptr1); 
+	printf("Second name : %s\n", ptr2); 
+	printf("Third name  : %s\n", ptr3); 
+	printf("Fourth name : %s\n\n", ptr4); 
+
+	// Returns the same address
+	printf("The address of first name  : %p\n", ptr1);
+	printf("The address of second name : %p\n", ptr2);
+	printf("The address of third name  : %p\n", ptr3);
+	printf("The address of fourth name : %p\n", ptr4);
+
+	/*
+		enter a name: selin
+		enter a name: lale
+		enter a name: zeliha
+		enter a name: melek
+		
+		First name  : melek
+		Second name : melek
+		Third name  : melek
+		Fourth name : melek
+
+		The address of first name  : 0058B490
+		The address of second name : 0058B490
+		The address of third name  : 0058B490
+		The address of fourth name : 0058B490
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: To eliminate the problem about receiving always the last name 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+char* get_name(void) {
+
+	static char buffer[100];
+	printf("enter a name: ");
+	scanf("%s", buffer);
+
+	return buffer;
+}
+
+int main() {
+
+	for (size_t i = 0; i < 4; ++i){
+		char* ptr = get_name();
+		puts(ptr);
+	}
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: string literals as static variables 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+char* get_day_name(int daynumber) {
+
+	switch (daynumber)
+	{
+	case 1: return "Monday";
+	case 2: return "Tuesday";
+	case 3: return "Wednesday";
+	case 4: return "Thursday";
+	case 5: return "Friday";
+	case 6: return "Saturday";
+	case 7: return "Sunday";
+	}
+	return "";
+}
+
+int main() {
+
+	int number;
+	printf("The day number: ");
+	scanf("%d", &number);
+
+	printf("The number of weekday : %d\n", number);
+	printf("The name of weekday : %s\n", get_day_name(number));
+
+	/*
+		The day number : 4
+		The number of weekday : 4
+		The name of weekday : Thursday
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:
+Fonksiyon kendisini çağıran koddan adres bir adres alır ve aynı nesnenin adresini döndürür.
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+char* str_rev(char* ptr) {
+	
+	size_t length = strlen(ptr);
+	for (size_t i = 0; i < length/2; ++i)
+	{
+		char temp = ptr[i];
+		ptr[i] = ptr[length - 1 - i];
+		ptr[length - 1 - i] = temp; 
+	}
+	return ptr; 
+}
+
+int main() {
+
+	char str[100] = "Gamze Sahin";
+	puts(str_rev(str)); // nihaS ezmaG
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+int get_array_max(const int *ptr, size_t size); yerine -->
+int* get_array_max(const int *ptr, size_t size); 
+
+en büyük elemanın adresi geri döndürülürse, bu elemanın bulunduğu adresteki nesneye de ulaşılabilir. Bu durumda nesne ile ilgili işlemler de uygulanabilir. 
+
+Example:
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 10
+
+// const-cast (const int* --> int* manually conversion for return value)
+// returns the address of max value in an array
+int* get_array_max(const int* ptr, size_t size) {
+	const int* ptr_max = ptr;
+	for (size_t i = 0; i < size; ++i)
+	{
+		if (ptr[i] > *ptr_max)
+			ptr_max = ptr + i; // the address of bigger value 
+	}
+
+	return (int*)ptr_max; // not return a local value 
+}
+
+// returns the address of min value in an array
+int* get_array_min(const int* ptr, size_t size) {
+	const int* ptr_min = ptr;
+	for (size_t i = 0; i < size; ++i)
+	{
+		if (ptr[i] < *ptr_min)
+			ptr_min = ptr + i; // the address of bigger value 
+	}
+
+	return (int*)ptr_min; // not return a local value 
+}
+
+int main() {
+
+	int array[SIZE];
+	int* p_max;
+
+	randomize();
+	set_random_array(array, SIZE);
+	print_array(array, SIZE);
+	
+	p_max = get_array_max(array, SIZE);
+	printf("max : %d\n", *p_max);
+	printf("The array index of max value : %d\n", p_max-array); 
+	// the address of max value (p_max) is the same of array index
+	// array : first address of the array 
+	
+	// print array till the max value
+	print_array(array, p_max - array + 1);
+
+	// print array from the max value to the end 
+	print_array(p_max, SIZE-(p_max - array));
+
+	*p_max = -1;
+	print_array(array, SIZE);
+	
+	/*
+		338 831 45 189 974 149 585 441 386 601
+		max : 974
+		The array index of max value : 4
+		338 831 45 189 974
+		974 149 585 441 386 601
+		338 831 45 189 -1 149 585 441 386 601
+	*/
+}
+
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example:
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 10
+
+// returns the address of max value in an array
+int* get_array_max(const int* ptr, size_t size) {
+	const int* ptr_max = ptr;
+	for (size_t i = 0; i < size; ++i)
+	{
+		if (ptr[i] > *ptr_max)
+			ptr_max = ptr + i; // the address of bigger value 
+	}
+
+	return (int*)ptr_max; // not return a local value 
+}
+
+// returns the address of min value in an array
+int* get_array_min(const int* ptr, size_t size) {
+	const int* ptr_min = ptr;
+	for (size_t i = 0; i < size; ++i)
+	{
+		if (ptr[i] < *ptr_min)
+			ptr_min = ptr + i; // the address of bigger value 
+	}
+
+	return (int*)ptr_min; // not return a local value 
+}
+
+int main() {
+
+	int array[SIZE];
+	int* p_max;
+	int* p_min;
+
+	randomize();
+	set_random_array(array, SIZE);
+	print_array(array, SIZE);
+	
+	p_max = get_array_max(array, SIZE);
+	printf("max : %d\n", *p_max);
+	printf("The array index of max value : %d\n", p_max-array); 
+	
+	p_min = get_array_min(array, SIZE);
+	printf("min : %d\n", *p_min);
+	printf("The array index of max value : %d\n", p_min - array);
+	
+	/*
+		275 726 82 752 698 354 746 742 178 106
+		max : 752
+		The array index of max value : 3
+		min : 82
+		The array index of max value : 2
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example: Swapping values in an array
+To be controlled for swap function
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 10
+
+int* get_array_max(const int* ptr, size_t size) {
+	const int* ptr_max = ptr;
+	for (size_t i = 0; i < size; ++i)
+	{
+		if (ptr[i] > *ptr_max)
+			ptr_max = ptr + i; // the address of bigger value 
+	}
+
+	return (int*)ptr_max; // not return a local value 
+}
+
+int* get_array_min(const int* ptr, size_t size) {
+	const int* ptr_min = ptr;
+	for (size_t i = 0; i < size; ++i)
+	{
+		if (ptr[i] < *ptr_min)
+			ptr_min = ptr + i; // the address of bigger value 
+	}
+
+	return (int*)ptr_min; // not return a local value 
+}
+
+int main() {
+
+	int array[SIZE];
+
+	randomize();
+	set_random_array(array, SIZE);
+	print_array(array, SIZE);
+	
+	// swapping the max and min value in the array
+	swap(get_array_max(array, SIZE), get_array_min(array, SIZE));
+	print_array(array, SIZE);
+
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: printing array between p_max and p_min
+
+int main() {
+
+	int array[SIZE];
+	randomize();
+	set_random_array(array, SIZE);
+	print_array(array, SIZE);
+
+	int* p_max = get_array_max(array, SIZE);
+	int* p_min = get_array_min(array, SIZE);
+	
+	// prints array between p_max and p_min
+	if (p_max>p_min)
+		print_array(p_min, (p_max - p_min+1));
+	else
+		print_array(p_max, (p_min - p_max+1));
+
+	/*
+		181 996 895 172 161 899 454 897 704 49
+		996 895 172 161 899 454 897 704 49
+	*/
+
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: printing array between p_max and p_min without using print_array function
+
+int main() {
+
+	int array[SIZE];
+	randomize();
+	set_random_array(array, SIZE);
+	print_array(array, SIZE);
+
+	int* p_max = get_array_max(array, SIZE);
+	int* p_min = get_array_min(array, SIZE);
+
+	// prints array between p_max and p_min
+	if (p_min < p_max ) {
+
+		while (p_min <= p_max)
+			printf("%3d ", *p_min++);
+	}
+	else {
+		while (p_max <= p_min)
+			printf("%3d ", *p_max++);
+
+	}
+	/*
+		47 64 128 616 247 743 915 611 89 744
+		47  64 128 616 247 743 915
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: Selection Sort
+Her defasında belirlenen aralıktaki dizi içindeki en küçük eleman, o dizinin ilk elemanı ile yer değiştirir. 
+
+9 7 8 6 3 1 
+1 7 8 6 3 9 
+1 3 8 6 7 9 
+1 3 6 8 7 9 
+1 3 6 7 8 9 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+#define SIZE 10
+
+// Complexity : O(n^2)
+// Besides for loop, get_array_min function has another internal loop
+void selection_sort_min(int* ptr, size_t size) {
+
+	for (size_t i = 0; i < size-1; ++i)
+		swap(get_array_min(ptr + i, size - i), ptr + i);
+}
+
+// Complexity : O(n^2)
+// Besides for loop, get_array_max function has another internal loop
+void selection_sort_max(int* ptr, size_t size) {
+
+	for (size_t i = 0; i < size - 1; ++i)
+		swap(get_array_max(ptr + i, size - i), ptr + i);
+}
+
+int main() {
+
+	int array[SIZE];
+	randomize();
+	set_random_array(array, SIZE);
+	print_array(array, SIZE);
+
+	selection_sort_min(array, SIZE);
+	print_array(array, SIZE);
+
+	selection_sort_max(array, SIZE);
+	print_array(array, SIZE);
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: 
+
+int main() {
+
+	int x = 10;
+	int y = 20;
+	const int* ptr1 = &x;
+
+	ptr1 = &y;
+	*ptr1 = 99; // syntax-error --> low-level const pointer
+
+	int* const ptr2 = &x;
+	ptr2 = &y; // syntax-error --> constant pointer
+	*ptr2 = 99;
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example/ Interview: the usage of typedef with const pointers
+
+typedef int* IPTR;
+
+int main() {
+
+	int x = 10;
+	int y = 20;
+	const IPTR ptr = &x; 
+	// whenever using typedef, const specifies pointer   
+	// int* const ptr = &x; 
+
+	ptr = &y; // syntax error --> constant pointer 
+	*ptr = 99;
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: 
+Adres döndüren bir fonksiyon dinamik ömürlü bir nesne adresini döndürebilir. 
+storage runtime zamanında belirlenir.
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+- NULL pointer:
+  - NULL is a macro, not a keyword or identifier 
+  - This macro is   defined in several standard libraries such as stdio.h, stdlib.h, stddef.h, string.h, time.h, etc. files. 
+  - NULL pointer is an address constant and can be assigned/initialized to pointers
+  - Assigning NULL macro to a non-pointer value is OK in C but not true (is error in Cpp) 
+    int x = NULL; // warning
+  - NULL pointer can be assigned to any type of pointers:
+    int *iptr = NULL;
+	double *dptr = NULL;
+	char *cptr = NULL;
+  - NULL pointer olan bir pointer değişken, hiçbir nesneyi göstermeyen ancak geçerli bir pointer değişkendir. 
+  - NULL pointers can not be operand for * and [] operators (not be dereferenced) --> undefined behaviour
+  - NULL pointers shall not be an operand for +, -, ++, --, etc. operators. 
+  - The followings are used a lot: 
+    - Controlling whether a pointer is a NULL pointer or not 
+	- Two pointers can be compared with == OR != operators:
+	  - If both of them are NULL pointers --> these pointers are equal in terms of value
+	- The address definition can be used in the place expecting to have a logic definition. 
+	  - If this address is a NULL pointer --> true
+	  - If this address is not a NULL pointer --> false
+	  if (ptr != NULL) --> if(ptr)
+	  if (ptr == NULL) --> if(!ptr)
+	  ptr ? op2 : op3; --> ptr is NULL --> op2
+	  if(ptr1 && ptr2) --> ptr1 != NULL && ptr2 != NULL
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:
+int main() {
+
+	int x = 10;
+	int* ptr = &x;
+	
+	if (ptr != NULL)
+		printf("True\n");  
+	else
+		printf("False\n");
+
+	ptr = NULL;
+	if (ptr != NULL)
+		printf("True\n");
+	else
+		printf("False\n");
+	
+	/*
+		True
+		False
+	*/
+}
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:
+
+int main() {
+
+	int x = 10;
+	int* ptr1 = &x;
+	int* ptr2 = NULL;
+
+	
+	if (ptr1 == ptr2)
+		printf("Equal\n");  
+	else
+		printf("Not equal\n");
+
+	ptr1 = NULL;
+	if (ptr1 == ptr2)
+		printf("Equal\n");
+	else
+		printf("Not equal\n");
+	
+	/*
+		Not equal
+		Equal
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:
+
+int main() {
+
+	int x = 10;
+	int* ptr = &x;
+
+	
+	if (ptr != NULL) // --> if(ptr)
+		printf("Equal\n");  
+	else
+		printf("Not equal\n");
+
+}
