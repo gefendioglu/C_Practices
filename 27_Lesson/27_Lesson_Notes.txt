@@ -1,0 +1,785 @@
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Yazýlarýn karþýlaþtýrýlmasý (strcmp): 
+- iki yazýnýn eþitliðini karþýlaþtýrmak (comparing two strings whether they are the same or not)
+- yazýlarýn küçüklük büyüklük karþýlaþtýrmasý (comparing two strings )
+- Standart kütüphanelerde 6 adet karþýlaþtýrma fonksiyonu bulunur (return value bool) Ancak C dilinde bu fonksiyonlar bulunmamaktadýr. 
+  bool is_equal
+  bool is_not_equal
+  bool is_less
+  bool is_greater ...
+- Karþýlaþtýrmanýn kesin sonucu 
+  retval > 0  --> 1. parametreye gönderilen deðer daha büyük 
+  retval < 0  --> 2. parametreye gönderilen deðer daha büyük 
+  retval == 0 --> Ýki parametre eþit
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+ 
+int strcmp(const char *ptr1, const char *ptr2)
+
+if(strcmp(s1, s2) == 0)
+if(!strcmp(s1, s2)) -->  iki yazý birbirine eþitse
+
+if(strcmp(s1, s2) != 0)
+if(strcmp(s1, s2)) -->  iki yazý birbirine eþit deðilse
+
+if(strcmp(s1, s2) > 0) --> if s1 > s2
+if(strcmp(s1, s2) < 0) --> if s1 < s2
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+container / collection 
+lexicogrphical compare algorithm : containerdeki öðeleri karþýlýklý olarak karþýlaþtýrmak amacýyla kullanýlýr. 
+
+1  2  4  6  8  9
+1  2  4  7  2  5 --> 7 > 6 olduðundan ikinci container daha büyük
+
+1  2  4  6  8  9
+1  2  4  6  8  9 --> iki container birbirine eþit, ancak hem öðeler hem de öðe                    sayýlarý birbirine eþit olmalýdýr.  
+
+1  2  4  ...  100
+5                --> ikinci container daha büyüktür.
+
+1  2  4  6
+1  2  4  6  8  9 --> ikinci container daha büyüktür
+
+ot
+cumhuriyet --> o > c olduðundan ot > cumhuriyet
+
+bakýr
+bakýrcý --> bakýrcý > bakýr 
+
+büyük masa
+küçük masa --> küçük masa > büyük masa 
+
+MASA
+masa --> m > M olduðundan masa > MASA
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example: 
+
+int main() {
+
+	char s1[SIZE];
+	char s2[SIZE];
+	int cmp_result;
+
+	printf("two names : ");
+	scanf("%s%s", s1, s2);
+
+	cmp_result = strcmp(s1, s2);
+
+	if (cmp_result>0)
+		printf("%s > %s\n", s1, s2);
+	else if (cmp_result < 0)
+		printf("%s < %s\n", s1, s2);
+	else
+		printf("esit");
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example: Checking password
+
+int main() {
+
+	char psw[] = "purple bird";
+	char entry[SIZE];
+
+	printf("enter the password : ");
+	gets_s(entry, SIZE);
+
+	if (!strcmp(psw, entry))
+		printf("true password\n");
+	else
+		printf("wrong password\n");
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+Example: strcmp function 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h> // for toupper
+
+#define SIZE 10
+
+int my_stricmp(const char* ptr_left, const char* ptr_right) {
+
+	while (toupper(*ptr_left) == toupper(*ptr_right)) {
+
+		if (*ptr_left == '\0')
+			return 0;
+		++ptr_left;
+		++ptr_right;
+	}
+	return toupper(*ptr_left) - toupper(*ptr_right);
+}
+
+int my_strcmp(const char* ptr_left, const char* ptr_right) {
+	
+	while (*ptr_left == *ptr_right) {
+		
+		if (*ptr_left == '\0')
+			return 0;
+		++ptr_left;
+		++ptr_right;
+	}
+	// no need to use int casting, because intergral promotion 
+	return (int)*ptr_left - (int)*ptr_right;
+}
+
+int main() {
+
+	char s1[SIZE];
+	char s2[SIZE];
+	int cmp_result;
+
+	printf("two names : ");
+	scanf("%s%s", s1, s2);
+
+	cmp_result = my_stricmp(s1, s2);
+
+	if (cmp_result > 0)
+		printf("%s > %s\n", s1, s2);
+	else if (cmp_result < 0)
+		printf("%s < %s\n", s1, s2);
+	else
+		printf("esit");
+
+	/*
+		two names : ankara antalya
+		ankara < antalya
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+- What is the locale-sensitive ? 
+  - <locale.h>
+  - writing dates is different from country to country
+    - 05.04.2020 OR 04.05.2020 --> can be the same date for different countries
+  - writing numbers with decimal points: 
+    - 1.720.344 OR 1'720'344
+  - C Locale --> default locale (if not specified)
+  - setlocale() function can be used to set some rules for locale-sensitivity
+  - locale-sensitive (locale-dependent) / local-insensitive (locale-independent)
+    - strcmp --> locale-insensitive
+	  cppreference: strcmp function is not locale-sensitive.
+    - printf --> locale-sensitive
+  - LC_xxx --> locale macros
+	LC_ALL  	selects the entire C locale
+	LC_COLLATE	selects the collation category of the C locale
+	LC_CTYPE	selects the character classification category of the C locale
+	LC_MONETARY	selects the monetary formatting category of the C locale
+	LC_NUMERIC	selects the numeric formatting category of the C locale
+	LC_TIME	    selects the time formatting category of the C locale
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: From cppreference
+
+#include <stdio.h>
+#include <locale.h>
+#include <time.h>
+#include <wchar.h>
+ 
+int main(void)
+{
+    // the C locale will be UTF-8 enabled English;
+    // decimal dot will be German
+    // date and time formatting will be Japanese
+    setlocale(LC_ALL, "en_US.UTF-8");
+    setlocale(LC_NUMERIC, "de_DE.utf8");
+    setlocale(LC_TIME, "ja_JP.utf8");
+ 
+    wchar_t str[100];
+    time_t t = time(NULL);
+    wcsftime(str, 100, L"%A %c", localtime(&t));
+    wprintf(L"Number: %.2f\nDate: %Ls\n", 3.14, str);
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: After setting locale
+
+int main() {
+	char* ptr;
+	double dval;
+
+	ptr = setlocale(LC_ALL, "turkish");
+	if (ptr == NULL) {
+		printf("locale was not changed!!!");
+		return 1;
+	}
+	printf("locale was changed!!! new locale:  [%s]\n", ptr);
+
+	printf("a number : ");
+	scanf("%lf", &dval);
+	printf("the number : %lf\n", dval);
+
+	/*
+		locale was changed!!! [Turkish_Turkey.1254]
+		a number : 12,456
+		the number : 12,456000
+	*/
+}
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: Without setting locale
+
+int main() {
+	char* ptr;
+	double dval;
+
+	/*ptr = setlocale(LC_ALL, "turkish");
+	if (ptr == NULL) {
+		printf("locale was not changed!!!");
+		return 1;
+	}
+	printf("locale was changed!!! new locale : [%s]\n", ptr);*/
+
+
+	printf("a number : ");
+	scanf("%lf", &dval);
+	printf("the number : %lf\n", dval);
+
+
+	/*
+		a number : 12,456
+		the number : 12.000000
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: Changing locale 
+
+int main() {
+
+	time_t timer;
+	struct tm* tptr;
+	char buffer[SIZE];
+	char* ptr;
+
+	/*ptr = setlocale(LC_ALL, "turkish"); // for ex: portuguese
+	if (ptr == NULL) {
+		printf("locale was not changed!!!");
+		return 1;
+	}
+	printf("locale was changed!!! new locale : [%s]\n", ptr);*/
+	
+	time(&timer);
+	tptr = localtime(&timer);
+
+	strftime(buffer, SIZE, "%A %B %Y", tptr);
+	puts(buffer);
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: strcoll function from cppreference
+Compares two null-terminated byte strings according to the current locale as defined by the LC_COLLATE category.
+
+#include <stdio.h>
+#include <string.h>
+#include <locale.h>
+ 
+int main(void)
+{
+    setlocale(LC_COLLATE, "cs_CZ.iso88592");
+ 
+    const char* s1 = "hrnec";
+    const char* s2 = "chrt";
+ 
+    printf("In the Czech locale: ");
+    if(strcoll(s1, s2) < 0)
+         printf("%s before %s\n", s1, s2);
+    else
+         printf("%s before %s\n", s2, s1);
+ 
+    printf("In lexicographical comparison: ");
+    if(strcmp(s1, s2) < 0)
+         printf("%s before %s\n", s1, s2);
+    else
+         printf("%s before %s\n", s2, s1);
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+string literals 
+pointer arrays
+pointer to pointer 
+void pointers 
+function pointers
+multi-dimensional arrays
+dynamic memory management
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+strcmp - strncmp
+strcat - strncat
+strcpy - strncpy
+char *strncpy( char *dest, const char *src, size_t count );
+
+Example: strncpy fonksiyonunda kopyalanacak karakter sayýsý, kaynak yazýnýn uzunluðuna eþit ya da küçükse yazýnýn sonuna null karakteri kopyalanmadýðý için runtime hatalarýna sebep olur. 
+
+int main() {
+	char str[] = "gamze";
+	char s[100];
+	size_t n;
+	printf("Kac adet charachter: ");
+	scanf("%zu", &n);
+
+	strncpy(s, str, n); // Runtime error 
+	printf("%s ", s); 
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:strncpy
+
+int main() {
+	char str[100] = "serkan";
+	char s[] = "afs";
+
+	strncpy(str + 1, s, 2);// [safkan]
+	printf("[%s]\n", str); 
+
+	strcpy(str + 1, s);    // [safs]
+	printf("[%s]\n", str);
+}
+
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:strncpy
+
+int main() {
+
+	char str[100] = "serkan";
+	char s[100];
+	size_t n;
+
+	printf("kac karakter: ");
+	scanf("%zu", &n);
+
+	strncpy(s, str, n)[n] = '\0';
+	printf("[%s]\n", s); 
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:strncat
+
+int main() {
+	char str1[100] = "ABCDEFGH";
+	char str2[100] = "012345";
+	strncat(str2, str1, 3);
+
+	printf("[%s]\n", str2); // [012345ABC]
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example:strncmp with substring
+
+int main() {
+	char str1[] = "gamzeersan";
+	char str2[] = "mehmetersoy";
+	
+	if (!strncmp(str1+5, str2+6,3))
+		printf("They are equal\n"); // They are equal
+	else 
+		printf("They are not equal\n");
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: is_at_end() fonksiyonun yazýlmasý 
+
+// First sentence: polathan - Second sentence : han 
+int is_at_end(const char *ptr1, const char *ptr2){
+	size_t length_ptr1 = strlen(ptr1);
+	size_t length_ptr2 = strlen(ptr2);
+	if (length_ptr2 > length_ptr1)
+		return 0;
+	// ptr1 + length_ptr1 - length_ptr2 --> the address of 'h'
+	return !strcmp(ptr1 + length_ptr1 - length_ptr2, ptr2); 
+}
+
+int main() {
+
+	char str1[SIZE];
+	char str2[SIZE];
+	
+	printf("First sentence: ");
+	gets_s(str1, SIZE);
+
+	printf("Second sentence: ");
+	gets_s(str2, SIZE);
+
+	if (is_at_end(str1, str2))
+		printf("True\n"); 
+	else 
+		printf("False\n");
+	/*
+		First sentence: polathan
+		Second sentence: han
+		True
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: Write str_prepend(...) function !!! 
+
+// Adding at the beginning ptr2 --> ptr1
+char* str_prepend(char* ptr1, const char* ptr2) {
+
+}
+
+int main() {
+
+	char str1[SIZE] = "GAMZE";
+	char str2[SIZE] = "MEHMET";
+	
+	printf("Before str_prepend: [%s]\n", str1); // [GAMZE]
+	str_prepend(str1, str2);
+	printf("After str_prepend: [%s]\n", str1);  // [MEHMETGAMZE]
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+- non-standard C funtions (provided by C compilers with underscore _)
+  - strupr  --> char *strupr(char *ptr);
+  - strlwr  --> char *strupr(char *ptr);
+  - strset  --> char *strset(char *ptr, int c);
+  - strrev  --> char *strrev(char *ptr);
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: 
+
+int main() {
+
+	char str[SIZE];
+	printf("A sentence: ");
+	gets_s(str, SIZE);
+	printf("[%s]\n", str);
+
+	_strupr(str);
+	printf("[%s]\n", str);
+
+	_strlwr(str);
+	printf("[%s]\n", str);
+
+	_strset(str, '*');
+	printf("[%s]\n", str);
+
+	_strrev(str);
+	printf("[%s]\n", str);
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: To be Controlled !!!
+
+int main() {
+
+	char str[SIZE] = "cumhuriyet bayrami kutlu olsun";
+
+	for (;;) {
+
+		puts(str);
+		sleep(0.15);
+		system("cls");
+		
+		_strupr(str);
+		puts(str);
+		sleep(0.15);
+		system("cls");
+
+		_strlwr(str);
+		puts(str);
+	}
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+strpbrk --> char* strpbrk( const char* dest, const char* breakset );
+Scans the null-terminated byte string pointed to by dest for any character from the null-terminated byte string pointed to by breakset, and returns a pointer to that character.
+
+The behavior is undefined if either dest or breakset is not a pointer to a null-terminated byte string.
+
+int main() {
+
+	char str1[SIZE];
+	char str2[SIZE];
+	char* ptr;
+
+	printf("icinde arama yapilacak yazi: ");
+	gets_s(str1, SIZE);
+
+	printf("aranacak karakterler: ");
+	scanf("%s", str2);
+
+	ptr = strpbrk(str1, str2);
+	if (ptr == NULL)
+	{
+		printf("Not found\n");
+	}
+	else {
+		printf("Found : %d\n", ptr-str1);
+		*ptr = '*';
+		puts(str1);
+	}
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: to be controlled !!!
+
+char* my_strpbrk(const char* ptr1, const char* ptr2) {
+	while (*ptr1) { // *ptr1 != '\0' 
+		if (strchr(ptr2, *ptr1) != NULL)
+			return (char*)ptr1;
+		++ptr1;
+	}
+
+	return NULL;
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+NULL pointer  - null karakter '\0'
+- NULL  --> bir makro ve null pointer, adres sabiti, pointerlara atanmalý 
+- '\0'  --> tamsayý sabiti, null karakter, int türden bir sabit, tamsayi deðiþkenlere  atanmalý 
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+p bir yazýyý gösteren bir pointer ise VE gösterdiði yazý boþ deðilse 
+short circuit behaviour --> ilk koþul saðlanmadýðýnda diðer koþula bakýlmamasý
+- if(p != NULL && *ptr != '\0') --> if(ptr && *ptr)
+
+p bir yazýyý göstermiyorsa VEYA gösterdiði yazý boþ ise
+- if(p == NULL || *ptr == '\0') --> if(!ptr || !*ptr)
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+int main() {
+
+	char str1[] = "alican";
+	char str2[] = "alican";
+	
+	if (str1 == str2) // always true
+	{
+		printf("Equal\n");
+	}
+	else {
+		printf("Not equal \n");
+	}
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+int main() {
+
+	char str1[] = "alican";
+	char str2[] = "alican";
+	
+	if (!strcmp(str1,str2)) // str1 ve str2 eþit mi? 
+	{
+		printf("Equal\n");
+	}
+	else {
+		printf("Not equal \n");
+	}
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: To be controlled
+
+int main() {
+
+	char str1[] = "alican";
+	char str2[] = "alican";
+	char* ptr1 = str1;
+	
+	if (ptr1==str1) 
+	{
+		printf("Equal\n");
+	}
+	else {
+		printf("Not equal \n");
+	}
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+- string literals:
+  - read only memory altýnda tutulmaktadýr. Deðiþtirilmek istendiðinde salt okunur bellek alanýnda deðiþiklik yapýlacaðý için compiler time hatasý verecektir. 
+
+  - string literaller --> char* yerine const char* ile tanýmlanmalýdýr. 
+
+  - string literaller static ömürlü dizilerdir. Bu durum embedded sistemler için önemli olabilir. Statik veriler için tanýmlanan alan kýsýtlý olabilir. Static ömürlü nesnelerin adresleri, otomatik ömürlü olanlarýn aksine bir fonksiyon tarafýndan geri döndürülebilir. 
+
+  - string literal ile oluþturulan dizileri deðiþtirmek --> undefined behaviour
+    - char* ptr = "gamze";
+	  *ptr = 'G'; // Exception thrown: write access violation.
+
+	- const char* ptr = "gamze";
+	  *ptr = 'G'; // syntax error
+
+	- char* ptr = "gamze";
+	  char str[] = "can";
+	  strcat(ptr, str); // undefined behaviour
+
+  - literal --> constant anlamýndadýr
+  - "gamze" --> string literal --> like char array 
+     --> (char[6])"gamze" (C) --> char str[] = "gamze";
+	 --> (const char[6])"gamze" (Cpp) --> const char str[] = "gamze";
+
+  - char* ptr = "Gamze Sahin"; 
+	// syntax error in Cpp
+	// const char* --> char* (no conversion) 
+
+  - bir dizi ismi bir ifade içinde kullanýldýðýnda o dizinin adresine dönüþtürülüyorsa array decay, array to pointer conversion; string literaller için de ayný durum geçerlidir.
+
+  - *"gamze" --> literal ile oluþturulan dizinin ilk elemaný 
+    - putchar(*"gamze");--> dizinin ilk adresini deðeri --> g
+	- "GAMZE"[2] --> M
+	- printf("%p\n", "gamze"); --> literalin adres bilgisi 
+	- printf("%s\n", "gamze"); --> literalin kendisi
+	- size_t len = strlen("gamze"); --> len --> literal uzunluðu
+	  printf("%zu\n", len);
+	- int to_hex_char(int value) {
+		return "0123456789ABCDEF"[value];
+	  }
+	- char* ptr = "gamze"; --> initialization with string literals
+	  ptr = "mehmet";  --> assigment with string literals
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: Returning string literals for functions
+
+char* get_str(int n) {
+	switch (n)
+	{
+	case 0: return "zero";
+	case 1: return "one";
+	case 2: return "two";
+	case 3: return "three";
+	case 4: return "four";
+	case 5: return "five";
+	case 6: return "six";
+	case 7: return "seven";
+	case 8: return "eigth";
+	case 9: return "nine";
+	}
+	return "";
+}
+
+int main() {
+
+	int ival=981234;
+	while(ival) {
+		puts(get_str(ival % 10));
+		printf("\n");
+		ival /= 10;
+	}
+	/*
+		four
+		three
+		two
+		one
+		eigth
+		nine
+	*/
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Interview:
+What is the difference between them?
+- 	char str[] = "gamze sahin";
+- 	char* ptr = "gamze sahin";
+
+int main() {
+
+	char str[] = "gamze sahin";
+	printf("sizeof(str) : %z\n", sizeof(str));
+	// "gamze sahin" statik ömürlü  bir char dizi deðildir.
+	// ismi str olan 10 elemanlý bir dizi tanýmý
+	// str[0] = 'G' --> Gamze sahin (well defined)
+	// str = "mehmet"; --> syntax error
+	// strcpy(str, "mehmet"); --> not syntax error
+
+	char* ptr = "gamze sahin";
+	printf("sizeof(ptr) : %z\n", sizeof(ptr));
+	// "gamze sahin" statik ömürlü bir string literaldir.
+	// ptr --> "gamze sahin" literalinin yerleþtirildiði alanýn adresini tutar
+	// char *ptr = "gamze sahin"; --> syntax error in Cpp
+	// *ptr = 'G'; --> undefined behaviour
+	// const char *ptr = "gamze sahin"; --> the true form of definition	
+
+	char* p = "mehmet efe"; 
+	// "mehmet efe" string literal olduðundan porgram sonlanana kadar var olacaktýr.
+	p = "gamze efe"; // --> farklý bir adres için tanýmlanýr. 
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Interview:
+Özdeþ string literalleri derleyiciye baðlý olarak;
+- ayný adreste de tutulabilir (tek bir dizi oluþturulur)
+- farklý adreslerde de saklanabilir (iki ayrý dizi oluþturulur). 
+- Compiler ayarlarý kullanýlarak ayarlanabilir!
+
+int main() {
+
+	// unspecified behaviour
+	char* ptr1 = "gamze";
+	char* ptr2 = "gamze";
+
+	if (ptr1 == ptr2) // It depends on the compiler
+		printf("True");
+	else
+		printf("False");
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
