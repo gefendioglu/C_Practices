@@ -872,23 +872,30 @@ storage runtime zamanında belirlenir.
 / ----------------------------------------------
 / ----------------------------------------------
 
-- NULL pointer:
+- NULL Pointers:
   - NULL is a macro, not a keyword or identifier 
+
   - This macro is   defined in several standard libraries such as stdio.h, stdlib.h, stddef.h, string.h, time.h, etc. files. 
+
   - NULL pointer is an address constant and can be assigned/initialized to pointers
-  - Assigning NULL macro to a non-pointer value is OK in C but not true (is error in Cpp) 
     int x = NULL; // warning
+
   - NULL pointer can be assigned to any type of pointers:
     int *iptr = NULL;
 	double *dptr = NULL;
 	char *cptr = NULL;
+
   - NULL pointer olan bir pointer değişken, hiçbir nesneyi göstermeyen ancak geçerli bir pointer değişkendir. 
+
   - NULL pointers can not be operand for * and [] operators (not be dereferenced) --> undefined behaviour
+
   - NULL pointers shall not be an operand for +, -, ++, --, etc. operators. 
+
   - The followings are used a lot: 
     - Controlling whether a pointer is a NULL pointer or not 
 	- Two pointers can be compared with == OR != operators:
 	  - If both of them are NULL pointers --> these pointers are equal in terms of value
+
 	- The address definition can be used in the place expecting to have a logic definition. 
 	  - If this address is a NULL pointer --> true
 	  - If this address is not a NULL pointer --> false
@@ -896,6 +903,58 @@ storage runtime zamanında belirlenir.
 	  if (ptr == NULL) --> if(!ptr)
 	  ptr ? op2 : op3; --> ptr is NULL --> op2
 	  if(ptr1 && ptr2) --> ptr1 != NULL && ptr2 != NULL
+
+   - Bir pointera bir adres atanmalı. Br tamsayı ifadesinin bir pointer degiskene atanması legal olsa da yanlistir. Ancak bu durumun bir istisnası vardır: 
+     - Eger bir pointer degiskene tamsayi sabiti olarak 0 atanırsa, derleyici 0 sabitini NULL pointera dönüstürür (null pointer conversion)
+       int *ptr = 0; --> int *ptr = NULL;
+	   int *ptr = 0; --> hesader file eklenmesine ihtiyac yok
+	   int *ptr = NULL; --> header file eklenmeli
+
+   - If arithmetical variables are not initialized manually, they are automatically initialized with zero value by compilers for both global variables and static local variables. 
+
+   - If static pointer variables are not initialized manually, they are automatically initialized with NULL pointers by compilers.
+
+   - When an arithmetic typed array variables are initialized with the values which have smaller than the size of this array, int this case non-initialized items are automatically initialized with zero value. 
+
+   - When a pointer typed array variables are initialized with the values which have smaller than the size of this array, int this case non-initialized items are automatically initialized with NULL pointer. 
+
+- What is the reason of using NULL pointers?
+  - Instead of NULL macro, or zero constant 
+    --> "nullptr" keyword shall be used in Cpp (with C++11)
+  - The return values of some functions are the object address (generally the address of given parameters to the same function, most probably user defined types)
+    - NULL pointers can be used as a return value for unsuccessfull situations. 
+	  - Examples from standard library
+	    - FILE* fopen(const char* _FileName, const char* _Mode);
+		- void* __cdecl malloc(size_t _Size);
+		- search functions:
+		  bsearch
+		  strchr --> search a char
+		  strrchr
+		  strstr
+		  strpbrk 
+  
+  - If the following function takes a NULL pointer as an argument --> undefined behaviour (If it is predefined implicitly)
+    void func(int *ptr); // setter function 
+	int* func(void);     // can be return NULL pointer 
+	int* func(int* ptr); // can be return NULL pointer (documented in the standard in third party library)
+	
+	- For example: strchr function in standard lib. (from cppreference.com): 
+	Pointer to the found character in str, or null pointer if no such character is found.
+	The behavior is undefined if str is not a pointer to a null-terminated byte string.
+
+	- For example: time function in standard lib. (from cppreference.com): 
+	arg	- pointer to a time_t object where the time will be stored, or a null pointer
+
+	- For example: time function in standard lib. (from cppreference.com):
+	int fflush( FILE *stream );
+	Returns zero on success. Otherwise EOF is returned and the error indicator of the file stream is set.
+
+  - NULL pointers can be used as flag variables to control.
+
+  - A dangling pointer is an invalid pointer !!! This type of pointer was exist once upon  a time; but now is not pointing any object now. 
+   int *ptr = malloc(1000*sizeof(int));
+   free(ptr);  --> dangling pointer
+   ptr = NULL; --> to make it valid pointer 
 
 / ----------------------------------------------
 / ----------------------------------------------
@@ -968,3 +1027,148 @@ int main() {
 		printf("Not equal\n");
 
 }
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: NULL pointer conversion
+
+int main() {
+
+	int px = 0;
+	int* ptr;
+
+	//ptr = NULL;
+	ptr = 0;
+
+	// warning C4047: '=': 'int *' differs in levels of indirection from 'int'
+	// the assignment shall be zero constant not a variable 
+	ptr = px; 
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: global pointer variables automatically initialized with NULL pointers
+
+int* gptr;
+
+int main() {
+
+	if (gptr == NULL)
+		printf("True\n"); // True
+	else
+		printf("False\n");
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: Pointer arrays automatically initialized with NULL pointers 
+
+int x, y, z;
+
+int main() {
+
+	int* ptr[4] = { &x, &y, &z };
+
+	if (ptr[3] == NULL)
+		printf("True\n"); // True
+	else
+		printf("False\n");
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: fopen() standard function  with NULL pointers as a return value
+int main() {
+
+	FILE* fptr;
+
+	fptr = fopen("gamze.txt", "r");
+
+	if (fptr == NULL) { // --> if(!fptr)
+		fprintf(stderr, "Not open a file\n");
+		return 1;
+	}
+	// Not open a file
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: malloc() standard function  with NULL pointers as a return value
+
+int main() {
+
+	size_t number;
+
+	scanf("%zu", &number);
+	int *ptr = malloc(number * sizeof(int));
+
+	if (ptr == NULL) { // --> if(!ptr)
+		//...
+	}
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: a function sample which has a pointer return value 
+
+// const-casting const int * --> int*
+int* search_value(const int* ptr, size_t size, int searched_value) {
+	for (size_t i = 0; i < size; ++i)
+	{
+		if (ptr[i] == searched_value)
+			return (int*)&ptr[i]; // OR --> return (int*)ptr + i;
+	}
+	return NULL;
+}
+
+int main() {
+
+	int array[SIZE];
+	int value;
+	int* ptr;
+
+	randomize();
+	set_random_array(array, SIZE);
+	print_array(array, SIZE);
+
+	printf("The searched value is : ");
+	scanf("%d", &value);
+
+	ptr = search_value(array, SIZE, value);
+	if (ptr == NULL)
+		printf("Not Found\n");
+	else
+		printf("Found !! The index of array : %d\n", ptr - array);
+
+	/*
+		509 561 979 427 164 249 248 355 763 316
+		The searched value is : 561
+		Found !! The index of array : 1
+	*/
+}
+
+
+/ ----------------------------------------------
+/ ----------------------------------------------
+
+Example: time function with NULL pointer
+
+int main() {
+
+	time_t timer;
+	time(&timer);
+
+	printf("second: %lld\n", timer); // second: 1603659950
+
+	printf("second (time(NULL)): %lld\n", time(NULL)); 
+	// second (time(NULL)): 1603659950
+}
+
+/ ----------------------------------------------
+/ ----------------------------------------------

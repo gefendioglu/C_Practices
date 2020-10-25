@@ -282,15 +282,20 @@ int* get_array_min(const int* ptr, size_t size) {
 
 typedef int* IPTR;
 
+// const-casting const int * --> int*
+int* search_value(const int* ptr, size_t size, int searched_value) {
+	for (size_t i = 0; i < size; ++i)
+	{
+		if (ptr[i] == searched_value)
+			return (int*)&ptr[i]; // return (int*)ptr + i;
+	}
+	return NULL;
+}
+
 int main() {
 
-	int x = 10;
-	int* ptr = &x;
+	FILE* file = NULL;
 
 
-	if (ptr != NULL) // --> if(ptr)
-		printf("Equal\n");
-	else
-		printf("Not equal\n");
-
+	printf("second (time(NULL)): %lld\n", time(NULL)); 
 }
