@@ -1,0 +1,40 @@
+## Standard Library
+
+- Standard Library aþaðýdaki bileþenlerden oluþmaktadýr:
+  - standard C functions
+  - standard user defined types
+    - struct tm tx; // tm is a user defined types from standard lib.
+  - standard macros (object like macros, function like macros)
+    - int x = RAND_MAX; // RAND_MAX is a macro from <time> file
+  - standard type alias
+    - time_t timer; // time_t is a type alias from standard lib.
+
+/----------------------------------------------
+/----------------------------------------------
+
+### Standard C Functions
+
+- These functions provide common interface and portability (for example: abs(..), strcpy(..), strcat(..), etc.) 
+
+- With C89 --> C99 --> C11, the number of standard c functions has increased.
+
+- The C standard library consists of modules of header files ( for example: stdio.h, string.h, math.h, stdlib.h, etc.). The declarations of standard C functions are in these header files. 
+
+- For example, the definitions of all C functions in the stdlib.h file are pasted at compile time wherever this file is included. Since this process happens during the compile time, it doesn't slow down the program. Generally, the processes that create workload during run-time cause the program to slow down.
+
+- The definitions of standard C functions cannot be reached by using header files. Instead, compiled versions of them are available as object code in compilers. Compiled versions of these functions are used during run-time. That is, they are included in the written source code.
+
+- Standards do not dictate how C functions will be implemented. They just make suggestions about it. For this reason, different compilers may have implemented standard functions differently.
+
+- Plaguer's "Standard C Library" book provides examples of implementation for standard C functions. 
+
+- Since there is no function overloading mechanism in the C programming language, there are different definitions for the same function in the standard library. For example: 
+  - int abs(int);
+    double fabs(double);
+
+- Functions such as printf, scanf are defined as variadic functions in the standard library. For these functions, arguments must be sent to the parameters up to the variadic parameter. Variadic parameter representation is provided by the ellipsis token (...). 
+  - int printf(const char* ptr, ...); // return value is int type
+  - scanf(const char* ptr, ...);
+    
+/----------------------------------------------
+/----------------------------------------------

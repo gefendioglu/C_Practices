@@ -1,0 +1,36 @@
+
+## Input - Output Stream
+
+- Bytes to the program --> standard input stream (default keyboard)
+- Bytes from the program --> standard output stream (default display unit - monitor)
+- standard input stream and standard output stream can be changed and this operation is called as "direction"
+
+- formatsýz çýkýþ iþlemi: bellekte tutulan deðerin karakter kodlamasýndaki kodlara dönüþtürülmeden ekrana yazýlmasý iþlemi
+- formatlý çýkýþ iþlemi: bellekte tutulan deðerin karakter kodlamasýndaki kodlara dönüþtürülerek ekrana yazýlmasý iþlemi
+
+- formatsýz giriþ iþlemi: klavyeden girilen binary deðerin direk belleðe girilmesi
+- formatlý giriþ iþlemi: klavyeden girilen deðerin ascii karakter kodlamasýna göre ikili sayý sisteminde belleðe girilmesi
+
+
+- C'nin standart kütüphanesinde formatted output ve formatted input iþlemlerini gerçekleþtiren fonksiyonlar bulunmaktadýr. 
+- <stdio.h> header file is responsible these operations 
+  - standart output functions: 
+    - printf()  --> prints to standart output 
+    - sprintf() --> prints to memory 
+    - fprintf() --> prints to a file 
+  - standart input functions: 
+    - scanf()  --> scans from standart input 
+    - sscanf() --> scans from memory 
+    - fscanf() --> scans from a file 
+
+- Formatted Output: 
+   - Which number system will it be written?
+   - Will the prefix showing the prefix of the number system be written?
+   - Will characters be written in uppercase or lowercase in the hexadecimal system?
+   - Will the + and - characters be used to write for positive/negative numbers?
+
+- width : yazma alaný geniþlði
+987551   gamze efendioglu
+   764  mehmet efendioglu
+
+- fill character: 

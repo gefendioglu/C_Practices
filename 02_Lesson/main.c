@@ -1,11 +1,4 @@
-#include <limits.h>
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
-
-int main() {
-
-	int number = INT_MAX;
-	printf("number : %d\n", number);
-
-	return 0;
-}
+int main(){}

@@ -1,0 +1,31 @@
+
+## Name Lookup
+   - Name Hiding ( the same meaning as "Name Shadowing" or "Name Masking" )
+
+### Scope Resolution Operator
+- With the use of unary scope resolution operator, it is possible to reach the global namespace area and get rid of name shadowing.
+- unary operator : it has got only one operand
+- binary operator: it has got two operands
+- scope resolution operator (::) can be unary or binary operator 
+
+/----------------------------------------------
+/----------------------------------------------
+
+-**Example**: Name Lookup and Name Shadowing 
+   - Name-lookup will be done for the x value in the right hand side. However, this value is not the value of x in the global namespace.
+   - That's why, local x definition (left hand side x) is initialized with a garbage value.
+   - Using x with garbage value leads to undefined behaviour. 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int x = 45;
+
+int main(){
+	int x = x; // undefined behaviour 
+	// Warning C6001: Using uninitialized memory 'x'
+	// Error C4700 : uninitialized local variable 'x' used	
+}
+
+/----------------------------------------------
+/----------------------------------------------
