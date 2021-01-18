@@ -29,5 +29,8 @@
     <Text Include="ascii.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="08_Lesson_Notes.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

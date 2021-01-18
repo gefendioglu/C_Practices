@@ -29,8 +29,363 @@
    - Will characters be written in uppercase or lowercase in the hexadecimal system?
    - Will the + and - characters be used to write for positive/negative numbers?
 
-- width : yazma alaný geniþlði
+- width character: yazma alaný geniþlði
 987551   gamze efendioglu
    764  mehmet efendioglu
 
 - fill character: 
+
+ 
+/----------------------------------------------
+/----------------------------------------------
+
+### printf function
+
+- int printf(const char *ptr, ...); --> en az bir argument gönderilmesi zorunlu
+  - const char *ptr : adresi alýnan yazý deðiþtirilmeyecekse, sadece okuma (eriþim) amaçlý olarak kullanýlacaksa const anahtar sözcüðü kullanýlmalýdýr.
+  - return value is int to show how many characters are written in output stream. 
+
+- C'de yazýlar char tipli dizilerde tutulmaktadýr (const char *). Özel olarak yazý tutan string sýnýfý ya da kütüphanesi bulunmaz.
+  - char str[20]; --> char array
+  - bir fonksiyona yazý gönderilmek istendiðinde, char dizisi gönderieceðinden call by value yerine call by reference ile (adres ile) gönderilmektedir. Bu sebeple fonksyinun parametresi pointer tipte olacaktýr. 
+
+- "BABA" is comprised of --> 'B' 'A' 'B' 'A' '\n'
+
+
+
+/----------------------------------------------
+/----------------------------------------------
+- **Example**: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	// The address of a string literal ("Enter a value : ") is sent as an argument for the first parameter of printf function 
+	printf("Enter a value : ");
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- printf fonksiyonunun variadic parametrelerine gönderilen argümanlar, formatlanarak ekrana yazýlmaktadýr. Conversion specifier samples are: 
+  - %d --> decimal
+  - %x --> hexadecimal
+  - %o --> octal 
+  - %f --> double types (default olarak noktadan sonra 6 basamak yazýlýr.)
+  - %.3f --> double types (noktadan sonra 3 basamak yazýlacak.)
+  - %c --> tamsayýdan karakter yazar 
+  - %% --> % karakteri yazdýrmak için
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example**: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x = 298012;
+	printf(" x : %d\n", x);
+	printf(" x : %x\n", x);
+	printf(" x : %o\n", x);
+
+	/*
+		x : 298012
+		x : 48c1c
+		x : 1106034
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example**: 
+ 
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	for (int i = 0; i < 26; ++i)
+		printf("%c ", 'A'+i);
+	
+	printf("\n");
+
+	for (int i = 0; i < 26; ++i)
+		printf("%c ", 'a' + i);
+
+	printf("\n");
+
+	for (int i = 0; i < 10; ++i)
+		printf("%c ", '0' + i);
+
+	printf("\n");
+
+	for (int i = 33; i < 127; ++i)
+		printf("%c ", i);
+
+	/*
+		A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+		a b c d e f g h i j k l m n o p q r s t u v w x y z
+		0 1 2 3 4 5 6 7 8 9
+		! " # $ % & ' ( ) * + , - . / 0 1 2 3 4 5 6 7 8 9 : ; < = > ? @ A B C D E F G H I J K L M N O P Q R S T U V W X Y Z [ \ ] ^ _ ` a b c d e f g h i j k l m n o p q r s t u v w x y z { | } ~
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example**: Using  the return value of printf function 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x = 110, y = 56;
+	int retval;
+
+	retval = printf("%d+%d=%d", x, y, x + y);
+	printf("\nretval : %d\n", retval);
+
+	/*
+		110+56=166
+		retval : 10
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example**: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x = 1976;
+	printf("%d", printf("%d", printf("%d", x))); // 197641
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example**: The usage of %% character 
+
+int main() {
+
+	int x,y;
+	printf("Enter two values: ");
+	scanf("%d%d", &x, &y);
+
+	printf("%d %% %d = %d\n", x, y, x%y); 
+	/*
+		Enter two values: 15 12
+		15 % 12 = 3
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+### scanf function
+
+- standart giriþ akýmýndan gelen karakterleri formatlý biçime uygun olarak set etmektedir. 
+
+- int scanf(const char *ptr, ...);
+  - ilk parametreye output stream ile ilgisi olmadýðýndan her zaman string literal olabilen bir format bilgisi (such as %d, %o, &x, etc.), variadic parametreye ise her zaman nesnenin adres bilgisi argument olarak gönderilmelidir. 
+  - printf fonksiyonundan farklý olan conversion specifierlarý: 
+	- %f  --> float
+	- %lf --> double 
+	- %u  --> unsigned int 
+
+- buffer of standard input stream :
+  - örneðin 123 879(enter) giriþi yapýldýðýnda;
+    her bir karakterin ASCII kodu input buffer ýna eklenir. 
+	bu örnekte sýrayla: 49 50 51 32 56 55 57 10 kodu buffer a eklenir.
+  - scanf is a line buffered function (bufferdan çýkýlmasý için newline (\n) karakterine ihtiyaç vardýr.)
+  - bufferýn boþaltýlmasý 
+
+void clear_input_buffer() {
+	int c;
+	while ((c = getchar()) != '\n' && c != EOF)
+		;
+}
+
+- return value of scanf function 
+  - scanf tarafýndan set edilen deðiþken sayýsýdýr
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example**: The buffer of standard input stream
+
+int main() {
+
+	int ival;
+	double dval;
+	printf("Enter two values: ");
+	scanf("%d%lf", &ival, &dval); 
+	// ival = 12.95 --> ival = 12 
+	// dval = .95 
+	// input stream buffer dan sadece 12 karakterleri alýnýr.
+	// buffer da kalan karakterler dval tarafýndan alýnýr.
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example**: 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int ival;
+	printf("Enter an integer: ");
+	scanf("%d", &ival); // decimal
+	printf("ival = %d\n", ival);
+
+	printf("Enter the same integer: ");
+	scanf("%x", &ival); // hexadecimal
+	printf("ival = %d\n", ival);
+
+	printf("Enter the same integer: ");
+	scanf("%o", &ival); // octal
+	printf("ival = %d\n", ival);
+
+	/*
+		Enter an integer: 12
+		ival = 12
+		Enter the same integer: 12
+		ival = 18
+		Enter the same integer: 12
+		ival = 10
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example**: The return value of scanf function 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int ival;
+	int retval;
+
+	printf("Enter an integer: ");
+	retval = scanf("%d", &ival);
+	
+	printf("retval : %d\n", retval);
+
+
+	/*
+		Enter an integer: 12
+		retval : 1
+
+		Enter an integer: mehmet
+		retval : 0
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example**: The return value of scanf function 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int ival;
+	int retval;
+
+	printf("Enter an integer: ");
+	retval = scanf("%x", &ival); 
+
+	printf("retval : %d\n", retval);
+	
+	/*
+		Enter an integer: ali // a is a hex number 
+		retval : 1
+
+		Enter an integer: mehmet // m is not a hex number
+		retval : 0
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example**:
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x,y,z;
+	int retval;
+
+	printf("Enter three integers: ");
+	retval = scanf("%d%d%d", &x, &y, &z);
+
+	printf("retval : %d\n", retval);
+
+	/*
+		Enter three integers: 12 34 58
+		retval : 3
+
+		Enter three integers: 12 34 mehmet
+		retval : 2
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example**:
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x,y;
+
+	printf("Enter an integer: ");
+	scanf("%d", &x);
+
+	printf("Enter an integer: ");
+	scanf("%d", &y);
+
+	printf("x : %d\n", x);
+	printf("y : %d\n", y);
+
+	/*
+		Enter an integer: 12
+		Enter an integer: 25
+		x : 12
+		y : 25
+
+		Enter an integer: 12mehmet
+		Enter an integer: x : 12
+		y : -858993460
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example**:
