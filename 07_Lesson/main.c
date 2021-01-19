@@ -1,26 +1,30 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
+int f1() {
+	printf("f1() is called\n");
+	return 3;
+}
 
-void clear_input_buffer() {
-	int c;
-	while ((c = getchar()) != '\n' && c != EOF)
-		;
+int f2() {
+	printf("f2() is called\n");
+	return 5;
 }
 
 int main() {
 
 	int x;
-	int retval;
+	x = f1() + 5 * f2(); 
+	
+	printf("x : %d\n", x);
 
-	printf("Enter an integer: ");
-	retval = scanf("%d", &x);
-
+	return 0;
 	/*
-
-
-
+		f1() is called
+		f2() is called
+		x : 28
 	*/
 }
+	
 
 

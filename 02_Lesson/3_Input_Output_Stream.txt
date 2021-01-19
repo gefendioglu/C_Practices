@@ -388,4 +388,85 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
+- **Example**: Different conversion specifiers for scanf func
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int x;
+
+	printf("Enter an integer: ");
+	scanf("%*d%*d%d", &x);
+
+	printf("x :%d\n", x);
+	/*
+		Enter an integer: 12 45 87
+		x :87
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example**: Using scanf func with diffent type of input data 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main() {
+
+	int age;
+	char name[100];
+
+	printf("Enter your name and age: ");
+	scanf("%s%d", &name, &age);
+
+	// dont want to take name from input stream
+	//scanf("%*s%d", &age); 
+
+	printf("name :%s\n age:%d\n", name, age);
+
+	/*
+		Enter an integer: ahmet 15
+		name :ahmet
+		age: 15
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example**: Printing the max value for three different integer numbers
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int max_value(int a, int b, int c) {
+	int max = a;
+	if (b > max)
+		max = b;
+	if (c > max)
+		max = c;
+	return max;
+}
+int main() {
+
+	int x,y,z;
+
+	printf("Enter three integers: ");
+	scanf("%d%d%d", &x, &y, &z);
+
+	printf("The max value : %d\n", max_value(x,y,z) );
+
+	/*
+		Enter three integers: 12 58 48
+		The max value : 58
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
 - **Example**:

@@ -1,13 +1,14 @@
 
 ## Functional Decomposition
- - Function Declaration
- - Function Definition
- - Function Call Expression
+
+- Function Declaration
+- Function Definition
+- Function Call Expression
 
 ### The details about "Function Definition":
-  - The concept of function definition is used in the same sense as the concept of function implementation.
-  - The concepts of "Integration" and "Implementation" are theoretically different from each other.
-  - While implementation is writing the code of a function that did not exist before, integration can be interpreted as, for example, adding a function from a third party library to an existing software so that it works together correctly.
+- The concept of function definition is used in the same sense as the concept of function implementation.
+- The concepts of "Integration" and "Implementation" are theoretically different from each other.
+- While implementation is writing the code of a function that did not exist before, integration can be interpreted as, for example, adding a function from a third party library to an existing software so that it works together correctly.
 
 - Although function parameters are called "formal parameters" in theory, it is more common to use them only as "parameters".
 
@@ -17,6 +18,7 @@
 - "implicit int" rule: In accordance with the backward compatibility rule, C functions that do not have type information are accepted as "int" type by default. If this rule is not valid, it means backward compatibility is not applied, a "missing type specifier" error is received.
 
 ### The details about "Function Call Expression": 
+
 - In C and C ++ languages, function calls are in an operator level and performed using function-call-operator (). 
 - Expressions whose values are sent to function parameters through the function call are named as "argument" or "actual parameters".
 
