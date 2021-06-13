@@ -1,18 +1,16 @@
 ## PREPROCESSOR SYMBOLIC CONSTANTS (PREDEFINED MACRO):
 
 - #line, #error, #pragma preprocessor commands: 
-  - #error  --> kodun bilerek isteyerek önişlemci aşamasında sonlandırılması
+  - #error  --> finalizing the code intentionally in the preprocessor phase
   - #pragma -->
   - #line   --> 
-
 
 #error this project should not been compiled!!!
 
 /----------------------------------------------
 /----------------------------------------------
 
-// c derleyicisi ile derlenmek istendiğinde bu blok içine girecektir:
-// programcı sadece cpp derleyicisi ile derlemek istediğinde 
+- ** Example ** : It will enter this block when it wants to be compiled with the c compiler.
 
 ```c
 #ifndef __cplusplus 
@@ -23,17 +21,19 @@
 /----------------------------------------------
 /---------------------------------------------- 
 
-- önceden tanımlanmış makro sabitleri:  __cplusplus 
-- diğer makrolar ile çakışma riskini ortadan kaldırmak için __ ile başlar ve biter. 
-  - __LINE__  : assert makrosu içinde de tanımlıdır. 
-  - __FILE__
-  - __DATE__
-  - __TIME__
-  - __STDC__
-  - __func__
+- ** Example ** : Predefined macro constants (such as __cplusplus )
+- It starts and ends with __ to avoid the risk of conflicts with other macros.
+  - __LINE__  : defined in assert macro 
+  - __FILE__  :
+  - __DATE__  :
+  - __TIME__  :
+  - __STDC__  :
+  - __func__  :
 
 /----------------------------------------------
 /----------------------------------------------
+
+- ** Example ** : __LINE__
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -47,6 +47,8 @@ int main() {
 
 /----------------------------------------------
 /----------------------------------------------
+
+- ** Example ** : Macro definition for DEBUG 
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -72,8 +74,8 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* You can use assert functional macro (from <assert.h> library) instead of previous code sample
- - assert(x != 0); --> parantez içinde doğru olması gereken ifade yazılmalı!
+- ** Example ** : You can use assert functional macro (from <assert.h> library) instead of previous code sample
+ - assert(x != 0); --> The expression in the parentheses must be true !!!
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -93,7 +95,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* assert functional macro definition in standard lib. 
+- ** Example ** : assert functional macro definition in standard lib. 
 
 ```c
 #ifdef NDEBUG
@@ -119,10 +121,11 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* #define NDEBUG ile debug süreci sonlandığında assert makrolarının elle silinmesine gerek kalmadan derleme aşamasında koddan çıkarılması sağlanır. 
- - #define NDEBUG --> #include <assert.h> öncesinde eklenmesi gerekmektedir. 
- - Bu sayede boş deyim dönmesi sağlanacaktır 
-   --> #define assert(expression) ((void)0)
+- ** Example ** : 
+  - When the debug process ends with "#define NDEBUG", assert macros are removed from the code during compilation without having to manually delete them.
+  - #define NDEBUG --> should be added before #include <assert.h> 
+  - In this way, an empty statement will be returned.
+    --> #define assert(expression) ((void)0)
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -137,9 +140,9 @@ void func(int x) {
 /----------------------------------------------
 /----------------------------------------------
 
-* __DATE__ , __TIME__ , __FILE makroları
-     - __TIME__ otomatik olarak derleme zamanına göre değişir.
-     - __DATE__ otomatik olarak derleme zamanına göre değişir.
+- ** Example ** :  __DATE__ , __TIME__ , __FILE 
+  - __TIME__  : It changes automatically with respect to the compile time. 
+  - __DATE__  : It changes automatically with respect to the compile time. 
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -161,7 +164,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* __func__ makrosu:
+- ** Example ** : __func__ 
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
@@ -179,9 +182,9 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-* __STDC__ : 
-    - c ile derlenmesi istenen kod blokları için koşul olarak kullanılır. 
-    - __cpluscplus ifadesi ise aynı makro yapısının cpp tarafındaki hali 
+- ** Example ** : __STDC__  
+  - This macro is used as a condition for the code blocks that are requested to be compiled with c.
+  - __cpluscplus is the same macro structure on the cpp side.  
 
 ```c
 #ifdef __STDC__     // Defined for c compiler
@@ -197,11 +200,13 @@ int main() {
 /----------------------------------------------
 
 * #pragma : 
-    - eğer bir derleyici önişlemci programa ilave işler yaptırmak istiyorsa bu komut kullanılmaktadır.
-    - hangi amaçla kullanılacağı standartlara bağlı değildir. 
-    - portability sorunu ortaya çıkabilir. Çünkü derleyiciye specifik pragma komutları yazılmaktadır. 
-    - #pragma once : multiple inclusion guard
-    - #pragma warning(disable:4552) : to disable a warning
+  - This command is used if a compiler wants the preprocessor program to do additional work.
+  - Which purpose that it will be used is not depending on the standards. 
+  - "Portability" issue may arise. Because specific "pragma" commands are written to the compiler. 
+  - #pragma once : multiple inclusion guard
+  - #pragma warning(disable:4552) : to disable a warning
+
+- ** Example ** :  #pragma
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
