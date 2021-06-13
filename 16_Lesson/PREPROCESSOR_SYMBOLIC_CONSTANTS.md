@@ -22,13 +22,13 @@
 /---------------------------------------------- 
 
 - ** Example ** : Predefined macro constants (such as __cplusplus )
-- It starts and ends with __ to avoid the risk of conflicts with other macros.
-  - __LINE__  : defined in assert macro 
-  - __FILE__  :
-  - __DATE__  :
-  - __TIME__  :
-  - __STDC__  :
-  - __func__  :
+  - It starts and ends with __ to avoid the risk of conflicts with other macros.
+    - __LINE__  : defined in assert macro 
+    - __FILE__  :
+    - __DATE__  :
+    - __TIME__  :
+    - __STDC__  :
+    - __func__  :
 
 /----------------------------------------------
 /----------------------------------------------
@@ -75,7 +75,7 @@ int main() {
 /----------------------------------------------
 
 - ** Example ** : You can use assert functional macro (from <assert.h> library) instead of previous code sample
- - assert(x != 0); --> The expression in the parentheses must be true !!!
+  - assert(x != 0); --> The expression in the parentheses must be true !!!
 
 ```c
 #define _CRT_SECURE_NO_WARNINGS
