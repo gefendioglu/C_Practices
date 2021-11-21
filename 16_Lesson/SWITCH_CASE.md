@@ -2,22 +2,22 @@
 
 ## SWITCH-CASE CONTROL STATEMENT :
 
-- her switch-case --> if-else dönüştürülebilir. Ancak tersi her zaman doğru değil!
-- daha iyi compiler optimization için tercih edilebilir.
-- switch() blok içindeki ifade tamsayı türü olmak zorundadır (double, float vb. olamaz).
-- case label ise constant tamsayı değeri olmak zorundadır !!! Değişken veya real sayılardan biri olamaz.  
-- her bir case label unique olmalıdır. 
-- break; kullanımı, case geçişleri arasında yaygındır (break; deyiminin özellikle kullanılmak zorunda olmadığı diller de mevcut!!!)
-- case label sonrasında mutlaka bir ifade bulunmalıdır. 
-- default case, switch-case ifadesinin farklı yerlerde bulunması anlam açısından fark yaratmaz. Ancak okunabilirlik açısından sonda bulunması tercih edilir. 
+- every switch-case --> if-else can be converted. But the reverse is not always true!
+- It may be preferred for better compiler optimization.
+- The expression inside the switch() block must be of integer type (cannot be double, float, etc.).
+- case label must be constant integer value !!! It cannot be either variable or real numbers.
+- each case label must be unique.
+- break; --> this usage is common among case transitions (there are languages where the break; statement doesn't have to be used specifically!!!)
+- There must be an expression after the case label.
+- ``default`` case, switch-case statement in different places makes no difference in meaning. However, for readability, it is preferable to have it at the end.
 - The usage of case labels: 
-  - case 'A':        --> OK
-  - case "Jane":     --> NOT OK, the case label shall not be string literal 
-  - case 12.5:       --> NOT OK, the case label shall be integer value
-  - case MAX:        --> OK or NOT OK, it depends on MAX value
-  - case (MIN+MAX)/2:--> OK or NOT OK, it depends on MAX, MIN values
+  - case 'A':          --> OK
+  - case "Jane":       --> NOT OK, the case label shall not be string literal 
+  - case 12.5:         --> NOT OK, the case label shall be integer value
+  - case MAX:          --> OK or NOT OK, it depends on MAX value
+  - case (MIN+MAX)/2:  --> OK or NOT OK, it depends on MAX, MIN values
   - case -5:	       --> OK, the case label can be positive or negative integer values 
-  - case 0X23:       --> OK, the case label can be defined in a different number systems
+  - case 0X23:         --> OK, the case label can be defined in a different number systems
 
 /----------------------------------------------
 /----------------------------------------------
