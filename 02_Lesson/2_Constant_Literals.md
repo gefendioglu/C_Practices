@@ -45,7 +45,7 @@
 /----------------------------------------------
 /----------------------------------------------
 
--**Example**: Constant Literals and Number Systems
+- **Example** : Constant Literals and Number Systems
 
 ```cpp
 #define _CRT_SECURE_NO_WARNINGS
@@ -76,7 +76,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
--**Example**: Floating constants 
+- **Example** : Floating constants 
 
 ```cpp
 #define _CRT_SECURE_NO_WARNINGS
@@ -104,7 +104,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
--**Example**: Floating constants with float variables 
+- **Example** : Floating constants with float variables 
 
 ```cpp
 #define _CRT_SECURE_NO_WARNINGS
@@ -130,7 +130,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
--**Example**: Floating constants with float variables (using the correct comparison definition)
+- **Example** : Floating constants with float variables (using the correct comparison definition)
 
 ```cpp
 #define _CRT_SECURE_NO_WARNINGS
@@ -156,7 +156,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
--**Example**: Writing real number constants with exponential (scientific)notation
+- **Example** : Writing real number constants with exponential (scientific)notation
   - 2.3E-5, 2.3e-5, 2e2, 2E2 --> double types
   - 2.3E, 2.3e
 
@@ -214,8 +214,8 @@ int main() {
 /----------------------------------------------
 
 ### Character Literals 
-- character literals ('A') --> its type is "int" type in C 
-- character literals ('A') --> its type is "char" type in C++
+- Character literals ('A') --> its type is "int" type in C 
+- Character literals ('A') --> its type is "char" type in C++
 - 'G' : char literal is a integer constant in C
 
 - In the character encoding used in the system, the int value (coding place) corresponding to this character is used.
@@ -234,22 +234,22 @@ int main() {
 
  ASCII    Binary Code   Int Number 
 ------ | ------------ | ----------- |
-  48   |  0011 0000		|      0      |
-  49	 |  0011 0001		|      1      |
-  50	 |  0011 0010		|      2      |
-  51	 |  0011 0011		|      3      |
-  52	 |  0011 0100		|      4      |
-  53	 |  0011 0101		|      5      |
-  54	 |  0011 0110		|      6      |
-  55	 |  0011 0111		|      7      |
-  56	 |  0011 1000		|      8      |
-  57	 |  0011 1001		|      9      |
+  48   |  0011 0000   |      0      |
+  49   |  0011 0001   |      1      |
+  50   |  0011 0010   |      2      |
+  51   |  0011 0011   |      3      |
+  52   |  0011 0100   |      4      |
+  53   |  0011 0101   |      5      |
+  54   |  0011 0110   |      6      |
+  55   |  0011 0111   |      7      |
+  56   |  0011 1000   |      8      |
+  57   |  0011 1001   |      9      |
 
 
 /----------------------------------------------
 /----------------------------------------------
 
--**Example**:  ASCII Coding for character literals
+- **Example** :  ASCII Coding for character literals
 
 ```cpp
 #define _CRT_SECURE_NO_WARNINGS
@@ -271,7 +271,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
--**Example**: Printing all ASCII Characters in a text file
+- **Example** : Printing all ASCII Characters in a text file
 
 ```cpp
 #define _CRT_SECURE_NO_WARNINGS
@@ -297,7 +297,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
--**Example**: Printing all ASCII Characters 
+- **Example** : Printing all ASCII Characters 
 
 ```cpp
 #define _CRT_SECURE_NO_WARNINGS
@@ -449,7 +449,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
--**Example**: Escape Sequence 
+- **Example** : Escape Sequence 
 
 ```cpp
 #define _CRT_SECURE_NO_WARNINGS
@@ -493,7 +493,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
--**Example**: Printing different types of characters
+- **Example** : Printing different types of characters
 
 ```cpp
 #define _CRT_SECURE_NO_WARNINGS
@@ -521,7 +521,7 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
--**Example**: In C ++ language, an integer constant can be written directly in binary system. In C language, extension should be used for this. It is not a standard feature.
+- **Example** : In C ++ language, an integer constant can be written directly in binary system. In C language, extension should be used for this. It is not a standard feature.
 
 ```cpp
 #define _CRT_SECURE_NO_WARNINGS
