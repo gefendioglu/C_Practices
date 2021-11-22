@@ -28,10 +28,10 @@
    - Will the + and - characters be used to write for positive/negative numbers?
 
 - width character: writing area width
-987551   gamze efendioglu
-   764  mehmet efendioglu
+  - 987551   gamze efendioglu
+  - 764      mehmet efendioglu
 
-- fill character: 
+- fill character: TODO
 
  
 /----------------------------------------------
@@ -54,7 +54,7 @@
 /----------------------------------------------
 /----------------------------------------------
 
-- **Example**: 
+- **Example** : 
 
 ```cpp
 #define _CRT_SECURE_NO_WARNINGS
