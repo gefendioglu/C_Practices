@@ -4,6 +4,8 @@ C sample codes
 
 - [Constant & Character Literals](https://github.com/gefendioglu/C_Practices/blob/master/02_Lesson/2_Constant_Character_Literals.md)
 
+- [Input & Output Stream](https://github.com/gefendioglu/C_Practices/blob/master/02_Lesson/3_Input_Output_Stream.md)
+
 - [Preprocessor Symbolic Constants](https://github.com/gefendioglu/C_Practices/blob/master/16_Lesson/PREPROCESSOR_SYMBOLIC_CONSTANTS.md)
 
 - [Switch Case Control Statement](https://github.com/gefendioglu/C_Practices/blob/master/16_Lesson/SWITCH_CASE.md)
