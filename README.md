@@ -6,6 +6,8 @@ C sample codes
 
 - [Input & Output Stream (scanf & printf Functions)](https://github.com/gefendioglu/C_Practices/blob/master/02_Lesson/3_Input_Output_Stream.md)
 
+- [Operators](https://github.com/gefendioglu/C_Practices/blob/master/02_Lesson/02_Lesson/4_Operators.md)
+
 - [Preprocessor Symbolic Constants](https://github.com/gefendioglu/C_Practices/blob/master/16_Lesson/PREPROCESSOR_SYMBOLIC_CONSTANTS.md)
 
 - [Switch Case Control Statement](https://github.com/gefendioglu/C_Practices/blob/master/16_Lesson/SWITCH_CASE.md)
