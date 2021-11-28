@@ -1,0 +1,150 @@
+﻿
+
+## FUNCTIONS
+
+- Function Call : 
+  - return value 
+  - call by reference --> pointer ile return value nun ıletılmesı
+    - fonksiyona gonderilen nesneye return value nun yazılması 
+  - return value by global variable (shared one)
+
+- Function Definition (Implementation) :
+  - Parametresiz fonksiyonlar icin 
+    - C --> func(void)
+    - C++ --> func() // not necessary to write void
+
+- Return Value 
+  - implicit int (default int rule) 
+    - hıcbır tur belırtılmedıgınde default ınt yazılır (C99 ıle bu kural kaldırıldı)
+    - C++ da bulunmaya bır kural 
+
+```c
+void func(void); // not used return value mechanism, deger uretmeyen fonksıyon demek degıl 
+func(void);      // implicit int before C99 --> int func(void);
+```
+void function birden fazla degerde degısıklık yapan fonksıyonlarda da tek bır return value 
+olmayacagı ıcın kullanılabılır
+
+- Fonksıyonların parametre degıskenlerı otomatık omurludur.
+  - Parametre degıskenlerının lokal degıskenlerden farkı nedır?
+    - Lokal degıskenlerın user tarafından degerlerı belırlenebılır
+    - Tanımlama sentakslarının farklı olması
+    - Parametre degıskenlerının statıc keyword ıle kullanılamaması
+
+```c
+int foo(int x) {
+    double x = 3.2; // NOK, Warning	C6001 Using uninitialized memory 'x'.	
+}
+
+int main()
+{
+    foo(12); 
+}
+```
+
+/----------------------------------------------
+/----------------------------------------------
+
+### Return Statement
+
+- Statements 
+  - Expression Statement
+  - Null Statement
+  - Compound Statement
+  - Control Statement
+    - if, for, while, do while, switch, goto, break, continue, return
+  - Return Statement is a sub-statement of control statements 
+
+- Return Statement
+  - return deyımının yurutulmesı ıle bır fonksoypnun kodunun calısması sona erer ve 
+  programın akısı o fonksyoınu cagıran koda gerı doner.
+  - bır fonksıyonda bırden fazla return statement bulunabılır
+  
+  - ıfadesız return statement --> return;
+  - ıfadesız return deyımı gerı donus degerı olmayan (void fonksıyonlarda) kullanılır
+  dıger durumda (void olmayan fonksıyonlarda) syntax error
+
+  ```c
+  void func(int x)
+  {
+    statement1;
+    statement2;
+    statement3;
+    ıf(cond)
+        return; 
+    statement4;
+    statement5;
+  }
+  ```
+   
+  - ıfadelı return statement  --> return expression; 
+
+  ```c
+  int foo(int x) 
+  {
+    double dval = 3.2; 	
+    return dval; // OK, but narrowing conversion (double --> int)
+  }
+  ```
+
+
+```c
+int max_val(int x, int y) {
+    if (x > y)
+        return x;
+    // hidden else
+    return y;
+
+    // return x > y ? x : y;
+}
+```
+
+```c
+int max_val(int x, int y, int z) {
+    int max = x;
+	
+	if (y > max)
+		max = y;
+	
+	if (z > max)
+		max = z;
+
+	return max;
+}
+```
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example** : Find the digit number
+
+```c
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int n_digit(int val) 
+{
+	int digit_cnt = 0;
+	if (val == 0)
+		return 1;
+
+	while (val!=0)
+	{
+		++digit_cnt;
+		val /= 10;
+	}
+
+	return digit_cnt;
+}
+
+int main()
+{
+	int digit = 0;
+	printf("enter a digit number = ");
+	scanf("%d", &digit);
+	printf("digit number = %d", n_digit(digit));
+}
+```
+
+/----------------------------------------------
+/----------------------------------------------
+

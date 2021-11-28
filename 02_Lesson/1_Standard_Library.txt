@@ -1,6 +1,6 @@
-## Standard Library
+ï»¿## Standard Library
 
-- Standard Library aşağıdaki bileşenlerden oluşmaktadır:
+- Standard Library aÃ¾aÃ°Ã½daki bileÃ¾enlerden oluÃ¾maktadÃ½r:
   - standard C functions
   - standard user defined types
     - struct tm tx; // tm is a user defined types from standard lib.
@@ -8,6 +8,7 @@
     - int x = RAND_MAX; // RAND_MAX is a macro from <time> file
   - standard type alias
     - time_t timer; // time_t is a type alias from standard lib.
+
 
 /----------------------------------------------
 /----------------------------------------------

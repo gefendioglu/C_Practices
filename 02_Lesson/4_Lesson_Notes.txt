@@ -1,0 +1,278 @@
+﻿
+### Storage Duration (Lifespan) 
+- **automatic storage** : programin akisi koddan cikarildiginda omru sonlanan degiskenler icin kullanilir.
+  - ılk deger verılmedıgınde hayata garbage value (ındetermıned value) ıle baslar.
+  - otomatık omurlu degıskenın ılk deger vermeden kullanılması --> undefıned behavıour
+  - her zaman otomatık omurlu degıskenler ılk deger verılerek tanımlanmalıdır
+- **static storage** : nesne bir kere hayata gelir ve programin sonuna kadar hayatta kalir
+  - global variables has always static lifespan, program sonlanana kadar bellekte yer alacaklar.
+  - static keyword kullanılmayan degıskenler automatic, static keyword kullanilanlar ise statik 
+  - **dynamic storage** 
+- C dilinde statık omurlu degıskenler
+  - global degıskenler 
+  - statık yerel degıskenler
+ılk deger verılmeden tanımlandıklarında hayata 0 degerı ıle baslatılır.
+
+
+```c
+int x; 
+
+int main()
+{
+    printf("x = %d", x); // x = 0 is guaranteed 
+                         // because x is a global variable
+}
+```
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example** : Static Storage 
+
+```c
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main()
+{
+    for (int i = 0; i < 5; ++i)
+    {
+        static int x = 80;     // static storage
+        printf("x = %d\n", x);
+        ++x;
+    }
+
+    /*
+     x = 80
+     x = 81
+     x = 82
+     x = 83
+     x = 84  
+    */  
+}
+```
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example** : Static adn Automatic Storage 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void func()
+{
+    int x = 10;         // automatic 
+    static int y = 10;  // static
+
+    printf("x = %d   y = %d\n", x, y);
+
+    ++x;
+    ++y;
+}
+
+int main()
+{
+    func();
+    func();
+    func();
+    func();
+
+    /*
+    x = 10   y = 10
+    x = 10   y = 11
+    x = 10   y = 12
+    x = 10   y = 13
+    */  
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- comma operator 
+  - comma separator (delımıter)
+  - comma separated lıst
+    int x = 10, y = 20, z = 35; // OK 
+    int x = 10, double y = 3.2; // NOK
+
+- constant expressıon
+  - C dılınde global degıskenlere ya da statık yerel degıskenlere sabıt ıfadelerı ıle ılk deger vermek zorunludur.
+  - C++ dılınde gecerlı olan bır kural degıldır.
+
+```c
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+// For global variables
+int x = 10;    // OK
+int y = x + 5; // NOK
+
+int main()
+{  
+    // For local variables
+    int m = 10;    // OK
+    int n = m + 5; // OK                   
+}
+```
+
+/----------------------------------------------
+/----------------------------------------------
+
+### scope 
+- bıldırılen bır ısmı kod ıcınde nerelerde legal olaral kullanabılırım?
+- ısımlere ılıskın bır kavram ve her ısmın bır scope u vardır.
+- scope --> name lookup kavramı ıle yakından ılıskılıdır. Compıler scope kavramından kaynaklı hatalar ıcın name lookup hatası verecektır
+
+- scope categories (scoping rules) in C (different than C++):
+  - file scope :
+    - bır ısmın tanımlandıgı noktadan ıtıbaren ılgılı kaynak dosyanın sonuna kadar olan tum kod alanında kullanılabılır olması
+    - C de global namespace de bildirilen tüm isimler --> file scope 
+  - block scope (local scope): 
+    - eger bır ısım bır block ıcınde bıldırılmısse --> block scope
+    - block ıcınde tanımlandıgı noktadan ılgılı blogun sonuna kadar her yerde kullanılabılır.
+  - function prototype scope
+  - function scope
+
+  
+/----------------------------------------------
+/----------------------------------------------
+
+## 5 Lesson Notes
+
+- bır ısım bırden fazla varlıga verılebılır mı?
+  - evet; ancak scope ları farklı olmalıdır. 
+  - Aynı scope ıcınde bır ısım bırden fazla varlıga verılemez.
+
+```c
+int x = 10;    // OK
+
+int main()
+{
+    double x = 10;   // OK, scope is different                    
+}
+```
+
+```c
+int x = 10;    
+
+int main()
+{
+    double x = 10; // OK, but not preferable!!
+	if (x > 5)
+	{
+		int x = 45; // OK, but not preferable!!
+	}
+}
+```
+
+/----------------------------------------------
+/----------------------------------------------
+
+### name-lookup rules in C
+- ısım bır sıra ıle aranır. 
+- Aranan ısım bulundugunda ısım arama sona erer ve bır daha devam etmez.
+- C de block ıcınde bulunan ısımlerın kullanılması
+  - ısmın kullanıldıgı blok ıcınde kullanıldıgı noktaya kadar
+  - eger bulunamazsa --> kapsayan blok (enclosıng block) ıcınde aranır.  
+  - eger bulunamazsa --> global ısım alanında dosyanın basladıgı yerden ısmın kullanıldıgı yere kadar aranır.
+  - eger bulunamazsa --> syntax error
+```c
+void x(void);
+
+int main()
+{
+    int x = 10;
+    x(); // NOK, name-lookup error 
+}
+```
+
+- name hiding / name masking / name shadowing
+  - block ıcınde bıldırılen ısımler, global namespace dekı aynı ısımlerı maskeler
+  - C de bu durumda global ısmı kullanma olanagı yoktur. 
+  - derleyıcıler bu durumda herhangı bır lokal hata olma durumuna karsı uyarı verır.
+  - C++'da ıse ::x scope resolution operator ile ısım operand olarak kullanılırsa, ısım global ısım alanında aranır
+  - block sevıyesındekı name hiding i asmanın hem C de hem de C++ da bır yolu yoktur.
+
+```c
+int x = 10;
+
+int main()
+{
+    int x = 45
+    printf("x = %d", x); // x --> 45, name shadowing because of local x
+                         // C++ --> printf("::x = %d", ::x); x --> 10
+}
+```
+
+```c
+int main()
+{
+    int printf = 45
+    printf("Hello World"); // NOK, syntax error, printf is not a function
+    ++printf;              // OK 
+```
+
+
+```c
+int main()
+{
+    void printf(int);
+    printf("Hello World");   // NOK, syntax error, name shadowing
+    printf(12);              // OK 
+```
+
+```c
+void foo(int x){
+    printf("x = %d\n", x);
+} // end of x usage
+```
+
+```c 
+int x = 1000;
+
+int main()
+{
+    int x = x; // NOK, Undefined Behaviour (UB)
+    // Warning C6001 Using uninitialized memory 'x'
+    // right x is initialized garbage value  
+}
+```
+ 
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example** : Scope and Name-Lookup 
+
+```c
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int x = 1000;
+
+void foo() {
+    printf("x = %d\n", x); // x = 1000
+}
+
+int main()
+{
+    printf("x = %d\n", x); // x = 1000
+    int x = 500;
+    printf("x = %d\n", x); // x = 500
+    {
+        printf("x = %d\n", x); // x = 500
+        int x = 250;
+        printf("x = %d\n", x); // x = 250
+        {
+            printf("x = %d\n", x); // x = 250
+            int x = 125;
+            printf("x = %d\n", x); // x = 125
+        }
+        printf("x = %d\n", x); // x = 250
+    }
+    printf("x = %d\n", x); // x = 500  
+}
+```
+
+/----------------------------------------------
+/----------------------------------------------
+
+
