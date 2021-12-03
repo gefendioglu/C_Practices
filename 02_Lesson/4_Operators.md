@@ -104,3 +104,39 @@ int main() {
 	*/
 }
 ```
+/----------------------------------------------
+/----------------------------------------------
+
+Add two spaces before the end of the line, and then select **Enter**.(space, space, Enter)
+A space gets added in between paragraphs.
+
+### Comma Operator 
+- Comma Separator (Delimiter)
+- Comma Separated List
+  - int x = 10, y = 20, z = 35; // OK 
+  - int x = 10, double y = 3.2; // NOK
+
+- constant expressıon
+  - C dılınde global degıskenlere ya da statık yerel degıskenlere sabıt ıfadelerı ıle ılk deger vermek zorunludur.
+  - C++ dılınde gecerlı olan bır kural degıldır.
+
+```c
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+// For global variables
+int x = 10;    // OK
+int y = x + 5; // NOK
+
+int main()
+{  
+    // For local variables
+    int m = 10;    // OK
+    int n = m + 5; // OK                   
+}
+```
+
+/----------------------------------------------
+/----------------------------------------------
+
+
