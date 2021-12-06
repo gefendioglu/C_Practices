@@ -1,20 +1,20 @@
 ### Storage Duration (Lifespan) 
-- **automatic storage** : programin akisi koddan cikarildiginda omru sonlanan degiskenler icin kullanilir.
-  - ılk deger verılmedıgınde hayata garbage value (ındetermıned value) ıle baslar.
-  - otomatık omurlu degıskenın ılk deger vermeden kullanılması --> undefıned behavıour
-  - her zaman otomatık omurlu degıskenler ılk deger verılerek tanımlanmalıdır
+- **automatic storage** : It is used for variables whose lifespan ends when the program's flow is exited from the code.
+  - If the first value is not given (if not initialized), it starts life with a garbage value (an indetermined value).__
+  If this variable is used without it is initialized, then this situation may result in **undefined behaviour**.
+  - auto variables should always been defined by initializing !!! 
   
-- **static storage** : nesne bir kere hayata gelir ve programin sonuna kadar hayatta kalir
-  - global variables has always static lifespan, program sonlanana kadar bellekte yer alacaklar.
+- **static storage** : The object comes to life once and keeps its existence until the end of the program. 
+  - Global variables has always static lifespan, they will be in memory until the program terminates.
   - static keyword kullanılmayan degıskenler automatic, static keyword kullanilanlar ise statik 
+  - Variables that do not use the **static** keyword are --> automatic, those that use the **static** keyword are --> static
   
 - **dynamic storage** 
 
-- C dilinde statık omurlu degıskenler
-  - global degıskenler 
-  - statık yerel degıskenler
-ılk deger verılmeden tanımlandıklarında hayata 0 degerı ıle baslatılır.
-
+- The variable in statç storage category in C: 
+  - global variables  
+  - static local variables__
+  When they are defined without giving an initial value, life is started with a value of 0. 
 
 ```c
 int x; 
@@ -39,7 +39,7 @@ int main()
 {
     for (int i = 0; i < 5; ++i)
     {
-        static int x = 80;     // static storage
+        static int x = 80;     // static local variable --> static storage
         printf("x = %d\n", x);
         ++x;
     }
@@ -58,13 +58,14 @@ int main()
 
 - **Example** : Static adn Automatic Storage 
 
+```c
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
 void func()
 {
-    int x = 10;         // automatic 
-    static int y = 10;  // static
+    int x = 10;         // automatic, it is created every time
+    static int y = 10;  // static   , it is created only once
 
     printf("x = %d   y = %d\n", x, y);
 
@@ -86,22 +87,23 @@ int main()
     x = 10   y = 13
     */  
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-### scope 
-- bıldırılen bır ısmı kod ıcınde nerelerde legal olaral kullanabılırım?
-- ısımlere ılıskın bır kavram ve her ısmın bır scope u vardır.
-- scope --> name lookup kavramı ıle yakından ılıskılıdır. Compıler scope kavramından kaynaklı hatalar ıcın name lookup hatası verecektır
+### Scope Definition
+- Where can I legally use a declared name  in the code?
+- It is a concept related to names and every name has a scope.
+- Scope definition is closely related to the concept of name-lookup.__It gives a name lookup error for the errors originating from the compiler scope concept. 
 
 - scope categories (scoping rules) in C (different than C++):
   - file scope :
-    - bır ısmın tanımlandıgı noktadan ıtıbaren ılgılı kaynak dosyanın sonuna kadar olan tum kod alanında kullanılabılır olması
-    - C de global namespace de bildirilen tüm isimler --> file scope 
+    - Usability for a name in the entire code space from the point at which it is defined to the end of the relevant source file
+    - All names declared in global namespace in C --> file scope 
   - block scope (local scope): 
-    - eger bır ısım bır block ıcınde bıldırılmısse --> block scope
-    - block ıcınde tanımlandıgı noktadan ılgılı blogun sonuna kadar her yerde kullanılabılır.
+    - If a name is declared in a block --> block scope
+    - The name can be used anywhere from the point where it is defined in the block to the end of the related block.
   - function prototype scope
   - function scope
 
@@ -141,13 +143,14 @@ int main()
 /----------------------------------------------
 
 ### Name-Lookup Rules in C
-- ısım bır sıra ıle aranır. 
-- Aranan ısım bulundugunda ısım arama sona erer ve bır daha devam etmez.
-- C de block ıcınde bulunan ısımlerın kullanılması
-  - ısmın kullanıldıgı blok ıcınde kullanıldıgı noktaya kadar
-  - eger bulunamazsa --> kapsayan blok (enclosıng block) ıcınde aranır.  
-  - eger bulunamazsa --> global ısım alanında dosyanın basladıgı yerden ısmın kullanıldıgı yere kadar aranır.
-  - eger bulunamazsa --> syntax error
+- The name is searched in an order.
+- When the searched name is found, the name-lookup is terminated and will not continue.
+- Using the names found in the block in C
+   - up to the point where the name is used in the block in which it is used
+   - if not found --> it is searched within the enclosing block.
+   - If not found --> it is searched in the global area from the beginning of the file to the place where the name is used.
+   - if not found --> syntax error 
+   
 ```c
 void x(void);
 
@@ -159,11 +162,11 @@ int main()
 ```
 
 ## Name Hiding / Name Masking / Name Shadowing
-  - block ıcınde bıldırılen ısımler, global namespace dekı aynı ısımlerı maskeler
-  - C de bu durumda global ısmı kullanma olanagı yoktur. 
-  - derleyıcıler bu durumda herhangı bır lokal hata olma durumuna karsı uyarı verır.
-  - C++'da ıse ::x scope resolution operator ile ısım operand olarak kullanılırsa, ısım global ısım alanında aranır
-  - block sevıyesındekı name hiding i asmanın hem C de hem de C++ da bır yolu yoktur.
+   - The names defined in the block mask the same names in the global namespace
+   - In this case, it is not possible to use the global name in C.
+   - Then compilers warn of any local error.
+   - In C++, if the name is used as an operand with the ::x scope resolution operator, it is searched in the global namespace
+   - There is no way in both C and C++ to deal with name-hiding at the block level. 
 
 ```c
 int x = 10;
@@ -175,6 +178,7 @@ int main()
                          // C++ --> printf("::x = %d", ::x); x --> 10
 }
 ```
+
 
 ```c
 int main()
@@ -193,11 +197,13 @@ int main()
     printf(12);              // OK 
 ```
 
+
 ```c
 void foo(int x){
     printf("x = %d\n", x);
 } // end of x usage
 ```
+
 
 ```c 
 int x = 1000;
