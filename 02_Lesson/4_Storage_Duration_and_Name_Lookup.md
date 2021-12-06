@@ -1,6 +1,6 @@
 ### Storage Duration (Lifespan) 
 - **automatic storage** : It is used for variables whose lifespan ends when the program's flow is exited from the code.
-  - If the first value is not given (if not initialized), it starts life with a garbage value (an indetermined value).__
+  - If the first value is not given (if not initialized), it starts life with a garbage value (an indetermined value).\
   If this variable is used without it is initialized, then this situation may result in **undefined behaviour**.
   - auto variables should always been defined by initializing !!! 
   
@@ -13,7 +13,7 @@
 
 - The variable in statç storage category in C: 
   - global variables  
-  - static local variables__
+  - static local variables\
   When they are defined without giving an initial value, life is started with a value of 0. 
 
 ```c
@@ -95,7 +95,8 @@ int main()
 ### Scope Definition
 - Where can I legally use a declared name  in the code?
 - It is a concept related to names and every name has a scope.
-- Scope definition is closely related to the concept of name-lookup.__It gives a name lookup error for the errors originating from the compiler scope concept. 
+- Scope definition is closely related to the concept of name-lookup.\
+It gives a name lookup error for the errors originating from the compiler scope concept. 
 
 - scope categories (scoping rules) in C (different than C++):
   - file scope :
@@ -111,11 +112,9 @@ int main()
 /----------------------------------------------
 /----------------------------------------------
 
-## 5 Lesson Notes
-
-- bır ısım bırden fazla varlıga verılebılır mı?
-  - evet; ancak scope ları farklı olmalıdır. 
-  - Aynı scope ıcınde bır ısım bırden fazla varlıga verılemez.
+- **Example** : Can a name be given to more than one entity?
+  - YES; but their scope must be different.
+  - A name can not be given to more than one entity in the same scope. 
 
 ```c
 int x = 10;    // OK
@@ -233,21 +232,21 @@ void foo() {
 
 int main()
 {
-    printf("x = %d\n", x); // x = 1000
+    printf("x = %d\n", x);         // x = 1000
     int x = 500;
-    printf("x = %d\n", x); // x = 500
+    printf("x = %d\n", x);         // x = 500
     {
-        printf("x = %d\n", x); // x = 500
+        printf("x = %d\n", x);     // x = 500
         int x = 250;
-        printf("x = %d\n", x); // x = 250
+        printf("x = %d\n", x);     // x = 250
         {
             printf("x = %d\n", x); // x = 250
             int x = 125;
             printf("x = %d\n", x); // x = 125
         }
-        printf("x = %d\n", x); // x = 250
+        printf("x = %d\n", x);     // x = 250
     }
-    printf("x = %d\n", x); // x = 500  
+    printf("x = %d\n", x);         // x = 500  
 }
 ```
 
