@@ -1,4 +1,4 @@
-### Storage Duration (Lifespan) 
+## Storage Duration (Lifespan) 
 - **automatic storage** : It is used for variables whose lifespan ends when the program's flow is exited from the code.
   - If the first value is not given (if not initialized), it starts life with a garbage value (an indetermined value).\
   If this variable is used without it is initialized, then this situation may result in **undefined behaviour**.
@@ -11,7 +11,7 @@
   
 - **dynamic storage** 
 
-- The variable in statç storage category in C: 
+- The variable in the static storage category in C: 
   - global variables  
   - static local variables\
   When they are defined without giving an initial value, life is started with a value of 0. 
