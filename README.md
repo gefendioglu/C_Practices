@@ -10,6 +10,8 @@ C sample codes
 
 - [Functional Decomposition & Function Return Value](https://github.com/gefendioglu/C_Practices/blob/master/07_Lesson/2_Functional_Decomposition_Function_Return_Value.md)
 
+- [Storage Duration && Name Lookup](https://github.com/gefendioglu/C_Practices/blob/master/02_Lesson/4_Storage_Duration_and_Name_Lookup.md)
+
 - [Preprocessor Symbolic Constants](https://github.com/gefendioglu/C_Practices/blob/master/16_Lesson/PREPROCESSOR_SYMBOLIC_CONSTANTS.md)
 
 - [Switch Case Control Statement](https://github.com/gefendioglu/C_Practices/blob/master/16_Lesson/SWITCH_CASE.md)
