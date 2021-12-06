@@ -141,7 +141,7 @@ int main()
 /----------------------------------------------
 /----------------------------------------------
 
-### Name-Lookup Rules in C
+## Name-Lookup Rules in C
 - The name is searched in an order.
 - When the searched name is found, the name-lookup is terminated and will not continue.
 - Using the names found in the block in C
@@ -160,7 +160,7 @@ int main()
 }
 ```
 
-## Name Hiding / Name Masking / Name Shadowing
+### Name Hiding / Name Masking / Name Shadowing
    - The names defined in the block mask the same names in the global namespace
    - In this case, it is not possible to use the global name in C.
    - Then compilers warn of any local error.
