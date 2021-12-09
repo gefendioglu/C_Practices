@@ -1,7 +1,7 @@
 ## MACRO 
- - avoiding the cost of function calls
- - where there is a function call, the compiler just writes the specified code
- - there is no return value definition for 
+ - It can be used for avoiding the cost of function calls
+ - The compiler only writes the specified code with macros where there is a function call.
+ - There is no return value definition for macros. 
 
 /----------------------------------------------
 /----------------------------------------------
