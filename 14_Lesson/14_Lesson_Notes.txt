@@ -1,22 +1,19 @@
-/----------------------------------------------
-/--------------LESSON NOTES-------------------- 
-/----------------------------------------------
-
-* MACRO 
- - fonksiyon çaðrýlarýndan kaynaklanan maliyetden kaçýnmak
- - fonksiyon çaðrýsý olduðu yerde derleyici sadece belirtilen kodu yazar
- - burada bir return value tanýmý yoktur
+## MACRO 
+ - It can be used for avoiding the cost of function calls
+ - The compiler only writes the specified code with macros where there is a function call.
+ - There is no return value definition for macros. 
 
 /----------------------------------------------
 /----------------------------------------------
 
+```c
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <limits.h>
 #include <stdio.h>
 
 
-#ifdef _USE_MATH_DEFINES // define edildiði için by bloða girilir. 
+#ifdef _USE_MATH_DEFINES // define edildiÄŸi iÃ§in by bloÄŸa girilir. 
 #define SIZE 100
 #define MAX 500
 #endif // _USE_MATH_DEFINES
@@ -35,18 +32,19 @@ int main() {
 
 	return 0;
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
 
-* Functional Macro:
- - fonsiyona giriþ ve fonksiyondan çýkýþ kodu olmayacaðý için daha hýzlý çalýþmasý beklenmektedir. 
- - kodu küçük ve çok sýk çaðrýlan fonksiyonlar için tercih edilmelidir. 
- - yazma kolaylýðýndan dolayý da tercih edilmektedir. 
- - bit elemanlarýnýn kullanýmý sýrasýnda functional macro kullanýmý yaygýndýr. 
- - bu macro yapýsýnýn kullanýcýsý 
- - güvenlik açýsýndan açýðý vardýr; ancak kullanýmýndan da vazgeçilemez. 
+### Functional Macro:
+ - It is expected to work faster since there will be no entry and exit code from the function.
+ - It should be preferred for functions whose code is small and frequently called.
+ - It is also preferred because of its ease of writing.
+ - It is common to use functional macros when using bit elements.
+ - It has a security vulnerability; but its use can not be abandoned.
 
+```c
 #define max(a,b) ((a) > (b) ? (a):(b))
 #include <stdio.h>
 
@@ -58,6 +56,7 @@ int main() {
 
 	return 0;
 }
+```
 
 /----------------------------------------------
 /----------------------------------------------
