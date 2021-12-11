@@ -146,6 +146,9 @@
     <Text Include="2_Functions_Return_Value.txt" />
     <Text Include="ascii.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="test.md" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

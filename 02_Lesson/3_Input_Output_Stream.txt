@@ -29,7 +29,7 @@
    - Will characters be written in uppercase or lowercase in the hexadecimal system?
    - Will the + and - characters be used to write for positive/negative numbers?
 
-- width character: yazma alaný geniþlði
+- width character: 
 987551   gamze efendioglu
    764  mehmet efendioglu
 

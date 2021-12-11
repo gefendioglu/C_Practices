@@ -31,10 +31,10 @@
     <Text Include="4_Operators.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="4_Lesson_Notes.txt">
+    <Text Include="Functions.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="Functions.txt">
+    <Text Include="6_Lesson_Notes.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

@@ -1,81 +1,78 @@
+ï»¿## Operators
 
-## Operators
-
-- Dilin iþlem yaptýran temel tokenlarýdýr.
-- C dilinde 45 adet operatörü bulunmaktadýr. 
+- There are 45 operators in C language. 
 - sizeof keyword is also an operator 
 
 - What kind of operators are there with respect to their operands? 
   - unary operators take one operand --> !x, ++y, ~z, m-- 
   - binary operators take two operands --> a<b, x*y, m%z
   - ternary operators take three operators --> ? :
-    there is only one ternary operator --> exp1 ? exp2 : exp3
+    - there is only one ternary operator --> exp1 ? exp2 : exp3
 
 - The operator (or operands) of an operator must be expression.
   - x + return y; // NOT OK ! --> return y; is a statement
-    x + y; // OK!
+  - x + y; // OK!
 
 - What kind of operators are there with respect to their place? 
   - Prefix operators --> ++x, !x, ~x, &x (unary prefix)
   - Postfix operators --> x++ (unary postfix)
   - Infix operators --> a + b (binary infix)
 
-- expression --> a + b
+- expression --> a + b (without ;)
 - expression statement --> a + b;
 
-- side effect : bazý operaörler operandlarýnýn deðerlerini deðiþtirebilir --> ++x
+- side effect : some operators can change the values of their operands --> ++x
   - Which operators have side effects?
     - ++, --, assignment operators (+=, -=, etc.)
  
 - The priority (precedence) of operators:
   - 4 operators have both unary and binary features and can undertake different tasks: 
-    + operator --> +x, a+b
-    - operator --> -x, a-b 
-    & operator --> &x, a&b
-    * operator --> *ptr, x*y
- 
-- operator önceliði bir iþlemin fiziksel olarak önceliðini belirtmez. operatörün operandlarýný belirleyen bir tanýmlamadýr. 
+    - + operator --> +x, a+b
+    - - operator --> -x, a-b 
+    - & operator --> &x, a&b
+    - * operator --> *ptr, x*y
+
+- operator precedence does not specify the physical precedence of an operation. It is a definition that determines the operands of the operator.
 
 - operator precedence table:
-----------------------------------------------
-1 () [] . ->
-----------------------------------------------
-2 ++ -- ! ~ & * sizeof (type conversion) + - (sign operators)
-----------------------------------------------
-3 * / %
-----------------------------------------------
-4 + -
-----------------------------------------------
-5 << >>
-----------------------------------------------
-6 < <= > >=
-----------------------------------------------
-7 == !=
-----------------------------------------------
-8 &
-----------------------------------------------
-9 ^
-----------------------------------------------
-10 | 
-----------------------------------------------
-11 &&
-----------------------------------------------
-12 ||
-----------------------------------------------
-13 ? : (ternary)
-----------------------------------------------
-14 = += -= /= %= <<= >>= &= ^= |=
-----------------------------------------------
-15 , (comma)
-----------------------------------------------
-
-
+---
+### 1 () [] . ->
+---
+### 2 ++ -- ! ~ & * sizeof (type conversion) + - (sign operators)
+---
+### 3 * / %
+---
+### 4 + -
+---
+### 5 << >>
+---
+### 6 < <= > >=
+---
+### 7 == !=
+---
+### 8 &
+---
+### 9 ^
+---
+### 10 | 
+---
+### 11 &&
+---
+### 12 ||
+---
+### 13 ? : (ternary)
+---
+### 14 = += -= /= %= <<= >>= &= ^= |=
+---
+### 15 , (comma)
+---
 
 /----------------------------------------------
 /----------------------------------------------
 
-- **Example**: Interview Question for the precedence of operators
+- **Example** : Interview question for the precedence of operators
 
+```cpp
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
@@ -106,3 +103,38 @@ int main() {
 		x : 28
 	*/
 }
+```
+/----------------------------------------------
+/----------------------------------------------
+
+Add two spaces before the end of the line, and then select **Enter**.(space, space, Enter)
+A space gets added in between paragraphs.
+
+### Comma Operator 
+- Comma Separator (Delimiter)
+- Comma Separated List
+  - int x = 10, y = 20, z = 35; // OK 
+  - int x = 10, double y = 3.2; // NOK
+
+- constant expressÄ±on
+  - C dÄ±lÄ±nde global degÄ±skenlere ya da statÄ±k yerel degÄ±skenlere sabÄ±t Ä±fadelerÄ± Ä±le Ä±lk deger vermek zorunludur.
+  - C++ dÄ±lÄ±nde gecerlÄ± olan bÄ±r kural degÄ±ldÄ±r.
+
+```c
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+// For global variables
+int x = 10;    // OK
+int y = x + 5; // NOK
+
+int main()
+{  
+    // For local variables
+    int m = 10;    // OK
+    int n = m + 5; // OK                   
+}
+```
+
+/----------------------------------------------
+/----------------------------------------------

@@ -1,32 +1,46 @@
 
-#define LIFESPAN
-
-/* LifeSpan*/
-#if defined(LIFESPAN)
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
 
-int n_digit(int val) 
+//call by value
+void func_val(int a)
 {
-	int digit_cnt = 0;
-	if (val == 0)
-		return 1;
+	a = 1000; 
+}
 
-	while (val!=0)
-	{
-		++digit_cnt;
-		val /= 10;
-	}
-
-	return digit_cnt;
+//call by reference
+void func_ref(int *a)
+{
+	*a = 1000;
 }
 
 int main()
 {
-	int digit = 0;
-	printf("enter a digit number = ");
-	scanf("%d", &digit);
-	printf("digit number = %d", n_digit(digit));
+	int x = RAND_MAX; // standard macro
+	struct tm tx;     // standard type 
+	time_t timer;     // standard type alias
+	time(&timer);     // standard function
+
+	return 0;
 }
-#endif
+
+/*
+int main()
+{
+	FILE *f;
+	//code...
+
+	f = fopen("database.dat", "rb");
+	if (f == NULL)
+	{
+		fprintf(stderr, "file is not opened!!!/n");
+		return 1;
+	}
+	//code...
+	return 0; // code readibility
+}
+*/
+
 
