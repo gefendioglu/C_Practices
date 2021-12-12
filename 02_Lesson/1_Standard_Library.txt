@@ -39,3 +39,91 @@
     
 /----------------------------------------------
 /----------------------------------------------
+
+
+
+### Standard Library 
+
+- Dilin kurallarinin on gordugu sekilde dilin derleyicisinin kullaniciya sundugu kodlardir.
+
+- Standard C fonksiyonlari standard kutuphanenin bilesenlerinden biridir. 
+
+- 3rd party library function is not a part of standard library
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example** : Standard library usage
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+
+int main()
+{
+	int x = RAND_MAX; // standard macro
+	struct tm tx;     // standard type 
+	time_t timer;     // standard type alias
+	time(&timer);     // standard function
+
+	return 0;
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- C de neden standart fonksiyonlar bulunur? 
+  - common interface saglamasi 
+  - programci tarafindan yazilmasina gerek kalmamasi ve test edilmesi 
+  - domain bilgisi gerektirmesi sebebiyle fonksiyonun yazilmasinin zor olmasi
+  - programci tarafindan yazilan fonksiyonlarin effeciency acisindan dusuk olma ihtimali 
+  - kod optimizasyonu acisindan compiler larin daha guclu olmasi
+  - tasinabilirlik saglamasi (portability)
+
+- standart fonksiyonlarin tanimlamalari (definition) derleyicide bulunmaz, derlenmis halleri (object code) bulunur. 
+  - Plaguer --> The Standard C Library Book 
+
+- bir standart baslik dosyasi eklendiginde bu baslikta bulunan fonksiyonlarin hepsinin bildirimleri de dosyaya eklenmis olur, fonksiyonlarin tanimlari degil ancak
+derlenmis halleri bulunmaktadir. 
+
+- <math.h>
+  double sqrt(double);
+  double pow(double base, double exp);
+  double sin(double);
+  int abs(int); --> returns abs value for an integer argument 
+  double fabs(double); --> returns abs value for a double argument 
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example** :  Designing a function that prints the absolute value 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <math.h>
+
+int main() {
+
+	int ival;
+	printf("Enter an integer number : ");
+	scanf("%d", &ival);
+
+	printf("|%d|--> %d\n", ival, abs(ival));
+
+	double dval;
+	printf("Enter a double number : ");
+	scanf("%lf", &dval);
+
+	printf("|%f|--> %f\n", dval, fabs(dval));
+
+	/*
+		Enter an integer number : -89
+		|-89|--> 89
+		Enter a double number : -3.2
+		|-3.200000|--> 3.200000
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------

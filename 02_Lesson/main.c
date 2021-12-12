@@ -1,46 +1,43 @@
+/*
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <math.h>
+
+int main() {
+
+	int ival;
+	printf("Enter an integer number : ");
+	scanf("%d", &ival);
+
+	printf("|%d|--> %d\n", ival, abs(ival));
+
+	double dval;
+	printf("Enter a double number : ");
+	scanf("%lf", &dval);
+
+	printf("|%f|--> %f\n", dval, fabs(dval));
+
+	/*
+		Enter an integer number : -89
+		|-89|--> 89
+		Enter a double number : -3.2
+		|-3.200000|--> 3.200000
+	*/
+//}
 
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include <time.h>
-#include <stdlib.h>
-
-//call by value
-void func_val(int a)
-{
-	a = 1000; 
-}
-
-//call by reference
-void func_ref(int *a)
-{
-	*a = 1000;
-}
 
 int main()
 {
-	int x = RAND_MAX; // standard macro
-	struct tm tx;     // standard type 
-	time_t timer;     // standard type alias
-	time(&timer);     // standard function
+	double dval1 = 1.3e5;    
+	double dval2 = 1.3e-5;
+	
+	printf("dval1 : %f\n", dval1);
+	printf("dval2 : %f\n", dval2);
 
-	return 0;
+	/*
+		dval1 : 130000.000000
+		dval2 : 0.000013
+	*/
 }
-
-/*
-int main()
-{
-	FILE *f;
-	//code...
-
-	f = fopen("database.dat", "rb");
-	if (f == NULL)
-	{
-		fprintf(stderr, "file is not opened!!!/n");
-		return 1;
-	}
-	//code...
-	return 0; // code readibility
-}
-*/
-
-

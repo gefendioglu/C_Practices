@@ -142,6 +142,7 @@
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\02_Lesson\4_Operators.txt" />
     <Text Include="1_Name_Lookup.txt" />
     <Text Include="2_Functions_Return_Value.txt" />
     <Text Include="ascii.txt" />

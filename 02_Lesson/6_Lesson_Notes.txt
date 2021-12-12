@@ -386,6 +386,24 @@ int main()
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 
+// printf, fprintf, sprintf and scanf, fscanf, sscanf are variadic functions
+// different number of arguments can be sent to these functions
+int main()
+{
+	int x, y, z, t;
+	printf("Enter 4 numbers : \n");    // 1 argument
+	scanf("%d%d%d%d", &x, &y, &z, &t); // 5 arguments
+	printf("%d + % d + % d + % d = % d\n", x, y, z, t, x + y + z + t); // 6 arguments
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example** : Variadic function example
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
 // variadic function definition
 void func(int a, int b, ...){/*code*/ }
 
@@ -462,40 +480,7 @@ int main()
 /----------------------------------------------
 /----------------------------------------------
 
-### Standard Library 
 
-- Dilin kurallarinin on gordugu sekilde dilin derleyicisinin kullaniciya sundugu kodlardir.
 
-- Standard C fonksiyonlari standard kutuphanenin bilesenlerinden biridir. 
-  - standard uder defined types
-  - standard macros
-    - object-like macros
-	- function-like macros 
-  - standard C functions
-  - standard type alias
 
-- 3rd party library function is not a part of standard library
-
-/----------------------------------------------
-/----------------------------------------------
-
-- **Example** : Standard library usage
-
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <time.h>
-#include <stdlib.h>
-
-int main()
-{
-	int x = RAND_MAX; // standard macro
-	struct tm tx;     // standard type 
-	time_t timer;     // standard type alias
-	time(&timer);     // standard function
-
-	return 0;
-}
-
-/----------------------------------------------
-/----------------------------------------------
 

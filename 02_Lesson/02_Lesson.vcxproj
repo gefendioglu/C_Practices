@@ -145,7 +145,6 @@
     <Text Include="1_Standard_Library.txt" />
     <Text Include="2_Constant_Literals.txt" />
     <Text Include="3_Input_Output_Stream.txt" />
-    <Text Include="4_Operators.txt" />
     <Text Include="6_Lesson_Notes.txt" />
     <Text Include="Functions.txt" />
   </ItemGroup>

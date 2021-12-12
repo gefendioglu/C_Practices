@@ -29,6 +29,9 @@
     <Text Include="ascii.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="..\02_Lesson\4_Operators.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="test.md">

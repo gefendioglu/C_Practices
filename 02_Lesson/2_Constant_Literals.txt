@@ -204,7 +204,8 @@ int main() {
 /----------------------------------------------
 /----------------------------------------------
 
-### Character Literals 
+### Character Literals
+
 - character literals ('A') --> its type is "int" type in C 
 - character literals ('A') --> its type is "char" type in C++
 - 'G' : char literal is a integer constant in C
@@ -217,7 +218,7 @@ int main() {
    - 127 : Control Character (not printable)
    - 65 - 90 : Uppercase Letters Code
    - 97 - 122 : Lowercase Letters Code
-   - There are 6 characters in between, in order to increase the difference between the uppercase and the lowercase of the same character to 32. Thus, by changing the fifth bit of the binary number, a conversion from uppercase to lowercase is achieved:
+   - There are 6 characters in between, in order to keep the difference same (as 32) between the uppercase and the lowercase of the same character. Thus, by changing the fifth bit of the binary number, a conversion from uppercase to lowercase is achieved:
      - 0100 0001 : 65 ('A')
 	 - 0110 0001 : 97 ('a')
 
@@ -456,13 +457,13 @@ int main() {
 	printf("question mark    %d\n", '?');
 
 	/*
-		newline              10
+		newline          10
 		vertical tab     9
 		horizontal tab   11
 		carriage return  13
-		backspace            8
+		backspace        8
 		alert            7
-		form feed            12
+		form feed        12
 		null character   0
 		back slash       92
 		single quote     39
@@ -522,3 +523,194 @@ int main() {
 
 /----------------------------------------------
 /----------------------------------------------
+
+SECOND TIME 
+
+## Constants (Literals)
+
+- constant and constant expression are different definitions.
+
+- each constants are token and data types
+
+- integer constants farkli sayi sistemlerinde yazilabilmektedir
+decimal, octal, hexadecimal (especially address values)
+
+- Kullanim yerlerine gore anlamlari degisebileceginden constant turlerinin belirtilmesi onemlidir. 
+
+Type of Constants : 
+- integral constants 
+  - signed int constant --> 0 
+  - unsigned int constant --> 0U 
+    - 3465u, 3465U   (decimal unsigned int constant)
+    - 0123u, 0123U   (octal unsigned int constant)
+    - 0x123u, 0x123U (hexadecimal unsigned int constant)
+  - signed long constant   --> 0L, 11L
+  - unsigned long constant --> 0LU, 11ul, 11UL, 11LU, 11lu 
+  - signed long long constant   --> 0LL, 345LL
+  - unsigned long long constant --> 0LLU, 345ull, 345ULL, 345LLU, 345LLU 
+- floating constants 
+  - float constant --> 3.4f, 3.4F (it must containt point)
+  - double constant --> 5.6, 34. 
+  - long double constant --> 5.6L, 34.L 
+
+
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example** : Constant Values 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main()
+{
+	int dec_val = 123;   // decimal value  
+	int hex_val = 0x123; // hexadecimal value 
+	int oct_val = 0123;  // octal value 
+	int all_val = 23 + 033 + 0x41; 
+
+	printf("dec_val : %d\n", dec_val);  // dec_val : 123  
+	printf("hex_val : %d\n", hex_val);  // hex_val : 291
+	printf("oct_val : %d\n", oct_val);  // oct_val : 83
+	printf("all_val : %d\n", all_val);  // all_val : 115
+
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example** : The usage of double constant value 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main()
+{
+	int dval = 0.1;    
+
+	for (int i = 0; i < 10 ;  ++i)
+	{
+		dval += 0.1;
+	}
+	
+	if (dval == 1.) // not a correct way to compare a double to an int
+		printf("equal to 1\n");
+	else
+		printf("not equal to 1\n");
+
+	// not equal to 1
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example** : The usage of float constant value 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main()
+{
+	float fval = 1.3;    
+	
+	if (fval == 1.3) // 1.3 must be 1.3f or 1.3F
+		printf("equal to 1.3\n");
+	else
+		printf("not equal to 1.3\n");
+
+	// not equal to 1.3
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+
+- gercek sayi sabitlerinin scientific notasyon ile yazilmasi
+  - 2.3e-5, 2.3E-5, 2.3e+5, 2.3E+5
+  - 2e2 (default double and it does not have to include point)
+
+/----------------------------------------------
+/----------------------------------------------
+
+- **Example** : Floating constants with scientific notation 
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+int main()
+{
+	double dval1 = 1.3e5;    
+	double dval2 = 1.3e-5;
+	
+	printf("dval1 : %f\n", dval1);
+	printf("dval2 : %f\n", dval2);
+
+	/*
+		dval1 : 130000.000000
+		dval2 : 0.000013
+	*/
+}
+
+/----------------------------------------------
+/----------------------------------------------
+
+- Bir tamsayi sabitinin yaziminda bir son ek kullanilmamissa ve yazilan
+sabit sistemdeki int turunun sinirlari icinde kaliyorsa sabitin turu integerdir.
+(int turunun kac byte ile temsil edildigine gore sinirlari degisecektir)
+32767 --> iki byte ile temsil edilen int turu icin maksimum value 
+- 84521 --> - burada sadece bir operator, sabitin bir parcasi degil 
+
+
+- Eger tamsayi sabiti decimal sayi sisteminde yazilmissa, bir son ek yoksa 
+ve int turunun sinirlarina sigmiyor ise sirayla asagida tur sinirlarina gore turu belirlenir:
+  - long
+  - unsigned long
+  - long long
+  - unsigned long long
+
+
+- Eger tamsayi sabiti octal veya hexadecimal sayi sisteminde yazilmissa, bir son ek yoksa 
+ve int turunun sinirlarina sigmiyor ise sirayla asagida tur sinirlarina gore turu belirlenir:
+  - unsigned int 
+  - long
+  - unsigned long
+  - long long
+  - unsigned long long
+
+
+- Eger tamsayi sabiti U ile (unsigned olarak) yazilmissa,bir son ek yoksa 
+ve int turunun sinirlarina sigmiyor ise yukarida verilen siralarda ancak sadece unsigned turler dikkate
+alinarak turu belirlenir. 
+
+- Yazilan constant hicbir sayi turune sigmiyorsa --> syntax error !!!
+
+- Buyuk tamsayilarla nasil aritmetik islemler uygulanabilir ?
+  - compiler extension --> dilde standart olmayan kurallarin uygulanmasi
+    - int128_t --> 16 byte lik int constant taniminin yapilmasi saglanabilir 
+  - bu amacla kullanilan ozel kutuphaneler vardir --> Big Integer linraries, high precision libraries 
+   
+/----------------------------------------------
+/----------------------------------------------
+
+### Character Literals 
+
+- Character literals C de int, C++ da char turundedir.
+
+- 'g' karakter sabiti bir tamsayi sabiti 
+  - sistemde kullanilan karakter kodlamasinda (character encoding)
+  - bu karaktere karsilik gelen (coding place)
+
+- ASCII karakter kodlamasinda 128 adet karakter bulunur. 
+  - harf, rakam, alphanumeric, printable/graphic, control karakterleri 
+  - 0 - 31 araligindaki karakterler, control karakteridir.
+  - goruntusu olan ve alphanumeric olmayan karakterlere punctuation karakter (! , .)
+  - Rakamlar 48 ile baslar
+  - 65 --> A
+  - Buyuk harfler 65 ile baslar
+  - Kucuk harfler 97 ile baslar
+  - Buyuk harf kucuk harf donusumleri sebebiyle harf dizilimi birbirini izlemez.
+  ayni harfin buyugu ile kucugu arasindaki kod farkinin 32 ye cikarilmasidir amac. 
+  sayinin besinci bitinin 0 veya 1 olmasi ile ayni harfin buyugu ile kucugu arasinda donusum saglanir. 
+
+

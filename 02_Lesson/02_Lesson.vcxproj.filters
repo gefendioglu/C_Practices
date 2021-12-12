@@ -28,9 +28,6 @@
     <Text Include="3_Input_Output_Stream.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="4_Operators.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
     <Text Include="Functions.txt">
       <Filter>Resource Files</Filter>
     </Text>
